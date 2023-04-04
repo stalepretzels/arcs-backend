@@ -15,21 +15,26 @@
     </form>
     </div>
   </div>
-  <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill" style="font-size: x-large;"></i></button>
-    <script src="/assets/jquery.js"></script>
+  <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill" style="font-size: xx-large;"></i></button>
+  <div style="display: flex; justify-content: center;"><img width="100" src="ARCS.png"></div>  
+  <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script> 
     <script>
       var user = document.cookie
         .split("; ")
         .find((row) => row.startsWith("user="))
         ?.split("%40")[1];
+      var disName = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("name="))
+        ?.split("%40")[1];
 
         var socket = io.connect();
         socket.on('connect', function(data) {
-           socket.emit('join', 'Hello World from client');
+           socket.emit('join', 'User joined.');
         });
         socket.on('broad', function(data) {
-                $('#future').append("<div><strong>@" + user +":</strong><div class='chat-msg other'>" + data + "</div></div>");
+                $('#future').append("<div><strong>" + disName + " (@" + user + ")" +":</strong><div class='chat-msg other'>" + data + "</div></div>");
           });
        
         $('form').submit(function(e){
