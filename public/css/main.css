@@ -16,6 +16,10 @@
   margin: 50px;
 }
 
+.chmscon {
+  margin-bottom: 5px;
+}
+
 #chat-block {
   margin: 20px 0 25px 25px;
   border: 2px solid #16173b;

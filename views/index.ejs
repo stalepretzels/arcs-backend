@@ -24,17 +24,13 @@
         .split("; ")
         .find((row) => row.startsWith("user="))
         ?.split("%40")[1];
-      var disName = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("name="))
-        ?.split("%40")[1];
 
         var socket = io.connect();
         socket.on('connect', function(data) {
            socket.emit('join', 'User joined.');
         });
         socket.on('broad', function(data) {
-                $('#future').append("<div><strong>" + disName + " (@" + user + ")" +":</strong><div class='chat-msg other'>" + data + "</div></div>");
+                $('#future').append("<div class='chmscon'><strong>@" + user + ":</strong><div class='chat-msg other'>" + data + "</div></div>");
           });
        
         $('form').submit(function(e){
