@@ -1,0 +1,12 @@
+<html>
+    <%- include('partials/header.ejs'); -%>
+    <body>
+      <div id="top-block">
+            <% if (user) { %>
+            <h1>Welcome, <%= user %></h1>
+            <% } %>
+            <h2><i>(this is a different page)</i></h2>
+          </div>
+
+    </body>
+</html>

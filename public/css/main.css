@@ -12,8 +12,74 @@
  */
 /*      light colors - used for select dropdown         */
 
-#top-block {
+#top-block, #error {
   margin: 50px;
+}
+
+#chat-block {
+  margin: 20px 0 25px 25px;
+  border: 2px solid #16173b;
+  border-radius: 1em;
+  height: 75%;
+}
+
+#chat-form {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  border-top: 2px solid #16173b;
+  padding: 7.5px;
+}
+
+.chat-msg {
+  border-radius: .5em;
+  color: white;
+  width: max-content;
+  padding: .5% 1%;
+}
+
+#future {
+  height: 90%;
+  padding: 1%;
+  overflow: auto;
+}
+
+.user {
+  background-color: #c9204b;
+}
+
+.other {
+  background-color: #c98020;
+}
+
+.dark-mode {
+  color: whitesmoke;
+  background-color: #16173b;
+}
+
+#dmbutton {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 10;
+  right: 10;
+}
+
+.dark-mode-dmbtn {
+  color: whitesmoke !important;
+}
+
+.dark-mode-fut > div > strong {
+  color: #b8b8b8 !important;
+}
+
+.dark-mode-b {
+  border: 2px solid whitesmoke !important;
+}
+
+.dark-mode-border-top {
+  border-top: 2px solid whitesmoke !important;
 }
 
 .ct-blue {

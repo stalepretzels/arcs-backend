@@ -2,12 +2,55 @@
     <%- include('partials/header.ejs'); -%>
     <body>
       <div id="top-block">
-      <% var user = 0 %>
-        <% if (user) { %>
-            <h1>Welcome, @<%= user.name %></h1>
-          <% } else { %>
-            <h1>Welcome, @guest<%= Math.floor(Math.random() * 999999999) %></h1>
+            <% if (user) { %>
+            <h1>Welcome, <%= user %></h1>
             <% } %>
+  <div id="chat-block">
+            <div id="future">
+            </div>
+            <div id="chat-form">
+    <form id="form" id="chat_form">
+        <input id="chat_input" type="text">
+        <input type="submit" value="Send">
+    </form>
+    </div>
+  </div>
+  <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill" style="font-size: x-large;"></i></button>
+    <script src="/assets/jquery.js"></script>
+    <script src="/assets/socket.io.js"></script> 
+    <script>
+      var user = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("user="))
+        ?.split("%40")[1];
+
+        var socket = io.connect();
+        socket.on('connect', function(data) {
+           socket.emit('join', 'Hello World from client');
+        });
+        socket.on('broad', function(data) {
+                $('#future').append("<div><strong>@" + user +":</strong><div class='chat-msg other'>" + data + "</div></div>");
+          });
+       
+        $('form').submit(function(e){
+            e.preventDefault();
+            var message = $('#chat_input').val();
+            socket.emit('messages', message);
+        });
+
+        function darkmodetoggle() {
+  var e = document.body;
+  var e1 = document.getElementById('chat-block')
+  var e2 = document.getElementById('chat-form')
+  var e3 = document.getElementById('future')
+  var e4 = document.getElementById('dmbutton')
+  e.classList.toggle("dark-mode");
+  e1.classList.toggle("dark-mode-b");
+  e2.classList.toggle("dark-mode-border-top");
+  e3.classList.toggle("dark-mode-fut");
+  e4.classList.toggle("dark-mode-dmbtn");
+}
+       </script>
           </div>
 
     </body>
