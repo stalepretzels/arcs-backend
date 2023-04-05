@@ -40,8 +40,8 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
-      client.emit('broad', data);
-      client.broadcast.emit('broad', data);
+      client.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + ":</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
+      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + ":</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
   });
 
 });
