@@ -30,13 +30,14 @@
            socket.emit('join', 'User joined.');
         });
         socket.on('broad', function(data) {
-                $('#future').append("<div class='chmscon'><strong>@" + user + ":</strong><div class='chat-msg other'>" + data + "</div></div>");
+                $('#future').append(data);
           });
        
         $('form').submit(function(e){
             e.preventDefault();
             var message = $('#chat_input').val();
-            socket.emit('messages', message);
+            var usern = user
+            socket.emit('messages', [ message, usern ]);
         });
 
         function darkmodetoggle() {
