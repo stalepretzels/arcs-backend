@@ -66,7 +66,7 @@ app.use("/", index);
 app.use("/test", test);
 app.use("/401", foo);
 app.use("/403", fot);
-// app.use("*", fof);
+app.use("*", fof);
 app.use("/500", fho);
 app.use("/index2", i2);
 
