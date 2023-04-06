@@ -1,7 +1,7 @@
 name: Update and install dependencies
 on: [workflow_dispatch]
 jobs:
-  check-bats-version:
+  install_and_update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
