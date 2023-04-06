@@ -2,6 +2,7 @@
   "name": "friendly-guacamole",
   "version": "1.0.0",
   "description": "online thingy",
+  "homepage": "callmeclover.github.io/friendly-guacamole",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
