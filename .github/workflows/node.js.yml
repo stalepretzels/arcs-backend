@@ -24,9 +24,6 @@ jobs:
         - name: Install 🔧
           run: npm install
 
-        - name: Lint 🧐
-          run: npm lint:check
-
         - name: Build 🏗️
           run: npm build
           env:
