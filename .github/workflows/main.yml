@@ -10,5 +10,6 @@ jobs:
           node-version: '16'
       - run: npm install -g npm@latest
       - run: npm install
-      - run: npm install -D webpack@latest webpack-cli@latest
+      - run: npm install -g webpack@latest
+      - run: npm install -g webpack-cli@latest --save-dev
       - run: npm update
