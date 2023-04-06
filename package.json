@@ -7,9 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon",
-    "build": "webpack --mode=development",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "build": "webpack --mode=development && gh-pages -d dist"
   },
   "author": "Clover Johnson",
   "license": "ISC",
