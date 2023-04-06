@@ -10,5 +10,5 @@ jobs:
           node-version: '14'
       - run: npm install -g npm@latest
       - run: npm install
-      - run: npm install webpack@latest webpack-cli@latest
+      - run: npm install -D webpack@latest webpack-cli@latest
       - run: npm update
