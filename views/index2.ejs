@@ -2,12 +2,19 @@
     <%- include('partials/header.ejs'); -%>
     <body>
       <div id="top-block">
-            <form method="post">
+            <form method="post" id="login">
               <label>Create A Display Name...</label>
-                <input type="text">
+                <input type="text" id="name">
                 <input type="submit" formmethod="post">
             </form>
           </div>
+
+          <script>
+            $('#login').submit(function (e) {
+            e.preventDefault();
+            window.location = "/"
+        })
+          </script>
 
     </body>
 </html>

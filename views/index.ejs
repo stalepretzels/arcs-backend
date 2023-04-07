@@ -24,6 +24,10 @@
         .split("; ")
         .find((row) => row.startsWith("user="))
         ?.split("%40")[1];
+      var user = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("uname="))
+        ?.split("=")[1];
 
         var socket = io.connect();
         socket.on('connect', function(data) {
