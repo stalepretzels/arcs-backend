@@ -12,7 +12,6 @@ router.get("/", function (req, res) {
         console.log('User ' + user + ' joined from ' + address.ip());
     }
     if (req.cookies.uname == undefined) {
-        res.render("index2.ejs")
         } else {
             user = req.cookies.user;
         }
