@@ -41,8 +41,8 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
-      client.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + ":</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
-      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + ":</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
+      client.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
+      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
   });
 
 });

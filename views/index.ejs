@@ -24,7 +24,7 @@
         .split("; ")
         .find((row) => row.startsWith("user="))
         ?.split("%40")[1];
-      var user = document.cookie
+      var uname = document.cookie
         .split("; ")
         .find((row) => row.startsWith("uname="))
         ?.split("=")[1];
@@ -41,7 +41,7 @@
             e.preventDefault();
             var message = $('#chat_input').val();
             var usern = user
-            socket.emit('messages', [ message, usern ]);
+            socket.emit('messages', [ message, usern, user ]);
         });
 
         function darkmodetoggle() {
