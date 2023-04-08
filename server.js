@@ -37,45 +37,46 @@ io.on('connection', function (client) {
   console.log('Client connected...');
 
   client.on('join', function (data) {
-      console.log(data);
+    console.log(data);
   });
 
   client.on('messages', function (data) {
-      client.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
-      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
+    client.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
+    client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + data.at(0) + "</div></div>");
   });
 
 });
 
 // Middlewares init
-const c403 = function(req, res, next) {
+const c403 = function (req, res, next) {
   BLOCKLIST.forEach((i) => {
-      if (req.url == i) {
-        console.log("This is a forbidden page, redirecting...");
-        res.render('errors/error403');
-      }
-    })
-    console.log('Checked');
-    next();
+    if (req.url == i) {
+      console.log("This is a forbidden page, redirecting...");
+      res.render('errors/error403');
+    }
+  })
+  console.log('Checked');
+  next();
 }
 
 // Middlewares use
 app.use(c403)
 
 // Routes init (VERY IMPORTANT)
+app.use("/login", i2);
 app.use("/", index);
 app.use("/test", test);
 app.use("/401", foo);
 app.use("/403", fot);
 app.use("*", fof);
 app.use("/500", fho);
-app.use("/index2", i2);
 
-httpServer.listen(PORT, function(err){
+
+httpServer.listen(PORT, function (err) {
   if (err) console.error("Error in server setup process");
   console.log("Server listening on Port", PORT);
 });
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.render('index');
 })

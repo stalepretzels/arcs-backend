@@ -1,20 +1,21 @@
 <html>
-    <%- include('partials/header.ejs'); -%>
-    <body>
-      <div id="top-block">
-            <form method="post" id="login">
-              <label>Create A Display Name...</label>
-                <input type="text" id="name">
-                <input type="submit" formmethod="post">
-            </form>
-          </div>
+  <%- include('partials/header.ejs'); -%>
+  <body>
+    <div id="top-block">
+          <form method="post" id="login">
+            <label>Create A Display Name...</label>
+              <input type="text" id="name">
+              <input type="submit" formmethod="post">
+          </form>
+        </div>
 
-          <script>
-            $('#login').submit(function (e) {
-            e.preventDefault();
-            window.location = "/"
-        })
-          </script>
+        <script>
+          $('#login').submit(function (e) {
+          e.preventDefault();
+          document.cookie = "uname="+$('#name').val()
+          window.location = "/"
+      })
+        </script>
 
-    </body>
+  </body>
 </html>
