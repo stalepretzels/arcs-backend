@@ -26,6 +26,7 @@
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script>
+        var form = document.getElementById('chat_input')
         var user = document.cookie
           .split("; ")
           .find((row) => row.startsWith("user="))
@@ -48,6 +49,7 @@
         $('form').submit(function (e) {
           e.preventDefault();
           var message = $('#chat_input').val();
+          form.value = '';
           socket.emit('messages', [message, uname, user]);
         });
 
