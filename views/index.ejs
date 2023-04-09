@@ -20,50 +20,51 @@
             </div>
             <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
                 style="font-size: xx-large;"></i></button>
-            <div style="display: flex; justify-content: center;"><img width="100" src="ARCS.png"></div>
-            <script src="/assets/jquery.js"></script>
-            <script src="/assets/socket.io.js"></script>
-            <script>
-              var user = document.cookie
-                .split("; ")
-                .find((row) => row.startsWith("user="))
-                ?.split("%40")[1];
-              var uname = document.cookie
-                .split("; ")
-                .find((row) => row.startsWith("uname="))
-                ?.split("=")[1];
-              if(uname == null || uname == "null" || uname == "")
-              {
-                window.location = "/login"
-              }
-              var socket = io.connect();
-              socket.on('connect', function (data) {
-                socket.emit('join', 'User joined.');
-              });
-              socket.on('broad', function (data) {
-                $('#future').append(data);
-              });
-
-              $('form').submit(function (e) {
-                e.preventDefault();
-                var message = $('#chat_input').val();
-                socket.emit('messages', [message, uname, user]);
-              });
-
-              function darkmodetoggle() {
-                var e = document.body;
-                var e1 = document.getElementById('chat-block')
-                var e2 = document.getElementById('chat-form')
-                var e3 = document.getElementById('future')
-                var e4 = document.getElementById('dmbutton')
-                e.classList.toggle("dark-mode");
-                e1.classList.toggle("dark-mode-b");
-                e2.classList.toggle("dark-mode-border-top");
-                e3.classList.toggle("dark-mode-fut");
-                e4.classList.toggle("dark-mode-dmbtn");
-              }
-            </script>
+            <button id="unamebutton" onclick="window.location = '/login'">you need to add an icon here</button>
+            <div style=" display: flex; justify-content: center;"><img width="100" src="ARCS.png">
       </div>
+      <script src="/assets/jquery.js"></script>
+      <script src="/assets/socket.io.js"></script>
+      <script>
+        var user = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("user="))
+          ?.split("%40")[1];
+        var uname = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("uname="))
+          ?.split("=")[1];
+        if (uname == null || uname == "null" || uname == "") {
+          window.location = "/login"
+        }
+        var socket = io.connect();
+        socket.on('connect', function (data) {
+          socket.emit('join', 'User joined.');
+        });
+        socket.on('broad', function (data) {
+          $('#future').append(data);
+        });
+
+        $('form').submit(function (e) {
+          e.preventDefault();
+          var message = $('#chat_input').val();
+          socket.emit('messages', [message, uname, user]);
+        });
+
+        function darkmodetoggle() {
+          var e = document.body;
+          var e1 = document.getElementById('chat-block')
+          var e2 = document.getElementById('chat-form')
+          var e3 = document.getElementById('future')
+          var e4 = document.getElementById('dmbutton')
+          e.classList.toggle("dark-mode");
+          e1.classList.toggle("dark-mode-b");
+          e2.classList.toggle("dark-mode-border-top");
+          e3.classList.toggle("dark-mode-fut");
+          e4.classList.toggle("dark-mode-dmbtn");
+        }
+      </script>
+    </div>
     </div>
 </body>
 
