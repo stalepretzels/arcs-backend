@@ -17,8 +17,6 @@ var fho = require("./routes/errors/500");
 var i2 = require("./routes/index2");
 
 // Declarations
-const USERNAME = "callmeclover";
-const PASSWORD = "1322454676909BnM";
 const PORT = 8080;
 const BLOCKLIST = ['/a', '/b', '/c'];
 

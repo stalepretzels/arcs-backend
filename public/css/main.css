@@ -70,6 +70,14 @@
   right: 10;
 }
 
+#unamebutton {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 10;
+  right: 55;
+}
+
 .dark-mode-dmbtn {
   color: whitesmoke !important;
 }
