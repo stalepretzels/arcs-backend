@@ -21,6 +21,9 @@
             <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
                 style="font-size: xx-large;"></i></button>
             <button id="unamebutton" onclick="window.location = '/login'"><i class="bi bi-person-circle" style="font-size: xx-large;"></i></button>
+            <div>
+              <span id="onlinebutton" tooltip="You are online" flow="right"><i id="onlineicon" class="bi bi-circle" style="font-size: xx-large;"></i></span>
+            </div>
             <div style=" display: flex; justify-content: center;"><img width="100" src="ARCS.png">
       </div>
       <script src="/assets/jquery.js"></script>
@@ -60,13 +63,30 @@
           var e3 = document.getElementById('future')
           var e4 = document.getElementById('dmbutton')
           var e5 = document.getElementById('unamebutton')
+          var e6 = document.getElementById('onlinebutton')
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
           e3.classList.toggle("dark-mode-fut");
           e4.classList.toggle("dark-mode-dmbtn");
           e5.classList.toggle("dark-mode-dmbtn");
+          e6.classList.toggle("dark-mode-dmbtn");
         }
+      </script>
+      <script>
+        var onlicon = document.getElementById('onlineicon');
+        var onltext = document.getElementById('onlinebutton');
+        const onlinechecker = setInterval(() => {
+          if (navigator.onLine == true) {
+            onlicon.classList.remove('bi-exclamation-circle');
+            onlicon.classList.add('bi-circle');
+            onltext.setAttribute('tooltip', 'You are online.')
+          } else if (navigator.onLine == false) {
+            onlicon.classList.remove('bi-circle');
+            onlicon.classList.add('bi-exclamation-circle');
+            onltext.setAttribute('tooltip', 'You are not online.')
+          }
+        }, 10000);
       </script>
     </div>
     </div>

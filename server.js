@@ -6,7 +6,11 @@ const ejs = require('ejs');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const address = require('address');
-const markdown = require("markdown-it");
+const md = require('markdown-it')('commonmark', {
+  html: true,
+  linkify: true,
+  typographer: true
+});
 const striptags = require('striptags');
 
 // Routes
@@ -21,7 +25,6 @@ var i2 = require("./routes/index2");
 // Declarations
 const PORT = 8080;
 const BLOCKLIST = ['/a', '/b', '/c'];
-const md = new markdown();
 
 // App init
 const app = express();
@@ -42,8 +45,8 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
-      client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['<strong>', '<i>', '<code>', '<a>']));
-      client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['<strong>', '<i>', '<code>', '<a>']));
+      client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']));
+      client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's']));
   });
 
 });
