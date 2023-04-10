@@ -173,9 +173,9 @@
 
 #chat-block {
   margin: 20px 0 25px 25px;
-  border: 2px solid #16173b;
   border-radius: 1em;
   height: 75%;
+  background: #e1e1e1;
 }
 
 .other > strong {
@@ -187,7 +187,6 @@
   display: flex;
   align-content: center;
   justify-content: center;
-  border-top: 2px solid #16173b;
   padding: 7.5px;
 }
 
@@ -250,11 +249,11 @@
 }
 
 .dark-mode-b {
-  border: 2px solid whitesmoke !important;
+  background: #3b3b3b !important;
 }
 
 .dark-mode-border-top {
-  border-top: 2px solid whitesmoke !important;
+  background: #none !important;
 }
 
 .ct-blue {

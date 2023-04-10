@@ -45,8 +45,14 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
-      client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']));
-      client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's']));
+    console.log(data.at(3))
+      if (data.at(3) == null) {
+        client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg user'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']));
+        client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's']));
+      } else {
+        client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "<img src='data:image/png;base64, " + data.at(3) + "'>" + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's', 'img']));
+      client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "<img src='data:image/png;base64, " + data.at(3) + "'>" + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's', 'img']));
+      }
   });
 
 });
