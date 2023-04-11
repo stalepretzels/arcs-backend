@@ -49,8 +49,8 @@ io.on('connection', function (client) {
         client.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
         client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
       } else {
-        client.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img src='" + data.image + "'>" + "</div></div>");
-      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img src='" + data.image + "'>" + "</div></div>");
+        client.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.image + "'>" + "</div></div>");
+      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.image + "'>" + "</div></div>");
       }
   });
 

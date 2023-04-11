@@ -194,6 +194,7 @@
   border-radius: .5em;
   color: white;
   width: max-content;
+  max-width: 700px;
   padding: .5% 1%;
 }
 
@@ -2719,6 +2720,10 @@
     .btn.dropdown-toggle {
       margin-bottom: 0; }
   
+    .sentImage {
+      width: 100%
+    }
+
     .media-post .author {
       width: 20%;
       float: none !important;
