@@ -29,7 +29,7 @@ const BLOCKLIST = ['/a', '/b', '/c'];
 // App init
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, { maxHttpBufferSize: 1e7 });
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -45,13 +45,12 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
-    console.log(data.at(3))
-      if (data.at(3) == null) {
-        client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg user'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']));
-        client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's']));
+      if (data.image == "ajsdgkjbdkfjgbijk") {
+        client.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
+        client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
       } else {
-        client.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "<img src='data:image/png;base64, " + data.at(3) + "'>" + "</div></div>", ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's', 'img']));
-      client.broadcast.emit('broad', striptags("<div class='chmscon'><strong>" + data.at(1) + " (" + data.at(2) + "):</strong><div class='chat-msg other'>" + md.render(data.at(0)) + "<img src='data:image/png;base64, " + data.at(3) + "'>" + "</div></div>", ['strong', 'i', 'code', 'a', 'div', 'sub', 'sup', 's', 'img']));
+        client.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img src='" + data.image + "'>" + "</div></div>");
+      client.broadcast.emit('broad', "<div class='chmscon'><strong>" + data.disName + " (" + data.genName + "):</strong><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img src='" + data.image + "'>" + "</div></div>");
       }
   });
 

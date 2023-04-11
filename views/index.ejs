@@ -13,7 +13,7 @@
               </div>
               <div id="chat-form">
                 <form id="form" id="chat_form">
-                  <input id="chat_input_uploads" type="file"> 
+                  <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
@@ -30,27 +30,23 @@
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script>
-        function base64(file, callback){
-  var coolFile = {};
-  function readerOnload(e){
-    var base64 = btoa(e.target.result);
-    coolFile.base64 = base64;
-    callback(coolFile)
-  };
-
-  var reader = new FileReader();
-  reader.onload = readerOnload;
-
-  var file = file[0].files[0];
-  coolFile.filetype = file.type;
-  coolFile.size = file.size;
-  coolFile.filename = file.name;
-  reader.readAsBinaryString(file);
+        var base = "";
+function getBase64(file) {
+   var reader = new FileReader();
+   base = reader.readAsDataURL(form_file.files[0]);
+   reader.onloadend = function() {
+    globalThis.base = reader.result.toString()
+   };
+   reader.onerror = function (error) {
+     console.log('Error: ', error);
+   };
 }
+
 
 
         var form = document.getElementById('chat_input')
         var form_file = document.getElementById('chat_input_uploads')
+
         var user = document.cookie
           .split("; ")
           .find((row) => row.startsWith("user="))
@@ -74,14 +70,25 @@
           e.preventDefault();
           var message = $('#chat_input').val();
           var form_file = document.getElementById('chat_input_uploads')
-          if (form_file.value == '') {
+          if (form_file.value == 'aidsgiasdgkjasijdg') {
             form.value = '';
-            socket.emit('messages', [message, uname, user]);
+            var data = {
+              text: message,
+              disName: uname,
+              genName: user
+            };
+            socket.emit('messages', data);
           } else {
-            var blob = base64(form_file, function(data){ console.log(data.base64) });  
             form.value = '';
             form_file.value = '';
-          socket.emit('messages', [message, uname, user, blob]);
+            var data = {
+              text: message,
+              disName: uname,
+              genName: user,
+              image: globalThis.base
+            };
+            console.log(Object.entries(data) + "\n" + base)
+            socket.emit('messages', data);
           }
         });
 
