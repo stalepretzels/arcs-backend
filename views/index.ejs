@@ -16,6 +16,7 @@
                   <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file" accept="image/*"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
+                  <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; top: 4px;"></i></button>
                 </form>
               </div>
             </div>
@@ -42,6 +43,13 @@ function getBase64(file) {
    };
 }
 
+function scrollToBottom(element) {
+  element.scrollTo({
+  top: element.scrollHeight,
+  left: 0,
+  behavior: "smooth",
+});
+}
 
 
         var form = document.getElementById('chat_input')
@@ -55,12 +63,17 @@ function getBase64(file) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
+          var ip = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("ip="))
+          ?.split("=")[1];  
         if (uname == null || uname == "null" || uname == "") {
           window.location = "/login"
         }
         var socket = io.connect();
         socket.on('connect', function (data) {
-          socket.emit('join', 'User joined.');
+          socket.emit('join', uname + ' (' + user + ') joined from ' + ip);
+          socket.emit('joinEmit', uname + ' (' + user + ') joined.');
         });
         socket.on('broad', function (data) {
           $('#future').append(data);
@@ -70,7 +83,7 @@ function getBase64(file) {
           e.preventDefault();
           var message = $('#chat_input').val();
           var form_file = document.getElementById('chat_input_uploads')
-          if (form_file.value == 'aidsgiasdgkjasijdg') {
+          if (form_file.value == '') {
             form.value = '';
             var data = {
               text: message,
@@ -100,6 +113,8 @@ function getBase64(file) {
           var e4 = document.getElementById('dmbutton')
           var e5 = document.getElementById('unamebutton')
           var e6 = document.getElementById('onlinebutton')
+          var e7 = document.getElementById('joinmsg')
+          var e8 = document.getElementById('scrollButton')
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
@@ -107,6 +122,8 @@ function getBase64(file) {
           e4.classList.toggle("dark-mode-dmbtn");
           e5.classList.toggle("dark-mode-dmbtn");
           e6.classList.toggle("dark-mode-dmbtn");
+          e7.classList.toggle("joinmsgdark");
+          e8.classList.toggle("dark-mode-dmbtn");
         }
       </script>
       <script>

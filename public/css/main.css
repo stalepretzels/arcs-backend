@@ -198,6 +198,19 @@
   padding: .5% 1%;
 }
 
+#joinmsg {
+  color: #6d6d6d;
+  font-weight: bold;
+}
+
+.joinmsgdark {
+  color: #bebebe !important;
+}
+
+.bopbot {
+  background-color: rgb(255 105 84);
+}
+
 #future {
   height: 90%;
   padding: 1%;
@@ -223,6 +236,11 @@
   position: fixed;
   top: 10;
   right: 10;
+}
+
+#scrollButton {
+  border: none;
+  background: none;
 }
 
 #unamebutton {
