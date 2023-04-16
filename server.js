@@ -14,7 +14,8 @@ const md = require('markdown-it')('commonmark', {
 const striptags = require('striptags');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-// MongoDB init (for persist)                                                                                                                                 
+// MongoDB init (for persist)                
+/*                                                                                                                 
 const uri = "mongodb+srv://callmeclover:1322454676909BnM@cluster0.yyv5lxs.mongodb.net/?retryWrites=true&w=majority";
 const dbClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const dbName = "Messages";
@@ -38,10 +39,10 @@ async function send(data) {
         console.log(err.stack);
     }
 
-  /*  finally {
+  finally {
        await dbClient.close();
-   } */
-}
+   }
+  }
 
 async function get(client) {
   try {
@@ -60,11 +61,11 @@ async function get(client) {
        console.log(err.stack);
    }
 
- /*  finally {
+    finally {
       await dbClient.close();
-  } */
+  } 
 }
-
+*/
 // Routes
 var index = require("./routes/index");
 var test = require("./routes/test");

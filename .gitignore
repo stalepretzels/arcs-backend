@@ -1,3 +1,5 @@
-images
-.gihub
+/images
+.github
 README.md
+/dist
+Dockerfile
