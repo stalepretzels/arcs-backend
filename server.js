@@ -98,7 +98,7 @@ io.on('connection', function (client) {
 
   client.on('join', function (data) {
     console.log(data);
-    get(client).catch(console.dir);
+   // get(client).catch(console.dir);
   });
 
   client.on('joinEmit', function (data) {
