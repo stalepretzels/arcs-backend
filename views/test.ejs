@@ -8,5 +8,19 @@
     <h5>Header 5 <i>Italics</i> <strong>Bold</strong></h5>
     <br>
     <p>Paragraph <i>Italics</i> <strong>Bold</strong></p>
+
+    <img id="test" src=<%=icon%> >
+    <button id="test2">update</button>
+
+    <script>
+        var socket = io.connect();
+        const f = document.getElementById('test')
+        const g = document.getElementById('test2')
+        g.onclick = test(f) 
+
+        function test(elem) {
+            socket.emit('imageUpdate', elem.src)
+        }
+    </script>
 </body>
 </html>

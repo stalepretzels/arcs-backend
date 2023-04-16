@@ -8,6 +8,10 @@
           <h1>Welcome, <%= user %>
           </h1>
           <% } %>
+          <% if (room) { %>
+            <h5>Current room <code><%=room%></code>
+            </h5>
+          <% } %>
             <div id="chat-block">
               <div id="future">
               </div>
@@ -16,8 +20,8 @@
                   <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file" accept="image/*"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
-                  <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; top: 4px;"></i></button>
                 </form>
+                <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
               </div>
             </div>
             <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
@@ -51,7 +55,6 @@ function scrollToBottom(element) {
 });
 }
 
-
         var form = document.getElementById('chat_input')
         var form_file = document.getElementById('chat_input_uploads')
 
@@ -63,10 +66,15 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-          var ip = document.cookie
+        var ip = document.cookie
           .split("; ")
           .find((row) => row.startsWith("ip="))
+          ?.split("=")[1];
+        var pfpic = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("pfp="))
           ?.split("=")[1];  
+
         if (uname == null || uname == "null" || uname == "") {
           window.location = "/login"
         }
@@ -79,26 +87,41 @@ function scrollToBottom(element) {
           $('#future').append(data);
         });
 
+        socket.on("disconnect", () => {
+          socket.emit('disconnected', uname + ' (' + user + ') left from ' + ip);
+          socket.emit('disconnectEmit', uname + ' (' + user + ') left.');
+        });
+
         $('form').submit(function (e) {
           e.preventDefault();
           var message = $('#chat_input').val();
           var form_file = document.getElementById('chat_input_uploads')
           if (form_file.value == '') {
             form.value = '';
+            var pfpic = document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("pfp="))
+              ?.split("=")[1];
             var data = {
               text: message,
               disName: uname,
-              genName: user
+              genName: user,
+              pfp: pfpic
             };
             socket.emit('messages', data);
           } else {
             form.value = '';
             form_file.value = '';
+            var pfpic = document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("pfp="))
+              ?.split("=")[1];
             var data = {
               text: message,
               disName: uname,
               genName: user,
-              image: globalThis.base
+              image: globalThis.base,
+              pfp: pfpic
             };
             console.log(Object.entries(data) + "\n" + base)
             socket.emit('messages', data);
