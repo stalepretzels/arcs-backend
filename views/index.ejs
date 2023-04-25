@@ -98,31 +98,32 @@ function scrollToBottom(element) {
           var form_file = document.getElementById('chat_input_uploads')
           if (form_file.value == '') {
             form.value = '';
-            var pfpic = document.cookie
+          /*  var pfpic = document.cookie
               .split("; ")
               .find((row) => row.startsWith("pfp="))
-              ?.split("=")[1];
+              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
-              genName: user,
-              pfp: pfpic
+              genName: user
+//              pfp: pfpic
             };
             socket.emit('messages', data);
           } else {
             form.value = '';
             form_file.value = '';
-            var pfpic = document.cookie
+           /* var pfpic = document.cookie
               .split("; ")
               .find((row) => row.startsWith("pfp="))
-              ?.split("=")[1];
+              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
               genName: user,
-              image: globalThis.base,
-              pfp: pfpic
+              image: globalThis.base
+//              pfp: pfpic
             };
+            globalThis.base = ""
             console.log(Object.entries(data) + "\n" + base)
             socket.emit('messages', data);
           }
