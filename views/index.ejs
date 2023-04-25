@@ -17,7 +17,7 @@
               </div>
               <div id="chat-form">
                 <form id="form" id="chat_form">
-                  <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file" accept="image/*"> 
+                  <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file" accept="image/*, video/*, audio/*"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
@@ -120,11 +120,11 @@ function scrollToBottom(element) {
               text: message,
               disName: uname,
               genName: user,
-              image: globalThis.base
+              file: globalThis.base
 //              pfp: pfpic
             };
-            globalThis.base = ""
             console.log(Object.entries(data) + "\n" + base)
+            globalThis.base = ""
             socket.emit('messages', data);
           }
         });
