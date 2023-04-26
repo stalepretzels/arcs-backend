@@ -27,6 +27,7 @@
             <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
                 style="font-size: xx-large;"></i></button>
             <button id="unamebutton" onclick="window.location = '/login'"><i class="bi bi-person-circle" style="font-size: xx-large;"></i></button>
+            <button id="notifbutton" onclick="notifReq()"><i class="bi bi-bell-fill" style="font-size: xx-large;"></i></button>
             <div>
               <span id="onlinebutton" tooltip="You are online" flow="right"><i id="onlineicon" class="bi bi-circle" style="font-size: xx-large;"></i></span>
             </div>
@@ -139,6 +140,7 @@ function scrollToBottom(element) {
           var e6 = document.getElementById('onlinebutton')
           var e7 = document.getElementById('joinmsg')
           var e8 = document.getElementById('scrollButton')
+          var e9 = document.getElementById('notifbutton')
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
@@ -148,6 +150,7 @@ function scrollToBottom(element) {
           e6.classList.toggle("dark-mode-dmbtn");
           e7.classList.toggle("joinmsgdark");
           e8.classList.toggle("dark-mode-dmbtn");
+          e9.classList.toggle("dark-mode-dmbtn");
         }
       </script>
       <script>

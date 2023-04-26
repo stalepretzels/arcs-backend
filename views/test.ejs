@@ -16,7 +16,9 @@
         var socket = io.connect();
         const f = document.getElementById('test')
         const g = document.getElementById('test2')
+        const h = document.getElementById('test3')
         g.onclick = test(f) 
+        h.onclick = notif()
 
         function test(elem) {
             socket.emit('imageUpdate', elem.src)

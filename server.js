@@ -11,6 +11,7 @@ const md = require('markdown-it')('commonmark', {
   linkify: true,
   typographer: true
 });
+const uuid = require("uuid/v4")
 const striptags = require('striptags');
 const { createAdapter } = require("@socket.io/mongo-adapter");
 const { MongoClient } = require("mongodb");
@@ -30,7 +31,7 @@ const { Socket } = require("socket.io-client");
 // Declarations
 const PORT = 8080;
 const BLOCKLIST = [];
-const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine'];
+const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch'];
 var ROOM = '::GENERAL'
 room = ROOM
 
@@ -79,9 +80,17 @@ io.on('connection', function (client) {
     client.broadcast.emit('broad', "<div id='joinmsg'>" + data + "</div>")
   });
 
+  client.on('delete', function(data) {
+    client.emit('deleteCli', data)
+    client.broadcast.emit('deleteCli', data)
+  })
+
   client.on('messages', function (data) {
-    if (BOPBOTBANNEDWORDS.some(function(v) { return data.text.indexOf(v) >= 0; })) {
+  //  var msgid = uuid() 
+    if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.text)) {
     client.emit('broad', "<div class='chmscon'><strong>BopBot:</strong><div class='chat-msg bopbot'>You've been bopped! This is because your message contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
+    } else if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.disName)) {
+      client.emit('broad', "<div class='chmscon'><strong>BopBot:</strong><div class='chat-msg bopbot'>You've been bopped! This is because your username contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
     } else {
       if (data.file == null) {
       /*
@@ -100,7 +109,7 @@ io.on('connection', function (client) {
       } else if (data.text == null) {
 
         if (data.file.slice(0, 10) == 'data:image') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div></div>");
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div><button onclick='socket.emit'></button></div>");
           client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div></div>");
         } else if (data.file.slice(0, 10) == 'data:audio') {
           client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio controls src='" + data.file + "'>" + "</div></div>");
@@ -126,7 +135,7 @@ io.on('connection', function (client) {
         }
       }
     }
-    }
+  }
     
   });
 

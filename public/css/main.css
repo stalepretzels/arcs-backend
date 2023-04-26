@@ -255,6 +255,14 @@
   right: 55;
 }
 
+#notifbutton {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 10;
+  right: 100;
+}
+
 #onlinebutton {
   border: none;
   background: none;
