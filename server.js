@@ -11,7 +11,7 @@ const md = require('markdown-it')('commonmark', {
   linkify: true,
   typographer: true
 });
-const uuid = require("uuid/v4")
+const uuid = require("uuid")
 const striptags = require('striptags');
 const { createAdapter } = require("@socket.io/mongo-adapter");
 const { MongoClient } = require("mongodb");
