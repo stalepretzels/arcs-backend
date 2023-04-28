@@ -9,6 +9,11 @@ const proxifly = new (require('proxifly'))();
 
 const BANNEDIPS = [];
 
+var options = {
+    mode: 'IPv4', // IPv4 | IPv6
+    format: 'json', // json | text
+  };
+
 router.get("/", function (req, res) {
     if (req.cookies.user == undefined) {
     res.cookie(`user`, "@guest" + Math.floor(Math.random() * 999999999), { secure: true });
@@ -39,12 +44,8 @@ router.get("/", function (req, res) {
             pfp = req.cookies.pfp;
         }
     room = room
-    if (BANNEDIPS.some(function(v) { return publicIpv4().toString().indexOf(v) >= 0; })) {
+    if (BANNEDIPS.some(function(v) { return proxifly.getPublicIp().toString().indexOf(v) >= 0; })) {
         res.render('errors/banned.ejs')
-        var options = {
-            mode: 'IPv4', // IPv4 | IPv6
-            format: 'json', // json | text
-          };
         console.log('User from ' + proxifly.getPublicIp(options) + ' banned.')
     } else {
         res.render('index');
