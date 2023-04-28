@@ -75,7 +75,7 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        const ip
+        var ip
         proxifly.getPublicIp(options)
         .then(proxy => {
   globalThis.ip = response
