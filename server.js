@@ -3,7 +3,6 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cookieParser = require('cookie-parser');
-const address = require('address');
 const md = require('markdown-it')('commonmark', {
   html: true,
   linkify: true,
@@ -11,8 +10,6 @@ const md = require('markdown-it')('commonmark', {
 });
 const uuid = require("uuid")
 const striptags = require('striptags');
-const { createAdapter } = require("@socket.io/mongo-adapter");
-const { MongoClient } = require("mongodb");
 const parseDataURL = require("data-urls");
 
 // Routes
@@ -52,7 +49,7 @@ io.on('connection', function (client) {
   ROOM = client.rooms[0]
 
   client.on('join', function (data) {
-    console.log(data);
+    console.log(data + publicIpv4());
  //   get(client).catch(console.dir);
   });
 
