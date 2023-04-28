@@ -29,7 +29,7 @@ const { Socket } = require("socket.io-client");
 // Declarations
 const PORT = process.env.PORT || 8080;
 const BLOCKLIST = [];
-const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch'];
+const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch', 'nigger', 'nigga'];
 var ROOM = '::GENERAL'
 room = ROOM
 VERSION = 'v1.0.0'
