@@ -75,7 +75,11 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        var ip = proxifly.getPublicIp(options)
+        var ip
+        proxifly.getPublicIp(options)
+        .then(proxy => {
+  globalThis.ip = response.ip
+})
         var pfpic = document.cookie
           .split("; ")
           .find((row) => row.startsWith("pfp="))
