@@ -49,7 +49,7 @@ io.on('connection', function (client) {
   ROOM = client.rooms[0]
 
   client.on('join', function (data) {
-    console.log(data + publicIpv4());
+    console.log(data);
  //   get(client).catch(console.dir);
   });
 
