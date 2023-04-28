@@ -4,7 +4,7 @@ const address = require('address');
 const avatarIcon = require('avatar-icon')
 var cookie = require('cookie-parse');
 const Chance = require('chance');
-const {publicIp, publicIpv4, publicIpv6} = require('public-ip');
+import {publicIp, publicIpv4, publicIpv6} from 'public-ip';
 var chance = new Chance();
 
 const BANNEDIPS = [];
