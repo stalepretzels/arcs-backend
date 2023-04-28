@@ -75,10 +75,10 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        var ip
+        const ip
         proxifly.getPublicIp(options)
         .then(proxy => {
-  globalThis.ip = response.ip
+  globalThis.ip = response
 })
         var pfpic = document.cookie
           .split("; ")
