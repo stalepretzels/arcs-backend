@@ -35,7 +35,15 @@
       </div>
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
-      <script>
+      <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
+
+<script>
+    var proxifly = new Proxifly()
+    var options = {
+  mode: 'IPv4', // IPv4 | IPv6
+  format: 'json', // json | text
+};
+
         var base = "";
 function getBase64(file) {
    var reader = new FileReader();
@@ -67,10 +75,7 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        var ip = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("ip="))
-          ?.split("=")[1];
+        var ip = proxifly.getPublicIp(options)
         var pfpic = document.cookie
           .split("; ")
           .find((row) => row.startsWith("pfp="))

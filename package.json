@@ -50,6 +50,7 @@
     "passport-local": "^1.0.0",
     "popups": "^1.1.3",
     "prompt": "^1.3.0",
+    "proxifly": "^1.0.21",
     "public-ip": "^6.0.1",
     "random": "^4.1.0",
     "socket.io": "^4.6.1",

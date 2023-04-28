@@ -4,8 +4,8 @@ const address = require('address');
 const avatarIcon = require('avatar-icon')
 var cookie = require('cookie-parse');
 const Chance = require('chance');
-import {publicIp, publicIpv4, publicIpv6} from 'public-ip';
 var chance = new Chance();
+const proxifly = new (require('proxifly'))();
 
 const BANNEDIPS = [];
 
@@ -13,10 +13,8 @@ router.get("/", function (req, res) {
     if (req.cookies.user == undefined) {
     res.cookie(`user`, "@guest" + Math.floor(Math.random() * 999999999), { secure: true });
     user = req.cookies.user;
-    res.cookie('ip', publicIpv4(), { secure: true });
     } else {
         user = req.cookies.user;
-        res.cookie('ip', publicIpv4(), { secure: true });
     }
     if (req.cookies.uname == undefined) {
         } else {
@@ -43,7 +41,11 @@ router.get("/", function (req, res) {
     room = room
     if (BANNEDIPS.some(function(v) { return publicIpv4().toString().indexOf(v) >= 0; })) {
         res.render('errors/banned.ejs')
-        console.log('User from ' + publicIpv4() + ' banned.')
+        var options = {
+            mode: 'IPv4', // IPv4 | IPv6
+            format: 'json', // json | text
+          };
+        console.log('User from ' + proxifly.getPublicIp(options) + ' banned.')
     } else {
         res.render('index');
     }
