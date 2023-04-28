@@ -32,6 +32,7 @@ const BLOCKLIST = [];
 const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch'];
 var ROOM = '::GENERAL'
 room = ROOM
+VERSION = 'v1.0.0'
 
 // App init
 const app = express();
