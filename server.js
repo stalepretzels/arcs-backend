@@ -2,8 +2,6 @@
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const ejs = require('ejs');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const address = require('address');
 const md = require('markdown-it')('commonmark', {
@@ -91,6 +89,8 @@ io.on('connection', function (client) {
     client.emit('broad', "<div class='chmscon'><strong>BopBot:</strong><div class='chat-msg bopbot'>You've been bopped! This is because your message contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
     } else if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.disName)) {
       client.emit('broad', "<div class='chmscon'><strong>BopBot:</strong><div class='chat-msg bopbot'>You've been bopped! This is because your username contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
+    } else if (!data.text.replace(/\s/g, '').length) {
+      /* Only do if contains no letters or numbers */
     } else {
       if (data.file == null) {
       /*
