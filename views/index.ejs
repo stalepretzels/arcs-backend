@@ -21,6 +21,9 @@
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
+                <div class="pickerContainer">
+                  <button id="emojiButton"><i class="bi bi-emoji-smile" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
+                </div>
                 <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
               </div>
             </div>
@@ -35,9 +38,24 @@
       </div>
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
+      <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
+      <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
+      <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
 <script>
+import { createPopup } from 'picmo';
+import { TwemojiRenderer } from 'picmo/renderers/twemoji';
+
+const trigger = document.querySelector('#emoji-button');
+
+const picker = createPopup({
+  // picker options go here
+  renderer: new TwemojiRenderer()
+}, {
+  referenceElement: trigger,
+  triggerElement: trigger
+});
+
 function httpGet(theUrl)
 {
     var xmlHttp = new XMLHttpRequest();
@@ -148,6 +166,7 @@ function scrollToBottom(element) {
           var e7 = document.getElementById('joinmsg')
           var e8 = document.getElementById('scrollButton')
           var e9 = document.getElementById('notifbutton')
+          var e10 = document.getElementById('emojiButton')
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
@@ -158,6 +177,7 @@ function scrollToBottom(element) {
           e7.classList.toggle("joinmsgdark");
           e8.classList.toggle("dark-mode-dmbtn");
           e9.classList.toggle("dark-mode-dmbtn");
+          e10.classList.toggle("dark-mode-dmbtn");
         }
       </script>
       <script>
