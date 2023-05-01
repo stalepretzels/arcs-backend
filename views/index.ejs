@@ -75,9 +75,7 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        var ip = $.getJSON('https://ipinfo.io/json', function(data) {
-  return JSON.stringify(data.ip, null, 2)
-});
+        var ip = $.get('https://api.ipify.org');
         var pfpic = document.cookie
           .split("; ")
           .find((row) => row.startsWith("pfp="))
