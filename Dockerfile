@@ -1,15 +1,14 @@
 # Use the official Node.js image as the base image
-FROM node:18
+FROM node:19
 
 # Set the working directory in the container
-WORKDIR /dist
+WORKDIR /app
 
 # Copy the application files into the working directory
-COPY . /dist
+COPY . /app
 
 # Install the application dependencies
 RUN npm install
 
 # Define the entry point for the container
-EXPOSE 8080/tcp
 CMD ["npm", "start"]
