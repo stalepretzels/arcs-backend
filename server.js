@@ -24,7 +24,7 @@ var bpbtpage = require("./routes/bopbot");
 const { Socket } = require("socket.io-client");
 
 // Declarations
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const BLOCKLIST = [];
 const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch', 'nigger', 'nigga'];
 var ROOM = '::GENERAL'
