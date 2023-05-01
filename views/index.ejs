@@ -53,7 +53,8 @@ const picker = createPopup({
   renderer: new TwemojiRenderer()
 }, {
   referenceElement: trigger,
-  triggerElement: trigger
+  triggerElement: trigger,
+  position: 'bottom-start'
 });
 
 function httpGet(theUrl)
