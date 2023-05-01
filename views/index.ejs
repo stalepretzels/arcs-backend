@@ -38,11 +38,13 @@
       <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
 
 <script>
-    var proxifly = new Proxifly()
-    var options = {
-  mode: 'IPv4', // IPv4 | IPv6
-  format: 'json', // json | text
-};
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
         var base = "";
 function getBase64(file) {
@@ -75,7 +77,7 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-        var ip = $.get('https://api.ipify.org');
+        var ip = httpGet('https://api.ipify.org');
         var pfpic = document.cookie
           .split("; ")
           .find((row) => row.startsWith("pfp="))
