@@ -21,9 +21,9 @@
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
-                <div class="pickerContainer">
-                  <button id="emojiButton"><i class="bi bi-emoji-smile" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
-                </div>
+          <!--      <div class="pickerContainer">
+                <button id="emojiButton"><i class="bi bi-emoji-smile" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
+                </div> -->
                 <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
               </div>
             </div>
@@ -43,19 +43,6 @@
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
 <script>
-import { createPopup } from 'picmo';
-import { TwemojiRenderer } from 'picmo/renderers/twemoji';
-
-const trigger = document.querySelector('#emoji-button');
-
-const picker = createPopup({
-  // picker options go here
-  renderer: new TwemojiRenderer()
-}, {
-  referenceElement: trigger,
-  triggerElement: trigger,
-  position: 'bottom-start'
-});
 
 function httpGet(theUrl)
 {
