@@ -216,7 +216,7 @@
 }
 
 #future {
-  height: 90%;
+  height: 88%;
   padding: 1%;
   overflow: scroll;
 }
@@ -289,7 +289,7 @@
 }
 
 .dark-mode-border-top {
-  background: #none !important;
+  background: none !important;
 }
 
 .ct-blue {
@@ -2756,7 +2756,7 @@
       margin-bottom: 0; }
   
     .sentImage {
-      width: 100%
+      width: 100%;
     }
 
     .media-post .author {

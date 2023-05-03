@@ -6,6 +6,7 @@ var cookie = require('cookie-parse');
 const Chance = require('chance');
 var chance = new Chance();
 const proxifly = new (require('proxifly'))();
+const pako = require('pako');
 
 const BANNEDIPS = [];
 
