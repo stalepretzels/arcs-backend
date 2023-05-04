@@ -41,6 +41,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+io.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
+});
+
 // Socket.io init
 io.on('connection', function (client) {
   console.log('Client connected...');
@@ -50,6 +54,10 @@ io.on('connection', function (client) {
   client.on('join', function (data) {
     console.log(data);
  //   get(client).catch(console.dir);
+  });
+
+  client.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
   });
 
   client.on('joinEmit', function (data) {
