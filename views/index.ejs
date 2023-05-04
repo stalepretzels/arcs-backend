@@ -14,7 +14,7 @@
           <% } %>
             <div id="chat-block">
               <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
-              <strong>v1.1.0-indev1</strong>
+              <strong>v1.1.0-indev3</strong>
             </div>
               <div id="future">
               </div>
@@ -39,13 +39,11 @@
             </div>
             <div style=" display: flex; justify-content: center;"><img width="100" src="ARCS.png">
       </div>
-
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
-      <script type="text/javascript" src="/assets/identicons.bundled.js"></script>
 
 <script>
 
@@ -88,13 +86,11 @@ function scrollToBottom(element) {
           .split("; ")
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
-      //  var ip = httpGet('https://api.ipify.org');
-        function getPfp(user) {
-          let result = Identicons.renderDiscs({
-            "seed": user,
-          });
-          return result.dataURL
-};
+        var ip = httpGet('https://api.ipify.org');
+        var pfpic = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("pfp="))
+          ?.split("=")[1];  
 
         if (uname == null || uname == "null" || uname == "") {
           window.location = "/login"
@@ -119,22 +115,30 @@ function scrollToBottom(element) {
           var form_file = document.getElementById('chat_input_uploads')
           if (form_file.value == '') {
             form.value = '';
+          /*  var pfpic = document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("pfp="))
+              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
-              genName: user,
-              pfp: getPfp()
+              genName: user
+//              pfp: pfpic
             };
             socket.emit('messages', data);
           } else {
             form.value = '';
             form_file.value = '';
+           /* var pfpic = document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("pfp="))
+              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
               genName: user,
-              file: globalThis.base,
-              pfp: getPfp()
+              file: globalThis.base
+//              pfp: pfpic
             };
             console.log(Object.entries(data) + "\n" + base)
             globalThis.base = ""
