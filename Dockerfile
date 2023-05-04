@@ -10,8 +10,5 @@ COPY . /app
 # Install the application dependencies
 RUN npm install
 
-# Expose port
-EXPOSE 8080/tcp
-
 # Define the entry point for the container
 CMD ["npm", "start"]
