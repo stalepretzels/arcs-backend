@@ -5,14 +5,29 @@
           <form method="post" id="login">
             <label>Create A Display Name...</label>
               <input type="text" id="name">
+              <input id="pfp" onchange="getBase64(this.files[0])" type="file" accept="image/*"> 
               <input type="submit" formmethod="post">
           </form>
         </div>
 
         <script>
+          var base = "";
+function getBase64(file) {
+   var reader = new FileReader();
+   reader.readAsDataURL(file)
+   reader.onloadend = function() {
+     globalThis.base = reader.result.toString()
+//     document.write(globalThis.base)
+   };
+   reader.onerror = function (error) {
+     console.log('Error: ', error);
+   };
+}
+
           $('#login').submit(function (e) {
           e.preventDefault();
-          document.cookie = "uname="+$('#name').val()
+          document.cookie = "uname=" + $('#name').val()
+          document.cookie = "pfp=" + encodeURIComponent(globalThis.base)
           window.location = "/"
       })
         </script>

@@ -8,10 +8,8 @@
           <h1>Welcome, <%= user %>
           </h1>
           <% } %>
-          <% if (room) { %>
-            <h5>Current room <code><%=room%></code>
+            <h5>Current room <code id="currRoom">::GENERAL</code>
             </h5>
-          <% } %>
             <div id="chat-block">
               <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
               <strong>v1.1.0-indev4</strong>
@@ -20,7 +18,7 @@
               </div>
               <div id="chat-form">
                 <form id="form" id="chat_form">
-                  <input id="chat_input_uploads" onchange="getBase64(this[0])" type="file" accept="image/*, video/*, audio/*"> 
+                  <input id="chat_input_uploads" onchange="getBase64(this.files[0])" type="file" accept="image/*, video/*, audio/*"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
@@ -37,8 +35,15 @@
             <div>
               <span id="onlinebutton" tooltip="You are online" flow="right"><i id="onlineicon" class="bi bi-circle" style="font-size: xx-large;"></i></span>
             </div>
+
+            <form id="room-form" id="room-form">
+              <input id="room-input" type="text">
+              <input type="submit" value="Send">
+            </form>
+            <br>
             <div style=" display: flex; justify-content: center;"><img width="100" src="ARCS.png">
       </div>
+
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
@@ -115,36 +120,40 @@ function scrollToBottom(element) {
           var form_file = document.getElementById('chat_input_uploads')
           if (form_file.value == '') {
             form.value = '';
-          /*  var pfpic = document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("pfp="))
-              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
-              genName: user
-//              pfp: pfpic
+              genName: user,
+              pfp: pfpic
             };
             socket.emit('messages', data);
           } else {
             form.value = '';
             form_file.value = '';
-           /* var pfpic = document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("pfp="))
-              ?.split("=")[1]; */
             var data = {
               text: message,
               disName: uname,
               genName: user,
-              file: globalThis.base
-//              pfp: pfpic
+              file: globalThis.base,
+              pfp: pfpic
             };
             console.log(Object.entries(data) + "\n" + base)
             globalThis.base = ""
             socket.emit('messages', data);
           }
         });
+        
+
+        $('#room-form').submit(function (e) {
+          e.preventDefault();
+          var roomtojoin = $('#room-input').val();
+          document.getElementById('currRoom').textContent = roomtojoin;
+          var data = {
+            rtj: roomtojoin
+          }
+            socket.emit('roomJoin', data);
+          }
+        );
 
         function darkmodetoggle() {
           var e = document.body;

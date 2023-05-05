@@ -25,25 +25,6 @@ router.get("/", function (req, res) {
         } else {
             user = req.cookies.user;
         }
-        if (req.cookies.pfp == undefined || req.cookies.pfp == null) {
-            res.cookie('pfp', avatarIcon({
-                size            : 72,   // px
-                density         : 10,   // max amount of shapes in one row
-                colorRange      : chance.integer({min : 6, max : 12}),   // amount of different colors
-                brightness      : 40,   // make it bright: start at 40 from 255 colors
-                contrast        : 50,   // %, take similar colors
-                backgroundColor : '',   // #hex or empty
-                fillRatio       : chance.integer({min : 40, max : 60}),   // %, some white space
-                rectangleRatio  : chance.integer({min : 40, max : 60}),   // %, ratio of rectangles
-                triangleRatio   : chance.integer({min : 20, max : 40}),   // %, ratio of triangles
-                circleRatio     : chance.integer({min : 10, max : 20}),    // %, ratio of circles
-                returnType      : '',   // default dataURL || 'buffer'
-              }));
-            pfp = req.cookies.pfp;
-        } else {
-            pfp = req.cookies.pfp;
-        }
-    room = room
     if (BANNEDIPS.some(function(v) { return proxifly.getPublicIp().toString().indexOf(v) >= 0; })) {
         res.render('errors/banned.ejs')
         console.log('User from ' + proxifly.getPublicIp(options) + ' banned.')

@@ -27,8 +27,6 @@ const { Socket } = require("socket.io-client");
 const PORT = 8080;
 const BLOCKLIST = [];
 const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch', 'nigger', 'nigga'];
-var ROOM = '::GENERAL'
-room = ROOM
 VERSION = 'v1.0.0'
 
 // App init
@@ -48,8 +46,7 @@ io.on("connect_error", (err) => {
 // Socket.io init
 io.on('connection', function (client) {
   console.log('Client connected...');
-  client.join(ROOM); 
-  ROOM = client.rooms[0]
+  client.join('::GENERAL');
 
   client.on('join', function (data) {
     console.log(data);
@@ -61,14 +58,13 @@ io.on('connection', function (client) {
   });
 
   client.on('joinEmit', function (data) {
-    client.broadcast.emit('broad', "<div id='joinmsg'>" + data + "</div>")
+    client.to(client.rooms[1]).emit('broad', "<div id='joinmsg'>" + data + "</div>")
     client.emit('broad', "<div id='joinmsg'>You joined the chat room.</div>")
   });
 
   client.on('joinRoom', (data) => {
     client.join(data.rtj);
 //    client.to(data.rtj).broadcast.emit('broad', 'user joined (test)')
-    ROOM = client.rooms[0]
   })
 
   client.on("disconnected", (data) => {
@@ -80,15 +76,11 @@ io.on('connection', function (client) {
   })
 
   client.on("disconnectEmit", (data) => {
-    client.broadcast.emit('broad', "<div id='joinmsg'>" + data + "</div>")
+    client.to(client.rooms[1]).emit('broad', "<div id='joinmsg'>" + data + "</div>")
   });
 
-  client.on('delete', function(data) {
-    client.emit('deleteCli', data)
-    client.broadcast.emit('deleteCli', data)
-  })
-
   client.on('messages', function (data) {
+    console.log([client.rooms].slice(1, )[1])
   //  var msgid = uuid() 
     if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.text)) {
     client.emit('broad', "<div class='chmscon'><strong>BopBot:</strong><div class='chat-msg bopbot'>You've been bopped! This is because your message contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
@@ -109,34 +101,29 @@ io.on('connection', function (client) {
 
       */
 
-        client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
-        client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
+        client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
+        client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
       } else if (data.text == null) {
-
         if (data.file.slice(0, 10) == 'data:image') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div><button onclick='socket.emit'></button></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div></div>");
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div><button onclick='socket.emit'></button></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<img class='sentImage' src='" + data.file + "'>" + "</div></div>");
         } else if (data.file.slice(0, 10) == 'data:audio') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio controls src='" + data.file + "'>" + "</div></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio src='" + data.file + "' controls></audio>" + "</div></div>");
-          console.log(data.file)
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio controls src='" + data.file + "'>" + "</div></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio src='" + data.file + "' controls></audio>" + "</div></div>");
         } else if (data.file.slice(0, 10) == 'data:video') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<video class='sentImage' controls autoplay src='" + data.file + "'>" + "</div></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<video class='sentImage' src='" + data.file + "' controls autoplay></video>" + "</div></div>");
-          console.log(data.file)
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<video class='sentImage' controls autoplay src='" + data.file + "'>" + "</div></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<video class='sentImage' src='" + data.file + "' controls autoplay></video>" + "</div></div>");
       
         } else if (data.text != null) {
           if (data.file.slice(0, 10) == 'data:image') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'>" + "</div></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'>" + "</div></div>");
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'><div><p>test</p></div></div></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'>" + "</div></div>");
         } else if (data.file.slice(0, 10) == 'data:audio') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><audio controls src='" + data.file + "'>" + "</div></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><audio src='" + data.file + "' controls></audio>" + "</div></div>");
-          console.log(data.file)
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><audio controls src='" + data.file + "'>" + "</div></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><audio src='" + data.file + "' controls></audio>" + "</div></div>");
         } else if (data.file.slice(0, 10) == 'data:video') {
-          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" +"<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><video class='sentImage' controls autoplay src='" + data.file + "'>" + "</div></div>");
-          client.to(client.rooms[0]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'>" + "<strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><video class='sentImage' src='" + data.file + "' controls autoplay></video>" + "</div></div>");
-          console.log(data.file)
+          client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg user'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><video class='sentImage' controls autoplay src='" + data.file + "'>" + "</div></div>");
+          client.to(client.rooms[1]).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em;' src='" + decodeURIComponent(data.pfp) + "'><strong>" + data.disName + " (" + data.genName + "):</strong></div><div class='chat-msg other'>" + striptags(md.render(data.text), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><video class='sentImage' src='" + data.file + "' controls autoplay></video>" + "</div></div>");
         }
       }
     }
