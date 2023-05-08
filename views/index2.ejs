@@ -5,10 +5,16 @@
           <form method="post" id="login">
             <label>Create A Display Name...</label>
               <input type="text" id="name">
+              <br><br>
+              <label>Create A Profile Picture...</label>
               <input id="pfp" onchange="getBase64(this.files[0])" type="file" accept="image/*"> 
+              <br><br>
               <input type="submit" formmethod="post">
+              <button onclick="window.location = '/'">Back to main page</button>
           </form>
         </div>
+
+        <script src="/assets/pako.js"></script>
 
         <script>
           var base = "";
@@ -27,8 +33,7 @@ function getBase64(file) {
           $('#login').submit(function (e) {
           e.preventDefault();
           document.cookie = "uname=" + $('#name').val()
-          document.cookie = "pfp=" + encodeURIComponent(globalThis.base)
-          window.location = "/"
+          localStorage.setItem("pfp", encodeURIComponent(globalThis.base))
       })
         </script>
 

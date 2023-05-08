@@ -9,6 +9,7 @@ const md = require('markdown-it')('commonmark', {
   typographer: true
 });
 const uuid = require("uuid")
+const pako = require("pako");
 const striptags = require('striptags');
 const parseDataURL = require("data-urls");
 
@@ -80,6 +81,7 @@ io.on('connection', function (client) {
   });
 
   client.on('messages', function (data) {
+
     console.log([client.rooms].slice(1, )[1])
   //  var msgid = uuid() 
     if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.text)) {

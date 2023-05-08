@@ -46,6 +46,7 @@
     "mongoose": "^7.0.3",
     "noci": "^1.0.3",
     "node-notifier": "^10.0.1",
+    "pako": "^2.1.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "picmo": "^5.8.3",

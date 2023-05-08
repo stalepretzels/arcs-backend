@@ -12,7 +12,7 @@
             </h5>
             <div id="chat-block">
               <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
-              <strong>v1.1.0-indev5</strong>
+              <strong>v1.1.0-indev6</strong>
             </div>
               <div id="future">
               </div>
@@ -92,10 +92,7 @@ function scrollToBottom(element) {
           .find((row) => row.startsWith("uname="))
           ?.split("=")[1];
         var ip = httpGet('https://api.ipify.org');
-        var pfpic = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("pfp="))
-          ?.split("=")[1];  
+        var pfpic = localStorage.getItem('pfp')
 
         if (uname == null || uname == "null" || uname == "") {
           window.location = "/login"
