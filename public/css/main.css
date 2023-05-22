@@ -216,7 +216,7 @@
 }
 
 #future {
-  height: 89%;
+  height: 92%;
   padding: 1%;
   overflow: scroll;
 }
@@ -2749,7 +2749,7 @@
       margin-bottom: 0; }
   
     .sentImage {
-      width: 100%
+      width: 70%
     }
 
     .media-post .author {
