@@ -27,7 +27,7 @@ const { Socket } = require("socket.io-client");
 // Declarations
 const PORT = 8080;
 const BLOCKLIST = [];
-const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'cocaine', 'fuck', 'shit', 'bitch', 'nigger', 'nigga'];
+const BOPBOTBANNEDWORDS = ['you are gay', 'methamphetamine', 'heroin', 'drug', 'crack', 'faggot', 'fag', 'cocaine', 'fuck', 'shit', 'bitch', 'nigger', 'nigga'];
 VERSION = 'v1.0.0'
 
 // App init
