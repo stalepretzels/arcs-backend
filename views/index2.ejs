@@ -7,11 +7,12 @@
               <input type="text" id="name">
               <br><br>
               <label>Create A Profile Picture...</label>
-              <input id="pfp" onchange="getBase64(this.files[0])" type="file" accept="image/*"> 
+              <input id="pfp" type="text"> 
               <br><br>
               <input type="submit" formmethod="post">
               <button onclick="window.location = '/'">Back to main page</button>
           </form>
+          <p style="color:#a0a0a0">Due to overloaded buffers on the server, we've decided to redo (and revamp 👀) the profile system. This will take a while, but for now, just use links.</p>
         </div>
 
         <script src="/assets/pako.js"></script>
@@ -32,8 +33,8 @@ function getBase64(file) {
 
           $('#login').submit(function (e) {
           e.preventDefault();
-          document.cookie = "uname=" + $('#name').val()
-          localStorage.setItem("pfp", encodeURIComponent(globalThis.base))
+          localStorage.setItem("uname", $('#name').val())
+          localStorage.setItem("pfp", $('#pfp').val())
       })
         </script>
 

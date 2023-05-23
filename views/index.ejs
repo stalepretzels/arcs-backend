@@ -18,7 +18,7 @@
               </div>
               <div id="chat-form">
                 <form id="form" id="chat_form">
-                  <input id="chat_input_uploads" onchange="getBase64(this.files[0])" type="file" accept="image/*, video/*, audio/*"> 
+                  <input id="chat_input_uploads"  type="text" placeholder="Links here!"> 
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
@@ -46,6 +46,7 @@
 
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
+      <script src="/assets/pako.js"></script>
       <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
@@ -83,14 +84,16 @@ function scrollToBottom(element) {
         var form = document.getElementById('chat_input')
         var form_file = document.getElementById('chat_input_uploads')
 
-        var user = document.cookie
+        if (localStorage.getItem('user') == undefined) {
+          localStorage.setItem('user', document.cookie
           .split("; ")
           .find((row) => row.startsWith("user="))
-          ?.split("%40")[1];
-        var uname = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("uname="))
-          ?.split("=")[1];
+          ?.split("%40")[1]);
+          var user = localStorage.getItem('user')
+        } else {
+          var user = localStorage.getItem('user')
+        }
+        var uname = localStorage.getItem('uname')
         var ip = httpGet('https://api.ipify.org');
         var pfpic = localStorage.getItem('pfp')
 
@@ -104,6 +107,10 @@ function scrollToBottom(element) {
         });
         socket.on('broad', function (data) {
           $('#future').append(data);
+
+          var f = document.getElementById('datea');
+          f.textContent = new Date().toLocaleString();
+          f.removeAttribute('id')
         });
 
         socket.on("disconnect", () => {
@@ -114,7 +121,7 @@ function scrollToBottom(element) {
         $('form').submit(function (e) {
           e.preventDefault();
           var message = $('#chat_input').val();
-          var form_file = document.getElementById('chat_input_uploads')
+          var files = $('#chat_input_uploads').val();
           if (form_file.value == '') {
             form.value = '';
             var data = {
@@ -131,7 +138,7 @@ function scrollToBottom(element) {
               text: message,
               disName: uname,
               genName: user,
-              file: globalThis.base,
+              file: files,
               pfp: pfpic
             };
             console.log(Object.entries(data) + "\n" + base)

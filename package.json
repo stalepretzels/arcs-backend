@@ -29,6 +29,7 @@
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "data-urls": "^4.0.0",
+    "eiows": "^6.3.1",
     "ejs": "^3.1.9",
     "engine.io": "^6.4.1",
     "express": "^4.18.2",
@@ -59,6 +60,7 @@
     "socket.io": "^4.6.1",
     "socket.io-cli": "^0.2.0",
     "socket.io-client": "^4.6.1",
+    "socket.io-msgpack-parser": "^3.0.2",
     "striptags": "^3.2.0",
     "uuid": "^9.0.0"
   },
