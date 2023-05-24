@@ -14,6 +14,7 @@
   "dependencies": {
     "@liting-yes/randomall": "^1.2.1",
     "@nestjs/common": "^8.4.7",
+    "@socket.io/admin-ui": "^0.5.1",
     "@socket.io/mongo-adapter": "^0.3.0",
     "address": "1.2.2",
     "avatar-icon": "^1.1.3",

@@ -22,7 +22,9 @@ var fof = require("./routes/errors/404");
 var fho = require("./routes/errors/500");
 var i2 = require("./routes/index2");
 var bpbtpage = require("./routes/bopbot");
+var admin = require("./routes/admin");
 const { Socket } = require("socket.io-client");
+const { instrument } = require("@socket.io/admin-ui");
 
 // Declarations
 const PORT = 8080;
@@ -35,7 +37,19 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { 
   maxHttpBufferSize: 1e8,
-  wsEngine: require("eiows").Server
+  wsEngine: require("eiows").Server,
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true
+  }
+});
+
+instrument(io, {
+  auth: {
+    type: "basic",
+    username: "cadmins",
+    password: "$2y$10$TkyJP6MUI0yRCY4JvRbAQ.A5grLzOoSgizoyoyHxDGjn1Vj8l7U4C" // "changeit" encrypted with bcrypt
+  },
 });
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
@@ -68,7 +82,7 @@ io.on('connection', function (client) {
 
   client.on('joinRoom', (data) => {
     client.join(data.rtj);
-//    client.to(data.rtj).broadcast.emit('broad', 'user joined (test)')
+    client.to(data.rtj).broadcast.emit('broad', 'user joined (test)')
   })
 
   client.on("disconnected", (data) => {
@@ -105,9 +119,11 @@ io.on('connection', function (client) {
 
         client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong id='user'>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg user'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
         client.to("::GENERAL").emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong id='user'>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg other'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "</div></div>");
+        client.to("::GENERAL").emit('broadNotif', data);
       } else {
           client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong id='user'>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg user'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'></div></div>");
           client.to("::GENERAL").emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong id='user'>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg other'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><img class='sentImage' src='" + data.file + "'></div></div>");
+          client.to("::GENERAL").emit('broadNotif', data);
         }/* else if (data.text == null && data.file.slice(0, 10) == 'data:audio') {
           client.emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong id='user'>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg user'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio controls src='" + data.file + "'></div></div>");
           client.to("::GENERAL").emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.pfp + "'><strong>" + data.disName + " (" + data.genName + "): </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg other'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<audio src='" + data.file + "' controls></audio></div></div>");
@@ -153,6 +169,8 @@ app.use("/403", fot);
 // app.use("*", fof);
 app.use("/500", fho);
 app.use("/bopbot", bpbtpage);
+app.use("/admin", admin);
+
 
 httpServer.listen(PORT, function (err) {
   if (err) console.error("Error in server setup process");

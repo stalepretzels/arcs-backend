@@ -53,6 +53,10 @@
 
 <script>
 
+  window.onload = function() {
+    Notification.requestPermission()
+  }
+
 function httpGet(theUrl)
 {
     var xmlHttp = new XMLHttpRequest();
@@ -113,12 +117,29 @@ function scrollToBottom(element) {
           f.removeAttribute('id')
         });
 
+        socket.on('broadNotif', function (data) {
+          if (data.file != null) {
+            var notifData = {
+            image: data.file,
+            icon: data.pfp,
+            body: "\n" +data.text,
+          }
+          new Notification(data.disName + " (" + data.genName + "): ", notifData)
+          } else {
+            var notifData = {
+            icon: data.pfp,
+            body: data.text,
+          }
+          new Notification(data.disName + " (" + data.genName + "): ", notifData)
+          }
+        })
+
         socket.on("disconnect", () => {
           socket.emit('disconnected', uname + ' (' + user + ') left from ' + ip);
           socket.emit('disconnectEmit', uname + ' (' + user + ') left.');
         });
 
-        $('form').submit(function (e) {
+        $('#form').submit(function (e) {
           e.preventDefault();
           var message = $('#chat_input').val();
           var files = $('#chat_input_uploads').val();
@@ -128,7 +149,8 @@ function scrollToBottom(element) {
               text: message,
               disName: uname,
               genName: user,
-              pfp: pfpic
+              pfp: pfpic,
+              room: $('#currRoom').textContent
             };
             socket.emit('messages', data);
           } else {
@@ -139,7 +161,8 @@ function scrollToBottom(element) {
               disName: uname,
               genName: user,
               file: files,
-              pfp: pfpic
+              pfp: pfpic,
+              room: $('#currRoom').textContent
             };
             console.log(Object.entries(data) + "\n" + base)
             globalThis.base = ""
@@ -152,10 +175,7 @@ function scrollToBottom(element) {
           e.preventDefault();
           var roomtojoin = $('#room-input').val();
           document.getElementById('currRoom').textContent = roomtojoin;
-          var data = {
-            rtj: roomtojoin
-          }
-            socket.emit('roomJoin', data);
+            socket.emit('roomJoin', roomtojoin);
           }
         );
 
