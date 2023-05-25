@@ -163,6 +163,18 @@
  */
 /*      light colors - used for select dropdown         */
 
+#pfpL {
+  border-radius: 10rem;
+  width: 250px;
+}
+
+#logo {
+  width: 95%;
+  height: 400px;
+  display: flex; 
+  justify-content: center;
+}
+
 #top-block, #error {
   margin: 50px;
 }
@@ -276,6 +288,27 @@
   left: 10;
 }
 
+#a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+}
+
+#a:hover {
+  text-decoration: wavy underline;
+  color: #3c77bf;
+  animation: colorlink 1s;
+}
+
+@keyframes colorlink {
+  0% {
+    color: inherit;
+  }
+  100% {
+    color: #3c77bf;
+  }
+}
+
 .dark-mode-dmbtn {
   color: whitesmoke !important;
 }
@@ -285,7 +318,7 @@
 }
 
 .dark-mode-border-top {
-  background: #none !important;
+  background: none !important;
 }
 
 .ct-blue {

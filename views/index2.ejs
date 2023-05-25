@@ -9,6 +9,9 @@
               <label>Create A Profile Picture...</label>
               <input id="pfp" type="text"> 
               <br><br>
+              <label>Create A Bio...</label>
+              <input id="bio" type="text">
+              <br><br>
               <input type="submit" formmethod="post">
               <button onclick="window.location = '/'">Back to main page</button>
           </form>
@@ -35,6 +38,8 @@ function getBase64(file) {
           e.preventDefault();
           localStorage.setItem("uname", $('#name').val())
           localStorage.setItem("pfp", $('#pfp').val())
+
+          localStorage.setItem("url", '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val())
       })
         </script>
 

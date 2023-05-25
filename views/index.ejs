@@ -40,11 +40,8 @@
               <input id="room-input" type="text">
               <input type="submit" value="Send">
             </form>
-            <p>ID: <span id="ID"></span></p>
-            <br>
-            <div style=" display: flex; justify-content: center;"><img width="100" src="ARCS.png">
+            <p>ID: <span id="ID"></span></p>            
       </div>
-
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script src="/assets/pako.js"></script>
@@ -128,7 +125,7 @@ function scrollToBottom(element) {
             var notifData = {
             image: data.file,
             icon: data.pfp,
-            body: "\n" +data.text,
+            body: data.text,
           }
           new Notification(data.disName + " (" + data.genName + "): ", notifData)
           } else {
@@ -156,6 +153,7 @@ function scrollToBottom(element) {
               disName: uname,
               genName: user,
               pfp: pfpic,
+              url: localStorage.getItem('url'),
               room: document.getElementById('currRoom').textContent
             };
             socket.emit('messages', data);
@@ -168,6 +166,7 @@ function scrollToBottom(element) {
               genName: user,
               file: files,
               pfp: pfpic,
+              url: localStorage.getItem('url'),
               room: document.getElementById('currRoom').textContent
             };
             console.log(Object.entries(data) + "\n" + base)
@@ -201,6 +200,7 @@ function scrollToBottom(element) {
           var e9 = document.getElementById('notifbutton')
           var e10 = document.getElementById('emojiButton')
           var e11 = document.getElementById('user')
+          var e11 = document.getElementById('logo')
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
@@ -213,6 +213,7 @@ function scrollToBottom(element) {
           e9.classList.toggle("dark-mode-dmbtn");
           e10.classList.toggle("dark-mode-dmbtn");
           e11.classList.toggle("user-dark");
+          e12.classList.toggle("logo-dark");
         }
       </script>
       <script>
