@@ -12,7 +12,7 @@
             </h5>
             <div id="chat-block">
               <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
-              <strong>v1.2.0</strong>
+              <strong>ARCS web - v2.0.0-indev3</strong>
             </div>
               <div id="future">
               </div>
@@ -22,16 +22,12 @@
                   <input id="chat_input" type="text">
                   <input type="submit" value="Send">
                 </form>
-          <!--      <div class="pickerContainer">
-                <button id="emojiButton"><i class="bi bi-emoji-smile" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
-                </div> -->
                 <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
               </div>
             </div>
             <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
                 style="font-size: xx-large;"></i></button>
             <button id="unamebutton" onclick="window.location = '/login'"><i class="bi bi-person-circle" style="font-size: xx-large;"></i></button>
-        <!--    <button id="notifbutton" onclick="notifReq()"><i class="bi bi-bell-fill" style="font-size: xx-large;"></i></button>-->
             <div>
               <span id="onlinebutton" tooltip="You are online" flow="right"><i id="onlineicon" class="bi bi-circle" style="font-size: xx-large;"></i></span>
             </div>
@@ -95,8 +91,13 @@ function scrollToBottom(element) {
         } else {
           var user = localStorage.getItem('user')
         }
+        if (localStorage.getItem('ip') == undefined) {
+          localStorage.setItem('ip', httpGet('https://api.ipify.org'));
+          var ip = localStorage.getItem('ip')
+        } else {
+          var ip = localStorage.getItem('ip')
+        }
         var uname = localStorage.getItem('uname')
-        var ip = httpGet('https://api.ipify.org');
         var pfpic = localStorage.getItem('pfp')
 
         if (uname == null || uname == "null" || uname == "") {

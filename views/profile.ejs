@@ -2,20 +2,10 @@
   <%- include('partials/header.ejs'); -%>
   <body style="overflow: hidden;">
     <div id="top-block">
-          <div style="width: 100%; display: flex; flex-wrap: nowrap;"><img id="pfpL" src=<%= pfp %>> <p style="padding: 0 15px; position: relative; top: 10px; line-height: 40px; font-size: 60px;"><%= disName %><br><span style="color: #c7c7c7; font-size: 30px;">(<%= genName %>)</span><br>
-            <% if (creatorbadge == true) { %>
-            <span id="badge" data-tooltip="Creator Badge">🛠</span>
-            <% } %>
-            <% if (modbadge == true) { %>
-            <span id="badge" data-tooltip="Admin Badge">🛡</span>
-            <% } %>
-            <% if (bugbadge == true) { %>
-            <span id="badge" data-tooltip="Bug Squasher Badge">🪲</span>
-            <% } %>
+          <div style="width: 100%; display: flex; flex-wrap: nowrap;"><img id="pfpL" src=<%= pfp %>> <p style="padding: 0 15px; position: relative; top: 10px; line-height: 40px; font-size: 60px;"><%= disName %><br><span style="color: #c7c7c7; font-size: 30px;">(<%= genName %>)</span><br><span id="badges"></span>
           </p></div>
           <br><br><br>
           <div style="width: 100%; height: 52%; position: relative; bottom: 45px; background-color: #e1e1e1; border-radius: 1em;"><p style="font-size: larger; font-weight: normal; padding: 10px 10px;"><%= bio %></p></div>
         </div>
-
   </body>
 </html>

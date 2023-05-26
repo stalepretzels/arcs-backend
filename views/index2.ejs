@@ -19,8 +19,11 @@
         </div>
 
         <script src="/assets/pako.js"></script>
-
         <script>
+          import { uModel } from '/data/message.js';
+
+          var user = localStorage.get('user')
+
           var base = "";
 function getBase64(file) {
    var reader = new FileReader();
@@ -34,6 +37,12 @@ function getBase64(file) {
    };
 }
 
+var badges = {
+            "guest955130612": ['CREB', 'MODB', 'BUGB', 'SHIB'],
+            "guest176691912": ['CREB', 'MODB', 'BUGB', 'SHIB'],
+            "guest702709350": ['BUGB', 'SHIB']
+          }          
+
           $('#login').submit(function (e) {
           e.preventDefault();
           localStorage.setItem("uname", $('#name').val())
@@ -42,6 +51,5 @@ function getBase64(file) {
           localStorage.setItem("url", '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val())
       })
         </script>
-
   </body>
 </html>

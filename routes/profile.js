@@ -8,11 +8,17 @@ router.get("/", function (req, res) {
   genName = req.query.genName
   bio = req.query.bio
 
-  if (req.query.disName == 'callmeclover') {
-    creatorbadge = true
-    modbadge = true
-    bugbadge = true
-  }
+  Array.from(decodeURIComponent(req.query.badges)).forEach(badge => {
+    if (badge == 'MODB') {
+      modbadge = true
+    } else if (badge == 'CREB') {
+      creatorbadge = true
+    } else if (badge == 'BUGB') {
+      bugbadge = true
+    } else if (badge == 'SHIB') {
+      shinybadge = true
+    }
+  });
 
   res.render("profile.ejs");
 });
