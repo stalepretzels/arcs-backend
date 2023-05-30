@@ -2,7 +2,7 @@
   <%- include('partials/header.ejs'); -%>
   <body>
     <div id="top-block">
-          <form method="post" id="login">
+          <form id="login" method="post" action="/" onsubmit="localStorage.setItem('uname', $('#name').val()); localStorage.setItem('pfp', $('#pfp').val()); localStorage.setItem('url', '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val())">
             <label>Create A Display Name...</label>
               <input type="text" id="name">
               <br><br>
@@ -12,13 +12,14 @@
               <label>Create A Bio...</label>
               <input id="bio" type="text">
               <br><br>
-              <input type="submit" formmethod="post">
-              <button onclick="window.location = '/'">Back to main page</button>
+              <input type="submit" formmethod="post" action="/">
+<!--          <button onclick="window.location = '/'">Back to main page</button>-->
           </form>
           <p style="color:#a0a0a0">Due to overloaded buffers on the server, we've decided to redo (and revamp 👀) the profile system. This will take a while, but for now, just use links.</p>
         </div>
 
         <script src="/assets/pako.js"></script>
+
         <script>
 //          import { uModel } from '/data/message.js';
 
@@ -35,21 +36,8 @@ function getBase64(file) {
    reader.onerror = function (error) {
      console.log('Error: ', error);
    };
-}
+  }   
 
-var badges = {
-            "guest955130612": ['CREB', 'MODB', 'BUGB', 'SHIB'],
-            "guest176691912": ['CREB', 'MODB', 'BUGB', 'SHIB'],
-            "guest702709350": ['BUGB', 'SHIB']
-          }          
-
-          $('#login').submit(function (e) {
-          e.preventDefault();
-          localStorage.setItem("uname", $('#name').val())
-          localStorage.setItem("pfp", $('#pfp').val())
-
-          localStorage.setItem("url", '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val())
-      })
         </script>
   </body>
 </html>

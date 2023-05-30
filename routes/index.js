@@ -21,16 +21,27 @@ router.get("/", function (req, res) {
     } else {
         user = req.cookies.user;
     }
-    if (req.cookies.uname == undefined) {
-        } else {
-            user = req.cookies.user;
-        }
     if (BANNEDIPS.some(function(v) { return proxifly.getPublicIp().toString().indexOf(v) >= 0; })) {
         res.render('errors/banned.ejs')
         console.log('User from ' + proxifly.getPublicIp(options) + ' banned.')
     } else {
         res.render('index');
     }
+});
+
+router.post("/", function (req, res) {
+    if (req.cookies.user == undefined) {
+        res.cookie(`user`, "@guest" + Math.floor(Math.random() * 999999999), { secure: true });
+        user = req.cookies.user;
+        } else {
+            user = req.cookies.user;
+        }
+        if (BANNEDIPS.some(function(v) { return proxifly.getPublicIp().toString().indexOf(v) >= 0; })) {
+            res.render('errors/banned.ejs')
+            console.log('User from ' + proxifly.getPublicIp(options) + ' banned.')
+        } else {
+            res.render('index');
+        }
 });
 
 module.exports = router;
