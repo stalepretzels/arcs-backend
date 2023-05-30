@@ -77,8 +77,8 @@ io.on('connection', function (client) {
   });
 
   client.on('joinEmit', function (data) {
-    client.to(data.room).emit('broad', "<div id='joinmsg'>" + data + "</div>")
-    client.emit('broad', "<div id='joinmsg'>You joined the chat room.</div>")
+    client.to(data.room).emit('broadJoin', "<div id='joinmsg'>" + data + "</div>")
+    client.emit('broadJoin', "<div id='joinmsg'>You joined the chat room.</div>")
   });
 
   client.on('joinRoom', (data) => {

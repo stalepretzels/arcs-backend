@@ -12,7 +12,7 @@
             </h5>
             <div id="chat-block">
               <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
-              <strong>ARCS web - v2.0.0-indev3</strong>
+              <strong>ARCS web - v2.0.0-indev3.5 QOL</strong>
             </div>
               <div id="future">
               </div>
@@ -46,6 +46,8 @@
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
 <script>
+
+  var joined = false;
 
   window.onload = function() {
     Notification.requestPermission()
@@ -109,6 +111,13 @@ function scrollToBottom(element) {
           socket.emit('joinEmit', uname + ' (' + user + ') joined.');
         });
 
+        socket.on('broadJoin', function (data) {
+          if (globalThis.joined == false) {
+          $('#future').append(data);
+          globalThis.joined = true;
+          }
+        });
+
         socket.on('ID', function (data) {
           document.getElementById('ID').textContent = data;
         })
@@ -119,6 +128,8 @@ function scrollToBottom(element) {
           var f = document.getElementById('datea');
           f.textContent = new Date().toLocaleString();
           f.removeAttribute('id')
+
+          scrollToBottom(document.getElementById('future'))
         });
 
         socket.on('broadNotif', function (data) {
