@@ -1,6 +1,5 @@
 /images
 .github
-README.md
 /dist
 Dockerfile
 /node_modules/
