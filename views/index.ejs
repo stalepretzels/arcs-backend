@@ -1,43 +1,72 @@
 <html>
-
-<body>
-  <%- include('partials/header.ejs'); -%>
+  <body>
+    <%- include('partials/header.ejs'); -%>
     <div id="client">
       <div id="top-block">
         <% if (user) { %>
-          <h1>Welcome, <%= user %>
-          </h1>
-          <% } %>
-            <h5>Current room <code id="currRoom">::GENERAL</code>
-            </h5>
-            <div id="chat-block">
-              <div style="text-align: center; width: 100%; height: 10px; padding: 5px 0 0 0;">
-              <strong>ARCS web - v2.0.0-indev4</strong>
-            </div>
-              <div id="future">
-              </div>
-              <div id="chat-form">
-                <form id="form" id="chat_form">
-                  <input id="chat_input_uploads"  type="text" placeholder="Links here!"> 
-                  <input id="chat_input" type="text">
-                  <input type="submit" value="Send">
-                </form>
-                <button id="scrollButton" onclick="var future = document.getElementById('future'); scrollToBottom(future);"><i class="bi bi-caret-down-square" style="font-size: x-large; position: relative; bottom: 8px;"></i></button>
-              </div>
-            </div>
-            <button id="dmbutton" onclick="darkmodetoggle()"><i class="bi bi-moon-stars-fill"
-                style="font-size: xx-large;"></i></button>
-            <button id="unamebutton" onclick="window.location = '/login'"><i class="bi bi-person-circle" style="font-size: xx-large;"></i></button>
-            <button id="githublink" onclick="window.location = 'https:/' + '/github.com/callmeclover/arcs'"><i class="bi bi-github" style="font-size: xx-large;"></i></button>
-            <div>
-              <span id="onlinebutton" tooltip="You are online" flow="right"><i id="onlineicon" class="bi bi-circle" style="font-size: xx-large;"></i></span>
-            </div>
-
-            <form id="room-form" id="room-form">
-              <input id="room-input" type="text">
-              <input type="submit" value="Send">
+        <h1>Welcome, <%= user %></h1>
+        <% } %>
+        <h5>Current room <code id="currRoom">::GENERAL</code></h5>
+        <div id="chat-block">
+          <div
+            style="
+              text-align: center;
+              width: 100%;
+              height: 10px;
+              padding: 5px 0 0 0;
+            "
+          >
+            <strong>ARCS web - v2.0.0-indev4</strong>
+          </div>
+          <div id="future"></div>
+          <div id="chat-form">
+            <form id="form" id="chat_form">
+              <input
+                id="chat_input_uploads"
+                type="text"
+                placeholder="Links here!"
+              />
+              <input id="chat_input" type="text" />
+              <input type="submit" value="Send" />
             </form>
-            <p>ID: <span id="ID"></span></p>            
+            <button
+              id="scrollButton"
+              onclick="var future = document.getElementById('future'); scrollToBottom(future);"
+            >
+              <i
+                class="bi bi-caret-down-square"
+                style="font-size: x-large; position: relative; bottom: 8px"
+              ></i>
+            </button>
+          </div>
+        </div>
+        <button id="dmbutton" onclick="darkmodetoggle()">
+          <i class="bi bi-moon-stars-fill" style="font-size: xx-large"></i>
+        </button>
+        <button id="unamebutton" onclick="window.location = '/login'">
+          <i class="bi bi-person-circle" style="font-size: xx-large"></i>
+        </button>
+        <button
+          id="githublink"
+          onclick="window.location = 'https:/' + '/github.com/callmeclover/arcs'"
+        >
+          <i class="bi bi-github" style="font-size: xx-large"></i>
+        </button>
+        <div>
+          <span id="onlinebutton" tooltip="You are online" flow="right"
+            ><i
+              id="onlineicon"
+              class="bi bi-circle"
+              style="font-size: xx-large"
+            ></i
+          ></span>
+        </div>
+
+        <form id="room-form" id="room-form">
+          <input id="room-input" type="text" />
+          <input type="submit" value="Send" />
+        </form>
+        <p>ID: <span id="ID"></span></p>
       </div>
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
@@ -46,174 +75,187 @@
       <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
-<script>
+      <script>
+        var joined = false;
 
-  var joined = false;
+        window.onload = function () {
+          Notification.requestPermission();
+        };
 
-  window.onload = function() {
-    Notification.requestPermission()
-  }
-
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
+        function httpGet(theUrl) {
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", theUrl, false); // false for synchronous request
+          xmlHttp.send(null);
+          return xmlHttp.responseText;
+        }
 
         var base = "";
-function getBase64(file) {
-   var reader = new FileReader();
-   base = reader.readAsDataURL(form_file.files[0]);
-   reader.onloadend = function() {
-    globalThis.base = reader.result.toString()
-   };
-   reader.onerror = function (error) {
-     console.log('Error: ', error);
-   };
-}
-
-function scrollToBottom(element) {
-  element.scrollTo({
-  top: element.scrollHeight,
-  left: 0,
-  behavior: "smooth",
-});
-}
-
-        var form = document.getElementById('chat_input')
-        var form_file = document.getElementById('chat_input_uploads')
-
-        if (localStorage.getItem('user') == undefined) {
-          localStorage.setItem('user', document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("user="))
-          ?.split("%40")[1]);
-          var user = localStorage.getItem('user')
-        } else {
-          var user = localStorage.getItem('user')
+        function getBase64(file) {
+          var reader = new FileReader();
+          base = reader.readAsDataURL(form_file.files[0]);
+          reader.onloadend = function () {
+            globalThis.base = reader.result.toString();
+          };
+          reader.onerror = function (error) {
+            console.log("Error: ", error);
+          };
         }
-        if (localStorage.getItem('ip') == undefined) {
-          localStorage.setItem('ip', httpGet('https://api.ipify.org'));
-          var ip = localStorage.getItem('ip')
-        } else {
-          var ip = localStorage.getItem('ip')
+
+        function scrollToBottom(element) {
+          element.scrollTo({
+            top: element.scrollHeight,
+            left: 0,
+            behavior: "smooth",
+          });
         }
-        var uname = localStorage.getItem('uname')
-        var pfpic = localStorage.getItem('pfp')
+
+        var form = document.getElementById("chat_input");
+        var form_file = document.getElementById("chat_input_uploads");
+
+        if (localStorage.getItem("user") == undefined) {
+          localStorage.setItem(
+            "user",
+            document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("user="))
+              ?.split("%40")[1]
+          );
+          var user = localStorage.getItem("user");
+        } else {
+          var user = localStorage.getItem("user");
+        }
+        if (localStorage.getItem("ip") == undefined) {
+          localStorage.setItem("ip", httpGet("https://api.ipify.org"));
+          var ip = localStorage.getItem("ip");
+        } else {
+          var ip = localStorage.getItem("ip");
+        }
+        var uname = localStorage.getItem("uname");
+        var pfpic = localStorage.getItem("pfp");
 
         if (uname == null || uname == "null" || uname == "") {
-          window.location = "/login"
+          window.location = "/login";
         }
         var socket = io.connect();
-        socket.on('connect', function (data) {
-          socket.emit('join', uname + ' (' + user + ') joined from ' + ip);
-          socket.emit('joinEmit', uname + ' (' + user + ') joined.');
+        socket.on("connect", function (data) {
+          socket.emit("join", uname + " (" + user + ") joined from " + ip);
+          socket.emit("joinEmit", uname + " (" + user + ") joined.");
         });
 
-        socket.on('broadJoin', function (data) {
+        socket.on("broadJoin", function (data) {
           if (globalThis.joined == false) {
-          $('#future').append(data);
-          globalThis.joined = true;
+            $("#future").append(data);
+            globalThis.joined = true;
           }
         });
 
-        socket.on('ID', function (data) {
-          document.getElementById('ID').textContent = data;
-        })
-
-        socket.on('broad', function (data) {
-          $('#future').append(data);
-
-          var f = document.getElementById('datea');
-          f.textContent = new Date().toLocaleString();
-          f.removeAttribute('id')
-
-          scrollToBottom(document.getElementById('future'))
+        socket.on("ID", function (data) {
+          document.getElementById("ID").textContent = data;
         });
 
-        socket.on('broadNotif', function (data) {
+        socket.on("broad", function (data) {
+          $("#future").append(data);
+
+          var f = document.getElementById("datea");
+          f.textContent = new Date().toLocaleString();
+          f.removeAttribute("id");
+
+          scrollToBottom(document.getElementById("future"));
+        });
+
+        socket.on("broadNotif", function (data) {
           if (data.file != null) {
             var notifData = {
-            image: data.file,
-            icon: data.pfp,
-            body: data.text,
-          }
-          new Notification(data.disName + " (" + data.genName + "): ", notifData)
+              image: data.file,
+              icon: data.pfp,
+              body: data.text,
+            };
+            new Notification(
+              data.disName + " (" + data.genName + "): ",
+              notifData
+            );
           } else {
             var notifData = {
-            icon: data.pfp,
-            body: data.text,
+              icon: data.pfp,
+              body: data.text,
+            };
+            new Notification(
+              data.disName + " (" + data.genName + "): ",
+              notifData
+            );
           }
-          new Notification(data.disName + " (" + data.genName + "): ", notifData)
-          }
-        })
-
-        socket.on("disconnect", () => {
-          socket.emit('disconnected', uname + ' (' + user + ') left from ' + ip);
-          socket.emit('disconnectEmit', uname + ' (' + user + ') left.');
         });
 
-        $('#form').submit(function (e) {
+        socket.on("disconnect", () => {
+          socket.emit(
+            "disconnected",
+            uname + " (" + user + ") left from " + ip
+          );
+          socket.emit("disconnectEmit", uname + " (" + user + ") left.");
+        });
+
+        $("#form").submit(function (e) {
           e.preventDefault();
-          var message = $('#chat_input').val();
-          var files = $('#chat_input_uploads').val();
-          if (form_file.value == '') {
-            form.value = '';
+          var message = $("#chat_input").val();
+          var files = $("#chat_input_uploads").val();
+          if (form_file.value == "") {
+            form.value = "";
             var data = {
               text: message,
               disName: uname,
               genName: user,
               pfp: pfpic,
-              url: localStorage.getItem('url'),
-              room: document.getElementById('currRoom').textContent
+              url: localStorage.getItem("url"),
+              room: document.getElementById("currRoom").textContent,
             };
-            socket.emit('messages', data);
+            socket.emit("messages", data);
           } else {
-            form.value = '';
-            form_file.value = '';
+            form.value = "";
+            form_file.value = "";
             var data = {
               text: message,
               disName: uname,
               genName: user,
               file: files,
               pfp: pfpic,
-              url: localStorage.getItem('url'),
-              room: document.getElementById('currRoom').textContent
+              url: localStorage.getItem("url"),
+              room: document.getElementById("currRoom").textContent,
             };
-            console.log(Object.entries(data) + "\n" + base)
-            globalThis.base = ""
-            socket.emit('messages', data);
+            console.log(Object.entries(data) + "\n" + base);
+            globalThis.base = "";
+            socket.emit("messages", data);
           }
         });
-        
 
-        $('#room-form').submit(function (e) {
+        $("#room-form").submit(function (e) {
           e.preventDefault();
-          var previous = document.getElementById('currRoom').textContent;
-          var roomtojoin = $('#room-input').val();
-          document.getElementById('currRoom').textContent = roomtojoin;
-          var joinStringConsole = uname + ' (' + user + ') joined from ' + ip;
-          var joinString = uname + ' (' + user + ') joined.';
-            socket.emit('joinRoom', { room: roomtojoin, pre: previous, jsc: joinStringConsole, js: joinString });
-          }
-        );
+          var previous = document.getElementById("currRoom").textContent;
+          var roomtojoin = $("#room-input").val();
+          document.getElementById("currRoom").textContent = roomtojoin;
+          var joinStringConsole = uname + " (" + user + ") joined from " + ip;
+          var joinString = uname + " (" + user + ") joined.";
+          socket.emit("joinRoom", {
+            room: roomtojoin,
+            pre: previous,
+            jsc: joinStringConsole,
+            js: joinString,
+          });
+        });
 
         function darkmodetoggle() {
           var e = document.body;
-          var e1 = document.getElementById('chat-block')
-          var e2 = document.getElementById('chat-form')
-          var e3 = document.getElementById('future')
-          var e4 = document.getElementById('dmbutton')
-          var e5 = document.getElementById('unamebutton')
-          var e6 = document.getElementById('onlinebutton')
-          var e7 = document.getElementById('joinmsg')
-          var e8 = document.getElementById('scrollButton')
-          var e9 = document.getElementById('notifbutton')
-          var e10 = document.getElementById('emojiButton')
-          var e11 = document.getElementById('user')
-          var e12 = document.getElementById('githublink')
+          var e1 = document.getElementById("chat-block");
+          var e2 = document.getElementById("chat-form");
+          var e3 = document.getElementById("future");
+          var e4 = document.getElementById("dmbutton");
+          var e5 = document.getElementById("unamebutton");
+          var e6 = document.getElementById("onlinebutton");
+          var e7 = document.getElementById("joinmsg");
+          var e8 = document.getElementById("scrollButton");
+          var e9 = document.getElementById("notifbutton");
+          var e10 = document.getElementById("emojiButton");
+          var e11 = document.getElementById("user");
+          var e12 = document.getElementById("githublink");
           e.classList.toggle("dark-mode");
           e1.classList.toggle("dark-mode-b");
           e2.classList.toggle("dark-mode-border-top");
@@ -230,22 +272,20 @@ function scrollToBottom(element) {
         }
       </script>
       <script>
-        var onlicon = document.getElementById('onlineicon');
-        var onltext = document.getElementById('onlinebutton');
+        var onlicon = document.getElementById("onlineicon");
+        var onltext = document.getElementById("onlinebutton");
         const onlinechecker = setInterval(() => {
           if (navigator.onLine == true) {
-            onlicon.classList.remove('bi-exclamation-circle');
-            onlicon.classList.add('bi-circle');
-            onltext.setAttribute('tooltip', 'You are online.')
+            onlicon.classList.remove("bi-exclamation-circle");
+            onlicon.classList.add("bi-circle");
+            onltext.setAttribute("tooltip", "You are online.");
           } else if (navigator.onLine == false) {
-            onlicon.classList.remove('bi-circle');
-            onlicon.classList.add('bi-exclamation-circle');
-            onltext.setAttribute('tooltip', 'You are not online.')
+            onlicon.classList.remove("bi-circle");
+            onlicon.classList.add("bi-exclamation-circle");
+            onltext.setAttribute("tooltip", "You are not online.");
           }
         }, 1500);
       </script>
     </div>
-    </div>
-</body>
-
+  </body>
 </html>

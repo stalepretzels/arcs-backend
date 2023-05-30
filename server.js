@@ -48,7 +48,7 @@ instrument(io, {
   auth: {
     type: "basic",
     username: "cadmins",
-    password: "$2y$10$TkyJP6MUI0yRCY4JvRbAQ.A5grLzOoSgizoyoyHxDGjn1Vj8l7U4C" // "changeit" encrypted with bcrypt
+    password: "$2y$10$TkyJP6MUI0yRCY4JvRbAQ.A5grLzOoSgizoyoyHxDGjn1Vj8l7U4C"
   },
 });
 app.use(express.static('public'));
@@ -170,10 +170,11 @@ app.use("/", index);
 app.use("/profile", profile);
 app.use("/401", foo);
 app.use("/403", fot);
-// app.use("*", fof);
 app.use("/500", fho);
 app.use("/bopbot", bpbtpage);
 app.use("/admin", admin);
+
+app.use("*", fof);
 
 
 httpServer.listen(PORT, function (err) {
