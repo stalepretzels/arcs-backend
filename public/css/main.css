@@ -240,13 +240,6 @@
   width: 250px;
 }
 
-#logo {
-  width: 95%;
-  height: 400px;
-  display: flex; 
-  justify-content: center;
-}
-
 #top-block, #error {
   margin: 50px;
 }
@@ -342,6 +335,14 @@
   position: fixed;
   top: 10;
   right: 55;
+}
+
+#githublink {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 10;
+  right: 100;
 }
 
 #notifbutton {
