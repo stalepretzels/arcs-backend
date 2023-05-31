@@ -16,14 +16,17 @@
 <!--          <button onclick="window.location = '/'">Back to main page</button>-->
           </form>
           <p style="color:#a0a0a0">Due to overloaded buffers on the server, we've decided to redo (and revamp 👀) the profile system. This will take a while, but for now, just use links.</p>
+          <noscript>
+            <p>Please turn on JavaScript or this site <span style="color:rgb(213, 42, 42);"><i>won't</i></span> work</p>
+          </noscript>
         </div>
 
         <script src="/assets/pako.js"></script>
 
         <script>
-//          import { uModel } from '/data/message.js';
+          import { uModel } from '/data/user.js';
 
-          var user = localStorage.get('user')
+          var user = localStorage.getItem('user')
 
           var base = "";
 function getBase64(file) {
