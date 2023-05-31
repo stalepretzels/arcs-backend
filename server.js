@@ -12,6 +12,7 @@ const uuid = require("uuid")
 const pako = require("pako");
 const striptags = require('striptags');
 const parseDataURL = require("data-urls");
+const csrf = require('lusca').csrf;
 
 // Routes
 var index = require("./routes/index");
