@@ -9,6 +9,7 @@ COPY . /app
 
 # Install the application dependencies
 RUN npm install
+RUN npm update
 
 EXPOSE 8080/tcp
 
