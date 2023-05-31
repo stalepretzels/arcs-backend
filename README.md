@@ -38,7 +38,7 @@ Native Releases are not out yet.
 <div align='center'>
 
 #
-## TroubleShooting
+## Troubleshooting
 
 </div>
 
