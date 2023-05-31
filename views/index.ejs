@@ -26,6 +26,12 @@
                 type="text"
                 placeholder="Links here!"
               />
+              <select name="ft" id="ft-select">
+                <option value="">SELECT A FILE TYPE.</option>
+                <option value="img">Image</option>
+                <option value="vid">Video</option>
+                <option value="aud">Audio</option>
+            </select>
               <input id="chat_input" type="text" />
               <input type="submit" value="Send" />
             </form>
@@ -178,20 +184,20 @@
           if (data.file != null) {
             var notifData = {
               image: data.file,
-              icon: data.pfp,
+              icon: data.user.pfp,
               body: data.text,
             };
             new Notification(
-              data.disName + " (" + data.genName + "): ",
+              data.user.disName + " (" + data.user.genName + "): ",
               notifData
             );
           } else {
             var notifData = {
-              icon: data.pfp,
+              icon: data.user.pfp,
               body: data.text,
             };
             new Notification(
-              data.disName + " (" + data.genName + "): ",
+              data.user.disName + " (" + data.user.genName + "): ",
               notifData
             );
           }
@@ -224,7 +230,7 @@
             var data = new mModel({
               text: message,
               file: files,
-              type: 'we\'ll do this later',
+              type: document.getElementById('ft-select').value,
               user: JSON.parse(localStorage.getItem('uObj')),
               room: document.getElementById("currRoom").textContent 
             });
