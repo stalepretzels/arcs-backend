@@ -2,7 +2,7 @@
   <%- include('partials/header.ejs'); -%>
   <body>
     <div id="top-block">
-          <form id="login" method="post" action="/" onsubmit="localStorage.setItem('uname', $('#name').val()); localStorage.setItem('pfp', $('#pfp').val()); localStorage.setItem('url', '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val())">
+          <form id="login" method="post" action="/" onsubmit="finishUP()">
             <label>Create A Display Name...</label>
               <input type="text" id="name">
               <br><br>
@@ -24,7 +24,14 @@
         <script src="/assets/pako.js"></script>
 
         <script>
-          import { uModel } from '/data/user.js';
+          class uModel {
+    constructor({ pfp, disName, genName, url }) {
+        this.pfp = pfp;
+        this.disName = disName;
+        this.genName = genName;
+        this.url = url;
+    }
+}
 
           var user = localStorage.getItem('user')
 
@@ -40,6 +47,12 @@ function getBase64(file) {
      console.log('Error: ', error);
    };
   }   
+
+  function finishUP() {
+    var url = '/profile?pfp=' + $('#pfp').val() + '&disName=' + $('#name').val() + '&genName=' + localStorage.getItem('user') + '&bio=' + $('#bio').val()
+    var obj = new uModel({ pfp: $('#pfp').val(), disName: $('#name').val(), genName: localStorage.getItem('user'), url: url})
+    localStorage.setItem('uObj', JSON.stringify(obj))
+  }
 
         </script>
   </body>

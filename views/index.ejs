@@ -16,7 +16,7 @@
               padding: 5px 0 0 0;
             "
           >
-            <strong>ARCS web - v2.0.0-indev4</strong>
+            <strong>ARCS web - v2.0.0-indev5</strong>
           </div>
           <div id="future"></div>
           <div id="chat-form">
@@ -67,6 +67,7 @@
           <input type="submit" value="Send" />
         </form>
         <p>ID: <span id="ID"></span></p>
+        <p>Please turn on JavaScript or this site <span style="color:rgb(213, 42, 42);"><i>won't</i></span> work</p>
       </div>
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
@@ -76,7 +77,15 @@
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
       <script>
-        import { mModel } from '/data/message.js';
+        class mModel {
+    constructor({ text, file, type, user, room }) {
+        this.text = text;
+        this.file = file;
+        this.type = type;
+        this.user = user;
+        this.room = room;
+    }
+}
 
         var joined = false;
 
@@ -202,28 +211,24 @@
           var files = $("#chat_input_uploads").val();
           if (form_file.value == "") {
             form.value = "";
-            var data = {
+            var data = new mModel({
               text: message,
-              disName: uname,
-              genName: user,
-              pfp: pfpic,
-              url: localStorage.getItem("url"),
-              room: document.getElementById("currRoom").textContent,
-            };
+              user: JSON.parse(localStorage.getItem('uObj')),
+              room: document.getElementById("currRoom").textContent 
+            });
+
             socket.emit("messages", data);
           } else {
             form.value = "";
             form_file.value = "";
-            var data = {
+            var data = new mModel({
               text: message,
-              disName: uname,
-              genName: user,
               file: files,
-              pfp: pfpic,
-              url: localStorage.getItem("url"),
-              room: document.getElementById("currRoom").textContent,
-            };
-            console.log(Object.entries(data) + "\n" + base);
+              type: 'we\'ll do this later',
+              user: JSON.parse(localStorage.getItem('uObj')),
+              room: document.getElementById("currRoom").textContent 
+            });
+            
             globalThis.base = "";
             socket.emit("messages", data);
           }
