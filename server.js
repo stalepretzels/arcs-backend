@@ -8,22 +8,13 @@ const md = require('markdown-it')('commonmark', {
   linkify: true,
   typographer: true
 });
-const uuid = require("uuid")
-const pako = require("pako");
 const striptags = require('striptags');
-const parseDataURL = require("data-urls");
-const csrf = require('lusca').csrf;
 
 // Routes
-var index = require("./routes/index");
-var profile = require("./routes/profile");
-var foo = require("./routes/errors/401");
-var fot = require("./routes/errors/403");
-var fof = require("./routes/errors/404");
-var fho = require("./routes/errors/500");
-var i2 = require("./routes/index2");
-var bpbtpage = require("./routes/bopbot");
-var admin = require("./routes/admin");
+var routeIndex = require("./routes/index");
+var routeExtras = require("./routes/extras");
+var routeAuth = require("./routes/auth");
+var routeError = require("./routes/error");
 const { Socket } = require("socket.io-client");
 const { instrument } = require("@socket.io/admin-ui");
 
@@ -157,16 +148,11 @@ const c403 = function (req, res, next) {
 app.use(c403)
 
 // Routes init (VERY IMPORTANT)
-app.use("/login", i2);
-app.use("/", index);
-app.use("/profile", profile);
-app.use("/401", foo);
-app.use("/403", fot);
-app.use("/500", fho);
-app.use("/bopbot", bpbtpage);
-app.use("/admin", admin);
+app.use("/", routeIndex);
+app.use("/", routeAuth);
+app.use("/", routeExtras);
 
-app.use("*", fof);
+app.use("/", routeError);
 
 
 httpServer.listen(PORT, function (err) {

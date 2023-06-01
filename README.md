@@ -13,11 +13,11 @@ A chat app I made, hosted at https://arcs-cats11134.b4a.run
 
 <br>
 
-#### v2.0.0-indev6
+#### v2.0.0-indev7 NOT TO BE RELEASED
 </div>
 
-- [x] Fixed a bug where messages wouldn't send.
-- [x] Readded file typing for later prototype of 2.0.0.
+- [x] Organized routes.
+- [x] Make part one of login/signup.
 - [ ] Added the ability to make a grilled cheese. 
   
 <br>

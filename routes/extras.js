@@ -9,16 +9,25 @@ var options = {
     format: 'json', // json | text
   };
 
-router.get("/", function (req, res) {
+router.get("/admin", function (req, res) {
     if (ALLOWEDIPS.some(function(v) { return proxifly.getPublicIp().toString().indexOf(v) >= 0; })) {
         res.render('errors/banned.ejs')
     } else {
-        res.render('admin.ejs');
+        res.render('extras/admin.ejs');
     }
 });
 
-router.get("/", function (req, res) {
-    res.render("index.ejs");
+router.get('/bopbot', (req, res) => {
+    res.render('extras/bopbot.ejs');
 });
+
+router.get("/", function (req, res) {
+    pfp = req.query.pfp
+    disName = req.query.disName
+    genName = req.query.genName
+    bio = req.query.bio
+  
+    res.render("extras/profile.ejs");
+  });
 
 module.exports = router;

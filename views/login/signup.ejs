@@ -1,10 +1,13 @@
 <html>
-  <%- include('partials/header.ejs'); -%>
+  <%- include('../partials/header.ejs'); -%>
   <body>
     <div id="top-block">
-          <form id="login" method="post" action="/" onsubmit="finishUP()">
+          <form id="login" method="post" action="/" onsubmit=""> <!--finishUP()-->
+            <label>Create A Username...</label>
+              <input type="text" id="genName">
+              <br><br>
             <label>Create A Display Name...</label>
-              <input type="text" id="name">
+              <input type="text" id="disName">
               <br><br>
               <label>Create A Profile Picture...</label>
               <input id="pfp" type="text"> 
