@@ -21,7 +21,8 @@
           <div id="future"></div>
           <div id="chat-form">
             <form id="form" id="chat_form">
-              <input
+              <input id="chat_input_uploads" type='file' accept='image/*, video/*, audio/*' onchange="getBase64()" />
+              <!--<input
                 id="chat_input_uploads"
                 type="text"
                 placeholder="Links here!"
@@ -31,7 +32,7 @@
                 <option value="img">Image</option>
                 <option value="vid">Video</option>
                 <option value="aud">Audio</option>
-            </select>
+            </select> -->
               <input id="chat_input" type="text" />
               <input type="submit" value="Send" />
             </form>
@@ -78,11 +79,17 @@
       <script src="/assets/jquery.js"></script>
       <script src="/assets/socket.io.js"></script>
       <script src="/assets/pako.js"></script>
+      <script src="/assets/lzstring.js"></script>
       <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
+      <script type="module">
+        import { compress, decompress } from './public/assets/lzstring.js';
+      </script>
+
       <script>
+
         class mModel {
     constructor({ text, file, type, user, room }) {
         this.text = text;
@@ -159,6 +166,20 @@
           socket.emit("joinEmit", uname + " (" + user + ") joined.");
         });
 
+        var onlicon = document.getElementById("onlineicon");
+        var onltext = document.getElementById("onlinebutton");
+        const onlinechecker = setInterval(() => {
+          if (socket.connected == true) {
+            onlicon.classList.remove("bi-exclamation-circle");
+            onlicon.classList.add("bi-circle");
+            onltext.setAttribute("tooltip", "You are connected to the server.");
+          } else if (socket.connected == false) {
+            onlicon.classList.remove("bi-circle");
+            onlicon.classList.add("bi-exclamation-circle");
+            onltext.setAttribute("tooltip", "You are not connected to the server.");
+          }
+        }, 1500);
+
         socket.on("broadJoin", function (data) {
           if (globalThis.joined == false) {
             $("#future").append(data);
@@ -177,9 +198,12 @@
           f.textContent = new Date().toLocaleString();
           f.removeAttribute("id");
 
-          var g = document.getElementById("pfpa");
-          g.textContent = new Date().toLocaleString();
+          var g = document.getElementById("imga");
+          var h = document.getElementById("imgtbd");
+          var j = decompress(g.textContent);
+          h.src = j;
           g.removeAttribute("id");
+          h.removeAttribute("id");
 
           scrollToBottom(document.getElementById("future"));
         });
@@ -219,12 +243,13 @@
           e.preventDefault();
           var message = $("#chat_input").val();
           var files = $("#chat_input_uploads").val();
-          if (form_file.value == "") {
+          if (globalThis.base == "") {
             form.value = "";
             var data = new mModel({
               text: message,
               user: JSON.parse(localStorage.getItem('uObj')),
-              room: document.getElementById("currRoom").textContent 
+              room: document.getElementById("currRoom").textContent,
+              type: 'none' 
             });
 
             socket.emit("messages", data);
@@ -233,8 +258,8 @@
             form_file.value = "";
             var data = new mModel({
               text: message,
-              file: files,
-              type: document.getElementById('ft-select').value,
+              file: compress(globalThis.base),
+              type: globalThis.base.slice(5, 10),
               user: JSON.parse(localStorage.getItem('uObj')),
               room: document.getElementById("currRoom").textContent 
             });
@@ -287,21 +312,6 @@
           e11.classList.toggle("user-dark");
           e12.classList.toggle("dark-mode-dmbtn");
         }
-      </script>
-      <script>
-        var onlicon = document.getElementById("onlineicon");
-        var onltext = document.getElementById("onlinebutton");
-        const onlinechecker = setInterval(() => {
-          if (navigator.onLine == true) {
-            onlicon.classList.remove("bi-exclamation-circle");
-            onlicon.classList.add("bi-circle");
-            onltext.setAttribute("tooltip", "You are online.");
-          } else if (navigator.onLine == false) {
-            onlicon.classList.remove("bi-circle");
-            onlicon.classList.add("bi-exclamation-circle");
-            onltext.setAttribute("tooltip", "You are not online.");
-          }
-        }, 1500);
       </script>
     </div>
   </body>
