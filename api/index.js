@@ -12,10 +12,10 @@ const striptags = require('striptags');
 const cors = require('cors');
 
 // Routes
-var routeIndex = require("./routes/index");
-var routeExtras = require("./routes/extras");
-var routeAuth = require("./routes/auth");
-var routeError = require("./routes/error");
+var routeIndex = require("../routes/index");
+var routeExtras = require("../routes/extras");
+var routeAuth = require("../routes/auth");
+var routeError = require("../routes/error");
 const { Socket } = require("socket.io-client");
 const { instrument } = require("@socket.io/admin-ui");
 
@@ -44,7 +44,7 @@ instrument(io, {
     password: "$2y$10$TkyJP6MUI0yRCY4JvRbAQ.A5grLzOoSgizoyoyHxDGjn1Vj8l7U4C"
   },
 });
-app.use(express.static('public'));
+//app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.json()); 
 app.use(cors()); 
