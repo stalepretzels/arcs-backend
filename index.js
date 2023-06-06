@@ -102,8 +102,7 @@ io.on('connection', function (client) {
     client.emit('broad', "<div class='chmscon'><strong id='user'>BopBot: </strong><span id='date' style='color: rgb(127, 127, 127) !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'><div class='chat-msg bopbot'>You've been bopped! This is because your message contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
     } else if (new RegExp(BOPBOTBANNEDWORDS.join("|")).test(data.disName)) {
       client.emit('broad', "<div class='chmscon'><strong id='user'>BopBot: </strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'><div class='chat-msg bopbot'>You've been bopped! This is because your username contained banned words. Your message was not sent. Only you can see this message. Click <a style='text-decoration: wavy underline; color: inherit;' href='/bopbot'>here</a> to learn more.</div></div>")
-    } /*else if (!data.text.replace(/\s/g, '').length && data.file == null) {
-    } */else if (data.type == 'none') {
+    } else if (data.type == 'none') {
       /*
 
       CHEATSHEET:
@@ -131,6 +130,21 @@ io.on('connection', function (client) {
       client.to(data.room).emit('broad', "<div class='chmscon'><div id='msghead' style='margin-bottom: 5px;'><img style='width: 48px; height: 48px; border-radius: 2em; margin-right: 3px;' src='" + data.user.pfp + "'><strong id='user'><a id='a' href='" + data.user.url + "'>" + data.user.disName + " (" + data.user.genName + "): </a></strong><span id='date' style='color: #000000 !important; font-weight: 300 !important; font-size: small;'>[at <span id='datea'></span>]</span id='date'></div><div class='chat-msg other'>" + striptags(md.render(striptags(data.text)), ['strong', 'i', 'em', 'code', 'a', 'div', 'sub', 'sup', 's']) + "<br><span id='imga' style='display:none;'>" + data.file + "</span><audio id='imgtbd' controls src='" + data.file + "'></div></div>");
       client.to(data.room).emit('broadNotif', data);
     } */
+  });
+
+  // COMMAND REGISTRY
+  client.on('testmyping', (data) => {
+    client.emit('pongpong', data)
+    console.log('Pong in progress...')
+  });
+
+  client.on('pongEmit', (data) => {
+    client.emit('broadPing', "<div id='joinmsg'>Pong! You have a ping of " + data + " ms.</div>")
+    console.log('should work???')
+  });
+
+  client.on("ping", (callback) => {
+    callback();
   });
 
 });

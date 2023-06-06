@@ -21,8 +21,8 @@
           <div id="future"></div>
           <div id="chat-form">
             <form id="form" id="chat_form">
-              <input id="chat_input_uploads" type='file' accept='image/*, video/*, audio/*' onchange="getBase64()" />
-              <!--<input
+              <!--<input id="chat_input_uploads" type='file' accept='image/*, video/*, audio/*' onchange="getBase64(this)" />-->
+              <input
                 id="chat_input_uploads"
                 type="text"
                 placeholder="Links here!"
@@ -32,7 +32,7 @@
                 <option value="img">Image</option>
                 <option value="vid">Video</option>
                 <option value="aud">Audio</option>
-            </select> -->
+            </select> 
               <input id="chat_input" type="text" />
               <input type="submit" value="Send" />
             </form>
@@ -84,12 +84,11 @@
       <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
       <script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
 
-      <script type="module">
+     <script type="module">
         import { compress, decompress } from './public/assets/lzstring.js';
       </script>
 
       <script>
-
         class mModel {
     constructor({ text, file, type, user, room }) {
         this.text = text;
@@ -111,18 +110,6 @@
           xmlHttp.open("GET", theUrl, false); // false for synchronous request
           xmlHttp.send(null);
           return xmlHttp.responseText;
-        }
-
-        var base = "";
-        function getBase64(file) {
-          var reader = new FileReader();
-          base = reader.readAsDataURL(form_file.files[0]);
-          reader.onloadend = function () {
-            globalThis.base = reader.result.toString();
-          };
-          reader.onerror = function (error) {
-            console.log("Error: ", error);
-          };
         }
 
         function scrollToBottom(element) {
@@ -157,7 +144,7 @@
         var uname = localStorage.getItem("uname");
         var pfpic = localStorage.getItem("pfp");
 
-        if (uname == null || uname == "null" || uname == "") {
+        if (uname == null || uname == "" || uname == undefined || localStorage.getItem('pfp') == undefined || localStorage.getItem('pfp') == null) {
           window.location = "/login";
         }
         var socket = io.connect();
@@ -243,7 +230,19 @@
           e.preventDefault();
           var message = $("#chat_input").val();
           var files = $("#chat_input_uploads").val();
-          if (globalThis.base == "") {
+          if (message == '/ping') {
+            form.value = "";
+            form_file.value = "";
+
+            const start = Date.now();
+
+  socket.emit("ping", () => {
+    const duration = Date.now() - start;
+    console.log(duration);
+    $("#future").append("<div id='joinmsg'>Pong! You have a ping of " + duration + " ms.</div>");
+          scrollToBottom(document.getElementById("future"));
+  });
+          } else if (files == "") {
             form.value = "";
             var data = new mModel({
               text: message,
@@ -259,7 +258,7 @@
             var data = new mModel({
               text: message,
               file: compress(globalThis.base),
-              type: globalThis.base.slice(5, 10),
+              type: document.getElementById("ft-select").value,
               user: JSON.parse(localStorage.getItem('uObj')),
               room: document.getElementById("currRoom").textContent 
             });
@@ -312,6 +311,11 @@
           e11.classList.toggle("user-dark");
           e12.classList.toggle("dark-mode-dmbtn");
         }
+
+        function DateDiff(date1, date2) {
+    return date1.getTime() - date2.getTime();
+}
+
       </script>
     </div>
   </body>
