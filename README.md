@@ -1,11 +1,10 @@
 <div align='center'>
 
 # ARCS
-### Moved to [stalepretzels/arcs](https://github.com/stalepretzels/arcs)
 
 <br>
 
-~~A chat app I made, hosted at https://arcs-cats11134.b4a.run~~
+Chat app.
 
 <br>
 
