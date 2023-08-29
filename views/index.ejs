@@ -142,9 +142,9 @@
           var ip = localStorage.getItem("ip");
         }
         var uname = localStorage.getItem("uname");
-        var pfpic = localStorage.getItem("pfp");
+        // var pfpic = localStorage.getItem("pfp");
 
-        if (uname == null || uname == "" || uname == undefined || localStorage.getItem('pfp') == undefined || localStorage.getItem('pfp') == null) {
+        if (uname == null || uname == "" || uname == undefined /*|| localStorage.getItem('pfp') == undefined || localStorage.getItem('pfp') == null*/) {
           window.location = "/login";
         }
         var socket = io.connect();
@@ -199,7 +199,7 @@
           if (data.file != null) {
             var notifData = {
               image: data.file,
-              icon: data.user.pfp,
+//              icon: data.user.pfp,
               body: data.text,
             };
             new Notification(
@@ -208,7 +208,7 @@
             );
           } else {
             var notifData = {
-              icon: data.user.pfp,
+//              icon: data.user.pfp,
               body: data.text,
             };
             new Notification(
