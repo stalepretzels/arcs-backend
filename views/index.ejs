@@ -108,7 +108,7 @@
         function httpGet(theUrl) {
           var xmlHttp = new XMLHttpRequest();
           xmlHttp.open("GET", theUrl, false); // false for synchronous request
-          xmlHttp.send(null);
+          xmlHttp.send(null);  
           return xmlHttp.responseText;
         }
 
@@ -144,9 +144,9 @@
         var uname = localStorage.getItem("uname");
         // var pfpic = localStorage.getItem("pfp");
 
-        if (uname == null || uname == "" || uname == undefined /*|| localStorage.getItem('pfp') == undefined || localStorage.getItem('pfp') == null*/) {
-          window.location = "/login";
-        }
+     //   if (uname == null || uname == "" || uname == undefined /*|| localStorage.getItem('pfp') == undefined || localStorage.getItem('pfp') == null*/) {
+       //   window.location = "/login";
+       // }
         var socket = io.connect();
         socket.on("connect", function (data) {
           socket.emit("join", uname + " (" + user + ") joined from " + ip);
