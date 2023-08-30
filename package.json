@@ -8,8 +8,7 @@
     "start": "node index.js",
     "dev": "nodemon",
     "debug": "DEBUG=* nodemon",
-    "build": "docker compose up -d",
-    "run": ""
+    "build": "docker compose up -d"
   },
   "author": "Clover Johnson",
   "license": "ISC",
