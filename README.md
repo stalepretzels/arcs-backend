@@ -13,13 +13,14 @@ Chat app.
 
 <br>
 
-#### v2.0.0-indev7 NOT TO BE RELEASED
+#### v2.1.0
 
 </div>
 
-- [x] Organized routes.
-- [x] Make part one of login/signup.
-- [ ] Added the ability to make a grilled cheese. 
+- [x] Fixed Dockerfile and added compose.yaml for Michael's self host update (on arcs.kielby.com)
+- [x] Removed profile picture options, and added generic one until fixed.
+- [x] Many, many bug fixes.
+- [ ] A pizza.
   
 <br>
 
