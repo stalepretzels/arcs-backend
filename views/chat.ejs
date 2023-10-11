@@ -1,0 +1,82 @@
+<html lang="en">
+<body>
+    <%- include('partials/header.ejs'); -%>
+    <div class='titlecon'>
+    <h1>Arcs</h1>
+    </div>
+
+    <div id='maincontainer'>
+        <div id='appendto'></div>
+        <div id='chatform'>
+            <input placeholder='msg' id="chat_input" type="text" />
+            <input placeholder='uuid' id="chat_input_uuid" type="text" />
+            <input placeholder='disname' id="chat_input_disname" type="text" />
+            <button id='chatsubmit'>submit</button>
+        </div>
+    </div>
+
+    <script src="/assets/socket.io.js"></script>
+    <script src="/assets/jquery.js"></script>
+
+    <script>
+        // Call this shit FedEx
+        class MailSystemClass {
+            constructor() {
+
+            }
+        }
+
+        class DriverClass extends MailSystemClass {
+            constructor(message, user, room) {
+                this.message = message;
+                this.disName = user.disName;
+                this.uuid = user.uuid;
+                this.room = room;
+
+                this.pkg = {
+                    message: this.message,
+                    room: this.room,
+                    user = {
+                        disName: this.disName,
+                        uuid: this.uuid
+                    }
+                }
+            }
+
+            send() {
+                socket.emit("messages", this.pkg);
+            }
+        }
+
+        class MailboxClass extends MailSystemClass {
+            constructor() {
+
+            }
+
+            append(pkg) {
+                $("#appendto").append(pkg);
+            }
+        }
+    </script>
+
+    <script>
+        const MailSystem = new MailSystemClass();
+        const Mailbox = new MailboxClass();
+
+        document.getElementById("chatsubmit").onclick = function(e) {
+            try {
+          e.preventDefault();
+          let message = $("#chat_input").val();
+          let uuid = $("#chat_input_uuid").val();
+          let disname = $("#chat_input_disname").val();
+
+          let Driver = new DriverClass(message, { disName: disname, uuid: uuid }, '::GENERAL')
+
+          Driver.send();
+            } except (err) {
+                console.log(err)
+            }
+        };
+    </script>
+</body>
+</html>

@@ -13,15 +13,13 @@
   "author": "Clover Johnson",
   "license": "ISC",
   "dependencies": {
-    "@socket.io/admin-ui": "^0.5.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "eiows": "^6.6.2",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
-    "markdown-it": "^13.0.1",
-    "socker.io": "^0.0.0-alpha-beta",
-    "socket.io-client": "^4.7.2",
+    "markdown-it": "^13.0.2",
+    "socket.io": "^4.7.2",
     "striptags": "^3.2.0"
   },
   "devDependencies": {
