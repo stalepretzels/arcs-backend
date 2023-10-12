@@ -3,7 +3,7 @@
 - [ ] &nbsp;api rewrite
     - [ ] &nbsp;rewrite index.js
     - [ ] &nbsp;write mailing system
-        - [ ] &nbsp;write delivery
+        - [ ] &nbsp;write mailman
         - [ ] &nbsp;write mailbox
     - [ ] &nbsp;write models
         - [ ] &nbsp;write user model
@@ -22,8 +22,8 @@
     - [ ] &nbsp;organize code
 
 ### untracked progress
-## 2%
+## 5%
 
-complete phase_0 testing
+most recent untracked: complete phase_1 testing + implement features
 
 ill add more later

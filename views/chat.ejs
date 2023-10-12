@@ -2,44 +2,61 @@
 <body>
     <%- include('partials/header.ejs'); -%>
     <div class='titlecon'>
-    <h1>Arcs</h1>
+    <h1>Arcs <span style='font-weight: 200;'>Slate</span></h1>
     </div>
-
+    <div class="leftmenu">
+        <button onclick='window.location = "/editinfo"' class='menubutton'><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16"><path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z"/></svg></button>
+        </div>
     <div id='maincontainer'>
         <div id='appendto'></div>
         <div id='chatform'>
-            <input placeholder='msg' id="chat_input" type="text" />
-            <input placeholder='uuid' id="chat_input_uuid" type="text" />
-            <input placeholder='disname' id="chat_input_disname" type="text" />
-            <button id='chatsubmit'>submit</button>
+            <textarea placeholder='This field supports Markdown!!' id="chat_input" type="text"></textarea>
+            <button id='chatsubmit'>>></button>
         </div>
     </div>
 
-    <script src="/assets/socket.io.js"></script>
     <script src="/assets/jquery.js"></script>
+    <script src="/assets/socket.io.js"></script>
 
     <script>
+        let User;
+        if (localStorage.getItem('user') == undefined) {
+            window.location = '/editinfo';
+        } else {
+            User = JSON.parse(localStorage.getItem('user'));
+        }
+        console.log(User)
+
         // Call this shit FedEx
         class MailSystemClass {
             constructor() {
+                // this is where id put my shared mailing resources...
 
+                // ...if i had any!!!
             }
         }
 
-        class DriverClass extends MailSystemClass {
-            constructor(message, user, room) {
-                this.message = message;
+        class MailmanClass extends MailSystemClass {
+            constructor(pkgtype, message, user, room) {
+                super()
+                if (pkgtype == 'message') {
+                    this.message = message;
                 this.disName = user.disName;
-                this.uuid = user.uuid;
+                this.ugn = user.ugn;
                 this.room = room;
+                this.uuid = user.uuid;
 
                 this.pkg = {
                     message: this.message,
                     room: this.room,
-                    user = {
+                    user: {
                         disName: this.disName,
-                        uuid: this.uuid
+                        ugn: this.ugn,
+                        uuid: this.uuid,
                     }
+                }
+                } else {
+                    
                 }
             }
 
@@ -50,33 +67,33 @@
 
         class MailboxClass extends MailSystemClass {
             constructor() {
-
+                super()
             }
 
             append(pkg) {
                 $("#appendto").append(pkg);
             }
         }
-    </script>
 
-    <script>
+        const socket = io();
         const MailSystem = new MailSystemClass();
         const Mailbox = new MailboxClass();
 
+        socket.on("connect", function (data) {
+          socket.emit("join", User);
+        });
+
         document.getElementById("chatsubmit").onclick = function(e) {
-            try {
           e.preventDefault();
           let message = $("#chat_input").val();
-          let uuid = $("#chat_input_uuid").val();
-          let disname = $("#chat_input_disname").val();
 
-          let Driver = new DriverClass(message, { disName: disname, uuid: uuid }, '::GENERAL')
-
-          Driver.send();
-            } except (err) {
-                console.log(err)
-            }
+          let Mailman = new MailmanClass('message', message, User, '::GENERAL')
+          Mailman.send();
         };
+
+        socket.on("broad", function (data) {
+          Mailbox.append(data);
+        });
     </script>
 </body>
 </html>

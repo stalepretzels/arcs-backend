@@ -1,0 +1,38 @@
+<html lang="en">
+<body>
+    <%- include('partials/header.ejs'); -%>
+    <div class='titlecon'>
+    <h1>Arcs</h1>
+    </div>
+
+    <div>
+            <input placeholder='Username...' id="einfo_input_username" type="text" />
+            <button id='einfosubmit'>submit</button>
+    </div>
+
+    <script src="/assets/jquery.js"></script>
+    <script src="/assets/chance.min.js"></script>
+    <script>
+        document.getElementById("einfosubmit").onclick = function(e) {
+          e.preventDefault();
+          let username = $("#einfo_input_username").val();
+          let uuid;
+          if (localStorage.getItem('user') == undefined) {
+            uuid = chance.guid();
+          } else {
+            uuid = localStorage.getItem('user').uuid;
+          }
+          let useridentifier = chance.integer({ min: 1000, max: 9999 });
+
+          let UserModel = {
+            disName: username,
+            uuid: uuid,
+            ugn: useridentifier
+          };
+            localStorage.setItem('user', JSON.stringify(UserModel));
+
+            window.location = '/chat';
+        };
+    </script>
+</body>
+</html>
