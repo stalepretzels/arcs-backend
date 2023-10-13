@@ -76,13 +76,25 @@ textarea {
 }
 
 .menubutton {
-  width: 32px;
-  height: 32px;
+  width: fit-content;
+  height: fit-content;
   background: none;
   border: none;
   cursor: pointer;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
-.joinmsg {
+.statusmsg {
   font-weight: bold;
+  color: grey;
+}
+
+.hr {
+  background: rgb(150, 150, 150);
+  width: calc(100% - 4px);
+  height: 3px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-radius: 1em;
 }

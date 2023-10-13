@@ -61,7 +61,7 @@ io.on("connection", (client) => {
       .to("::GENERAL")
       .emit(
         "broad",
-        "<div class='joinmsg'>" +
+        "<div class='statusmsg'>" +
           data.disName +
           "@" +
           data.ugn +
@@ -69,7 +69,7 @@ io.on("connection", (client) => {
       );
     client.emit(
       "broad",
-      "<div class='joinmsg'>You joined the chat room.</div>",
+      "<div class='statusmsg'>You joined the chat room.</div>",
     );
   });
 
@@ -82,10 +82,17 @@ io.on("connection", (client) => {
     client.join(data.room);
     client
       .to(data.room)
-      .emit("broad", "<div id='joinmsg'>" + data.js + "</div>");
+      .emit(
+        "broad",
+        "<div class='statusmsg'>" +
+          data.disName +
+          "@" +
+          data.ugn +
+          " joined this chat room.</div>",
+      );
     client.emit(
       "broad",
-      "<div id='joinmsg'>You joined the " + data.room + ".</div>",
+      "<div id='statusmsg'>You joined " + data.room + ".</div>",
     );
     console.log(data.jsc);
   });
@@ -132,7 +139,7 @@ io.on("connection", (client) => {
         "</div></div>",
     );
     client
-      .to("::GENERAL")
+      .to(data.room)
       .emit(
         "broad",
         "<div style='margin: 10px 0;'><span>" +
