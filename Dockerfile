@@ -11,7 +11,7 @@ COPY . /app
 RUN npm install
 RUN npm update
 
-EXPOSE 8080/tcp
+EXPOSE 8443/tcp
 
 # Define the entry point for the container
 CMD ["npm", "start"]

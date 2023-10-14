@@ -22,7 +22,8 @@
         </div>
     </div>
 
-    <%- include('partials/requiredscripts.ejs'); -%>
+    <script src="/assets/jquery.js"></script>
+    <script src="/assets/socket.io.js"></script>
 
     <script>
         let User;
@@ -45,7 +46,8 @@
         class MailmanClass extends MailSystemClass {
             constructor(pkgtype, message, user, room) {
                 super()
-                switch (pkgtype) {
+                this.pkgtype = pkgtype
+                switch (this.pkgtype) {
                     case "message":
                     this.message = message;
                 this.disName = user.disName;
@@ -82,7 +84,7 @@
             }
 
             send() {
-                switch (key) {
+                switch (this.pkgtype) {
                     case "message":
                         socket.emit("messages", this.pkg);
                         break;

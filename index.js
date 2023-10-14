@@ -56,15 +56,15 @@ io.on("connection", (client) => {
   client.join("::GENERAL");
 
   client.on("join", function (data) {
-    console.log(data.disName + "@" + data.ugn + " joined.");
+    console.log(data.user.disName + "@" + data.user.ugn + " joined.");
     client
       .to("::GENERAL")
       .emit(
         "broad",
         "<div class='statusmsg'>" +
-          data.disName +
+          data.user.disName +
           "@" +
-          data.ugn +
+          data.user.ugn +
           " joined this chat room.</div>",
       );
     client.emit(
@@ -85,9 +85,9 @@ io.on("connection", (client) => {
       .emit(
         "broad",
         "<div class='statusmsg'>" +
-          data.disName +
+          data.user.disName +
           "@" +
-          data.ugn +
+          data.user.ugn +
           " joined this chat room.</div>",
       );
     client.emit(
