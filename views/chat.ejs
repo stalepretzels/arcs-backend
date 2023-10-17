@@ -143,10 +143,10 @@
     
         let message = $("#chat_input").val();
 
+        document.getElementById("chat_input").value = '';
+
           let Mailman = new MailmanClass('message', message, User, room)
           Mailman.send();
-
-        document.getElementById("chat_input").textContent = '';
     }
 });
 
