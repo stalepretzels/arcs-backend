@@ -22,8 +22,6 @@
         </div>
     </div>
 
-<div class='messageBar'><a href='/changelog'>Changelog</a></div>
-
     <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script>
 
@@ -124,20 +122,29 @@
         });
 
         
-        let lmsTime;
         document.getElementById("chatsubmit").onclick = function(e) {
           e.preventDefault();
 
-            if (!(lmsTime - Date.now()) < 2000) {
           let message = $("#chat_input").val();
 
           let Mailman = new MailmanClass('message', message, User, room)
           Mailman.send();
-        lmsTime = Date.now()
-        } else {
-        Mailbox.append('<div class='statusmsg'>You're sending messages too fast. (2 second cooldown.)</div>')
-        }
+
+        document.getElementById("chat_input").textContent = '';
         };
+
+        $("chat_input").keypress(function (e) {
+    if(e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+    
+        let message = $("#chat_input").val();
+
+          let Mailman = new MailmanClass('message', message, User, room)
+          Mailman.send();
+
+        document.getElementById("chat_input").textContent = '';
+    }
+});
 
         socket.on("broad", function (data) {
           Mailbox.append(data);
