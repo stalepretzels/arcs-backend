@@ -17,10 +17,12 @@
     <div id='maincontainer'>
         <div id='appendto'></div>
         <div id='chatform'>
-            <textarea placeholder='This field supports Markdown!!' id="chat_input" type="text"></textarea>
+            <textarea placeholder='This field supports Markdown!! 2000 character limit.' id="chat_input" type="text" maxlength='2000'></textarea>
             <button id='chatsubmit'>>></button>
         </div>
     </div>
+
+<div class='messageBar'>New message cooldown and character limit. What did you guys think was going to happen?</div>
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script>
@@ -116,12 +118,20 @@
             Mailman.send();
         });
 
+        
+        let lmsTime;
         document.getElementById("chatsubmit").onclick = function(e) {
           e.preventDefault();
+
+            if (!(lmsTime - Date.now()) < 2000) {
           let message = $("#chat_input").val();
 
           let Mailman = new MailmanClass('message', message, User, room)
           Mailman.send();
+        lmsTime = Date.now()
+        } else {
+        Mailbox.append('<div class='statusmsg'>You're sending messages too fast. (2 second cooldown.)</div>')
+        }
         };
 
         socket.on("broad", function (data) {
