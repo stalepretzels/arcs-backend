@@ -34,6 +34,7 @@ let io = new socketio.Server(httpServer, {
 let routes = {
   main: require("./routes/main.js"),
   login: require("./routes/login.js"),
+  extras: require("./routes/extras.js"),
 };
 
 // Functions
@@ -49,6 +50,7 @@ app.use(cookieParser());
 /* Routes */
 app.use("/", routes.main);
 app.use("/", routes.login);
+app.use("/", routes.extras);
 
 // Socket.io
 io.on("connection", (client) => {
