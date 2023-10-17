@@ -22,7 +22,7 @@
         </div>
     </div>
 
-<div class='messageBar'>New message cooldown and character limit. What did you guys think was going to happen?</div>
+<div class='messageBar'><a href='/changelog'>Changelog</a></div>
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script>
@@ -35,6 +35,10 @@
             User = JSON.parse(localStorage.getItem('user'));
         }
         console.log(User)
+
+        if (localStorage.getItem('readrules') == undefined) {
+            window.location = '/rules';
+        }
 
         // Call this shit FedEx
         class MailSystemClass {
@@ -104,7 +108,7 @@
 
             append(pkg) {
                 $("#appendto").append(pkg);
-                $("#appendto").scrollTop = $("#appendto").scrollHeight;
+                document.getElementById("appendto").scrollTo(document.getElementById("appendto").scrollHeight);
             }
         }
 
