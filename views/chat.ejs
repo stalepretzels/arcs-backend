@@ -109,11 +109,6 @@
             }
 
             append(pkg) {
-                if (typeof pkg != 'object') {
-                $("#appendto").append(pkg);
-} else {
-                $("#appendto").append(pkg[1] + pkg[0].toLocaleString() + pkg[2]);
-}
                 $("#appendto").append(pkg);
                 document.getElementById("appendto").scrollTo({
             top: document.getElementById("appendto").scrollHeight,
