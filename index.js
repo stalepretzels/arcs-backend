@@ -102,12 +102,11 @@ io.on("connection", (client) => {
   client.on("messages", (data) => {
     client.emit(
       "broad",
-      "<div style='margin: 10px 0;'><span>" +
+      [data.date, "<div style='margin: 10px 0;'><span>" +
         data.user.disName +
         "@" +
         data.user.ugn +
-        " <span style='font-size: small;'>[at " +
-        new Date().toLocaleString(new Date().getTime()) +
+        " <span style='font-size: small;'>[at ",
         "]</span></span><div id='message'>" +
         striptags(markdown.render(striptags(data.message)), [
           "strong",
@@ -138,18 +137,22 @@ io.on("connection", (client) => {
           "h5",
           "h6",
         ]) +
-        "</div></div>",
+        "</div></div>"]
     );
     client
       .to(data.room)
       .emit(
+        "notification", data
+      )
+    client
+      .to(data.room)
+      .emit(
         "broad",
-        "<div style='margin: 10px 0;'><span>" +
+        ["<div style='margin: 10px 0;'><span>" +
           data.user.disName +
           "@" +
           data.user.ugn +
-          " <span style='font-size: small;'>[at " +
-          new Date().toLocaleString(new Date().getTime()) +
+          " <span style='font-size: small;'>[at ",
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
             "strong",
@@ -180,7 +183,7 @@ io.on("connection", (client) => {
             "h5",
             "h6",
           ]) +
-          "</div></div>",
+          "</div></div>"]
       );
   });
 });
