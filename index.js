@@ -58,29 +58,8 @@ io.on("connection", (client) => {
   client.join("::GENERAL");
 
   client.on("join", function (data) {
-    console.log(data.user.disName + "@" + data.user.ugn + " joined.");
-    client
-      .to("::GENERAL")
-      .emit(
-        "broad",
-        "<div class='statusmsg'>" +
-          data.user.disName +
-          "@" +
-          data.user.ugn +
-          " joined this chat room.</div>",
-      );
-    client.emit(
-      "broad",
-      "<div class='statusmsg'>You joined the chat room.</div>",
-    );
-  });
-
-  client.on("connect_error", (err) => {
-    console.log(`connect_error due to ${err.message}`);
-  });
-
-  client.on("joinRoom", (data) => {
-    client.leave(data.pre);
+    if (!(data.preroom == '')) {
+    client.leave(data.preroom);
     client.join(data.room);
     client
       .to(data.room)
@@ -96,7 +75,27 @@ io.on("connection", (client) => {
       "broad",
       "<div id='statusmsg'>You joined " + data.room + ".</div>",
     );
-    console.log(data.jsc);
+    } else {
+    console.log(data.user.disName + "@" + data.user.ugn + " joined.");
+    client
+      .to("::GENERAL")
+      .emit(
+        "broad",
+        "<div class='statusmsg'>" +
+          data.user.disName +
+          "@" +
+          data.user.ugn +
+          " joined this chat room.</div>",
+      );
+    client.emit(
+      "broad",
+      "<div class='statusmsg'>You joined the chat room.</div>",
+    );
+    }
+  });
+
+  client.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
   });
 
   client.on("messages", (data) => {
