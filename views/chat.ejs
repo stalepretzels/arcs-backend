@@ -2,7 +2,7 @@
 <body>
     <%- include('partials/header.ejs'); -%>
     <div class='titlecon'>
-    <h1>Arcs <span style='font-weight: 200;'>Slate</span>&nbsp;<span style='font-weight: 300; font-size: 15px;'>v3.0.0-indev4</span></h1>
+    <h1>Arcs <span style='font-weight: 200;'>Slate</span>&nbsp;<span style='font-weight: 300; font-size: 15px;'>v3.0.0-indev5</span></h1>
 
 </div>
     <div class="leftmenu">
@@ -103,6 +103,8 @@
             }
         }
 
+        let has_focus;
+
         class MailboxClass extends MailSystemClass {
             constructor() {
                 super()
@@ -118,7 +120,7 @@
             }
 
             sendNotif(pkg) {
-                if (Notification.permission == 'granted' && !notifMuted == true) {
+                if (Notification.permission == 'granted' && !notifMuted == true && !hasfocus == true) {
                     new Notification(pkg.user.disName + '@' + pkg.user.ugn, {'body': pkg.message})            
                 }
             }
