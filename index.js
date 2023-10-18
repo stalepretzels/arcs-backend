@@ -102,11 +102,12 @@ io.on("connection", (client) => {
   client.on("messages", (data) => {
     client.emit(
       "broad",
-      [data.date, "<div style='margin: 10px 0;'><span>" +
+      "<div style='margin: 10px 0;'><span>" +
         data.user.disName +
         "@" +
         data.user.ugn +
-        " <span style='font-size: small;'>[at ",
+        " <span style='font-size: small;'>[at " +
+        new Date().toLocaleString(new Date().getTime()) +
         "]</span></span><div id='message'>" +
         striptags(markdown.render(striptags(data.message)), [
           "strong",
@@ -137,7 +138,7 @@ io.on("connection", (client) => {
           "h5",
           "h6",
         ]) +
-        "</div></div>"]
+        "</div></div>",
     );
     client
       .to(data.room)
@@ -148,11 +149,12 @@ io.on("connection", (client) => {
       .to(data.room)
       .emit(
         "broad",
-        ["<div style='margin: 10px 0;'><span>" +
+        "<div style='margin: 10px 0;'><span>" +
           data.user.disName +
           "@" +
           data.user.ugn +
-          " <span style='font-size: small;'>[at ",
+          " <span style='font-size: small;'>[at " +
+          new Date().toLocaleString(new Date().getTime()) +
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
             "strong",
@@ -183,7 +185,7 @@ io.on("connection", (client) => {
             "h5",
             "h6",
           ]) +
-          "</div></div>"]
+          "</div></div>",
       );
   });
 });
