@@ -107,7 +107,7 @@ io.on("connection", (client) => {
         "@" +
         data.user.ugn +
         " <span style='font-size: small;'>[at " +
-        new Date().toLocaleString(new Date().getTime()) +
+        new Date(Date.now()).toLocaleString() +
         "]</span></span><div id='message'>" +
         striptags(markdown.render(striptags(data.message)), [
           "strong",
@@ -154,7 +154,7 @@ io.on("connection", (client) => {
           "@" +
           data.user.ugn +
           " <span style='font-size: small;'>[at " +
-          new Date().toLocaleString(new Date().getTime()) +
+          new Date(Date.now()).toLocaleString() +
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
             "strong",
