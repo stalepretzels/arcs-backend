@@ -73,7 +73,7 @@ io.on("connection", (client) => {
       );
     client.emit(
       "broad",
-      "<div id='statusmsg'>You joined " + data.room + ".</div>",
+      "<div class='statusmsg'>You joined " + data.room + ".</div>",
     );
     } else {
     console.log(data.user.disName + "@" + data.user.ugn + " joined.");
