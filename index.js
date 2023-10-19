@@ -55,8 +55,7 @@ app.use("/", routes.extras);
 io.on("connection", (client) => {
   console.log("Client connected...");
   client.join("::GENERAL");
-  client.disable('heartbeats');
-
+  
   client.on("join", function (data) {
     if (!(data.preroom == '')) {
     client.leave(data.preroom);
