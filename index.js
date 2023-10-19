@@ -69,6 +69,15 @@ io.on("connection", (client) => {
           "@" +
           data.user.ugn +
           " joined this chat room.</div>",
+        client
+      .to(data.preroom)
+      .emit(
+        "broad",
+        "<div class='statusmsg'>" +
+          data.user.disName +
+          "@" +
+          data.user.ugn +
+          " left this chat room.</div>",
       );
     client.emit(
       "broad",
@@ -105,7 +114,7 @@ io.on("connection", (client) => {
         "@" +
         data.user.ugn +
         " <span style='font-size: small;'>[at " +
-        new Date(Date.now()).toString() +
+        "<span id='date'></span>" +
         "]</span></span><div id='message'>" +
         striptags(markdown.render(striptags(data.message)), [
           "strong",
@@ -152,7 +161,7 @@ io.on("connection", (client) => {
           "@" +
           data.user.ugn +
           " <span style='font-size: small;'>[at " +
-          new Date(Date.now()).toString() +
+          "<span id='date'></span>" +
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
             "strong",
