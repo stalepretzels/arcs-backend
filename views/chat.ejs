@@ -133,6 +133,8 @@
         }
 
         const socket = io();
+        socket.disable('heartbeats');
+
         const MailSystem = new MailSystemClass();
         const Mailbox = new MailboxClass();
 
