@@ -20,13 +20,13 @@
           if (localStorage.getItem('user') == undefined) {
             uuid = chance.guid();
           } else {
-            uuid = localStorage.getItem('user').uuid;
+            uuid = JSON.parse(localStorage.getItem('user')).uuid;
           }
 let useridentifier
             if (localStorage.getItem('user') == undefined) {
             useridentifier = chance.integer({ min: 1000, max: 9999 });
           } else {
-            uuid = localStorage.getItem('user').ugn;
+            useridentifier = JSON.parse(localStorage.getItem('user')).ugn;
           }
 
           let UserModel = {
