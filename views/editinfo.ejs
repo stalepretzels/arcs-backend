@@ -23,7 +23,7 @@
             uuid = localStorage.getItem('user').uuid;
           }
 let useridentifier
-            if (localStorage.getItem('ugn') == undefined) {
+            if (localStorage.getItem('user') == undefined) {
             useridentifier = chance.integer({ min: 1000, max: 9999 });
           } else {
             uuid = localStorage.getItem('user').ugn;
