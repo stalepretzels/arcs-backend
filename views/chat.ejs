@@ -29,6 +29,7 @@
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script>
+<script src="/assets/arrive.min.js"></script>
 
     <script>
         let notifMuted = false;
@@ -180,6 +181,10 @@ if (!message.replace(/\s/g, '').length) { /* empty */ } else {
         socket.on("notification", function (data) {
           Mailbox.sendNotif(data);
         });
+
+    document.arrive("#date", function(element) {
+    element.textContent = new Date(Date.now()).toLocaleString()
+});
     </script>
 </body>
 </html>
