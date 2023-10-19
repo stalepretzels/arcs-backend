@@ -41,6 +41,7 @@ body {
   width: max-content;
   max-width: calc(100% - 10px);
   word-wrap: break-word;
+  overflow: hidden;
 }
 
 #chatform {
