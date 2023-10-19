@@ -18,7 +18,6 @@ const markdown = require("markdown-it")({
   .use(require("markdown-it-ins")) // many
   .use(require("markdown-it-sub")) // of
   .use(require("markdown-it-sup")) // these
-  .use(require("@larose/markdown-it-katex")) // but
   .use(require("markdown-it-mark")) // it
   .use(require("markdown-it-anchor")) // looks
   .use(require("markdown-it-highlightjs")); // cool
@@ -106,7 +105,7 @@ io.on("connection", (client) => {
         "@" +
         data.user.ugn +
         " <span style='font-size: small;'>[at " +
-        new Date(Date.now()).toLocaleString() +
+        new Date(Date.now()).toString() +
         "]</span></span><div id='message'>" +
         striptags(markdown.render(striptags(data.message)), [
           "strong",
@@ -153,7 +152,7 @@ io.on("connection", (client) => {
           "@" +
           data.user.ugn +
           " <span style='font-size: small;'>[at " +
-          new Date(Date.now()).toLocaleString() +
+          new Date(Date.now()).toString() +
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
             "strong",
