@@ -68,7 +68,7 @@ io.on("connection", (client) => {
           data.user.disName +
           "@" +
           data.user.ugn +
-          " joined this chat room.</div>",
+          " joined this chat room.</div>",);
         client
       .to(data.preroom)
       .emit(
