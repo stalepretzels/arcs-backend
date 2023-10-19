@@ -7,6 +7,7 @@
 
     <div>
             <input placeholder='Username...' id="einfo_input_username" maxlength='20' type="text" />
+            <input placeholder='Bio...' id="einfo_input_bio" type="text" />
             <button id='einfosubmit'>submit</button>
     </div>
 
@@ -16,6 +17,7 @@
         document.getElementById("einfosubmit").onclick = function(e) {
           e.preventDefault();
           let username = $("#einfo_input_username").val();
+            let bio = $("#einfo_input_bio").val();
           let uuid;
           if (localStorage.getItem('user') == undefined) {
             uuid = chance.guid();
@@ -23,7 +25,7 @@
             uuid = JSON.parse(localStorage.getItem('user')).uuid;
           }
 let useridentifier
-            if (localStorage.getItem('user') == undefined) {
+            if (localStorage.getItem('user') == undefined || JSON.parse(localStorage.getItem('user')).ugn == undefined ) {
             useridentifier = chance.integer({ min: 1000, max: 9999 });
           } else {
             useridentifier = JSON.parse(localStorage.getItem('user')).ugn;
@@ -32,7 +34,8 @@ let useridentifier
           let UserModel = {
             disName: username,
             uuid: uuid,
-            ugn: useridentifier
+            ugn: useridentifier,
+            bio: bio
           };
             localStorage.setItem('user', JSON.stringify(UserModel));
 
