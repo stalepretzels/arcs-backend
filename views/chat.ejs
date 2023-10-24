@@ -59,37 +59,23 @@
                 switch (this.pkgtype) {
                     case "message":
                     this.message = message;
-                this.disName = user.disName;
-                this.ugn = user.ugn;
                 this.room = room;
-                this.uuid = user.uuid;
 
                 this.pkg = {
                     message: this.message,
                     sent: new Date(Date.now()),
                     room: this.room,
-                    user: {
-                        disName: this.disName,
-                        ugn: this.ugn,
-                        uuid: this.uuid,
-                    }
+                    user: user
                 }
                     break;
                     case "join":
-                this.disName = user.disName;
-                this.ugn = user.ugn;
                 this.room = room;
                 this.preroom = message;
-                this.uuid = user.uuid;
 
                 this.pkg = {
                     room: this.room,
                     preroom: this.preroom,
-                    user: {
-                        disName: this.disName,
-                        ugn: this.ugn,
-                        uuid: this.uuid,
-                    }
+                    user: user
                 }
                 room = this.room
                     break;

@@ -61,6 +61,7 @@ self.addEventListener("install", (event) => {
 event.waitUntil(
   addResourcesToCache([
       "/main.ejs",
+      "/profile.ejs",
       "/chat.ejs",
       "/editinfo.ejs",
       "/rules.ejs",
