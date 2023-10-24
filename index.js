@@ -97,7 +97,7 @@ io.on("connection", (client) => {
       "<div class='statusmsg'>You joined " + data.room + ".</div>",
     );
     } else {
-      client.username = data.user.disName + "@" + data.user.ugn;
+      client.nickname = data.user.disName + "@" + data.user.ugn;
     console.log(data.user.disName + "@" + data.user.ugn + " joined.");
     client
       .to("::GENERAL")
@@ -121,6 +121,7 @@ io.on("connection", (client) => {
   });
 
   client.on("messages", (data) => {
+    client.nickname = data.user.disName + "@" + data.user.ugn;
     client.emit(
       "broad",
       "<div style='margin: 10px 0;'><span>" +
