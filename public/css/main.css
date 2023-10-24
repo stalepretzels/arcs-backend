@@ -118,6 +118,8 @@ textarea {
   text-decoration: wavy underline;
   transition: color 1.5s;
   color: inherit;
+  cursor: pointer;
+  user-select: none;
 }
 
 .pfplink:hover {
