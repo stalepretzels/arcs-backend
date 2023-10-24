@@ -187,9 +187,9 @@ function joinRoomLogic(rtj) {
 if (room == rtj) {
     // user is already in room
 } else {
-room = rtj; 
 let Mailman = new MailmanClass("join", room, User, rtj)
           Mailman.send();
+          room = rtj; 
 }}
     </script>
 </body>
