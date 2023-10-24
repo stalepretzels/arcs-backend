@@ -5,6 +5,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const striptags = require("striptags");
+const { instrument } = require("@socket.io/admin-ui");
+
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
@@ -26,7 +28,18 @@ const markdown = require("markdown-it")({
 let app = express();
 let httpServer = http.createServer(app);
 let io = new socketio.Server(httpServer, {
-  /* options */
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true
+  }
+});
+
+instrument(io, {
+  auth: {
+    type: "basic",
+    username: "admin",
+    password: "$2a$10$emXkyLqEe9.A9zLmsrCkFuHfPx3ayPvHk2mEyhGcK1vR4KAt9eiWu"
+  },
 });
 
 /* Routes */
@@ -84,6 +97,7 @@ io.on("connection", (client) => {
       "<div class='statusmsg'>You joined " + data.room + ".</div>",
     );
     } else {
+      client.username = data.user.disName + "@" + data.user.ugn;
     console.log(data.user.disName + "@" + data.user.ugn + " joined.");
     client
       .to("::GENERAL")
