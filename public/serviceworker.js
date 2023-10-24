@@ -71,6 +71,7 @@ event.waitUntil(
       "/assets/jquery.js",
       "/assets/socket.io.js", 
       "/logo.png",
+      "/maskable.png",
       "/favicon.ico",
   ]),
 );
