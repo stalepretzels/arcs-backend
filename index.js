@@ -125,7 +125,7 @@ io.on("connection", (client) => {
     client.nickname = data.user.disName + "@" + data.user.ugn;
     client.emit(
       "broad",
-      "<div style='margin: 10px 0;'><span>" +
+      "<div style='margin: 10px 0;'><span class='pfplink' onclick='window.location = \"/profile?user=" + data.user.disName + "@" + data.user.ugn + "&bio=" + data.user.bio + "\"'>" +
         data.user.disName +
         "@" +
         data.user.ugn +
@@ -172,7 +172,7 @@ io.on("connection", (client) => {
       .to(data.room)
       .emit(
         "broad",
-        "<div style='margin: 10px 0;'><span>" +
+        "<div style='margin: 10px 0;'><span class='pfplink' onclick='window.location = \"/profile?user=" + data.user.disName + "@" + data.user.ugn + "&bio=" + data.user.bio + "\"'>" +
           data.user.disName +
           "@" +
           data.user.ugn +

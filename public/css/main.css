@@ -113,3 +113,15 @@ textarea {
   bottom: 0;
   left: 0;
 }
+
+.pfplink {
+  text-decoration: wavy underline;
+  transition: color 1.5s;
+  color: inherit;
+}
+
+.pfplink:hover {
+  text-decoration: wavy underline;
+  transition: color 0.5s;
+  color: #1d5ea9;
+}
