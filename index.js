@@ -26,6 +26,7 @@ const markdown = require("markdown-it")({
 
 // Declarations
 let app = express();
+let clients = [];
 let httpServer = http.createServer(app);
 let io = new socketio.Server(httpServer, {
   cors: {
@@ -68,7 +69,7 @@ app.use("/", routes.extras);
 io.on("connection", (client) => {
   console.log("Client connected...");
   client.join("::GENERAL");
-  
+
   client.on("join", function (data) {
     if (!(data.preroom == '')) {
     client.leave(data.preroom);

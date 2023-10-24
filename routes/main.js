@@ -13,4 +13,11 @@ router.get("/chat", function (req, res) {
     res.render("chat.ejs");
 });
 
+router.get("/profile", function (req, res) {
+  genName = req.query.user
+  bio = req.query.bio
+
+  res.render("profile.ejs");
+});
+
 module.exports = router;
