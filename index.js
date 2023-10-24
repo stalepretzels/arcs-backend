@@ -172,11 +172,11 @@ io.on("connection", (client) => {
       .to(data.room)
       .emit(
         "broad",
-        "<div style='margin: 10px 0;'><span class='pfplink' onclick='window.location = \"/profile?user=" + data.user.disName + "@" + data.user.ugn + "&bio=" + data.user.bio + "\"'>" +
+        "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \"/profile?user=" + data.user.disName + "@" + data.user.ugn + "&bio=" + data.user.bio + "\"'>" +
           data.user.disName +
           "@" +
           data.user.ugn +
-          " <span style='font-size: small;'>[at " +
+          "</span> <span style='font-size: small;'>[at " +
           "<span id='date'></span>" +
           "]</span></span><div id='message'>" +
           striptags(markdown.render(striptags(data.message)), [
