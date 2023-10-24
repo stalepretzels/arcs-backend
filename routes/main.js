@@ -14,7 +14,7 @@ router.get("/chat", function (req, res) {
 });
 
 router.get("/profile", function (req, res) {
-  genName = req.query.user
+  user = req.query.user
   bio = req.query.bio
 
   res.render("profile.ejs");
