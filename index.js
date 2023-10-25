@@ -71,6 +71,7 @@ io.on("connection", (client) => {
   client.join("::GENERAL");
 
   client.on("join", function (data) {
+    if (!(data.user.disName == undefined)) { 
     if (!(data.preroom == '')) {
     client.leave(data.preroom);
     client.join(data.room);
@@ -114,13 +115,14 @@ io.on("connection", (client) => {
       "<div class='statusmsg'>You joined the chat room.</div>",
     );
     }
-  });
+  }});
 
   client.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
   });
 
   client.on("messages", (data) => {
+    if (!(data.user.disName == undefined)) {
     client.emit(
       "broad",
       "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \'" + `/profile?user=${data.user.disName}@${data.user.ugn}&bio=${data.user.bio}` + "\''>" +
@@ -208,7 +210,7 @@ io.on("connection", (client) => {
           ]) +
           "</div></div>",
       );
-  });
+  }});
 });
 
 httpServer.listen(8443, () => {
