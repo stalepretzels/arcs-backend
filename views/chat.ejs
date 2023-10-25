@@ -32,7 +32,7 @@
         }
 
         let User;
-        if (localStorage.getItem('user') == undefined || JSON.parse(localStorage.getItem('user')).disName == undefined || JSON.parse(localStorage.getItem('bio')).disName == undefined || JSON.parse(localStorage.getItem('ugn')).disName == undefined) {
+        if (localStorage.getItem('user') == undefined) {
             window.location = '/editinfo';
         } else {
             User = JSON.parse(localStorage.getItem('user'));
