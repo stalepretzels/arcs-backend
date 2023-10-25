@@ -125,7 +125,7 @@ io.on("connection", (client) => {
     if (!(data.user.disName == undefined)) {
     client.emit(
       "broad",
-      "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \'" + `/profile?user=${data.user.disName}@${data.user.ugn}&bio=${data.user.bio}` + "\''>" +
+      "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \'" + `/profile?user=${data.user.disName}@${data.user.ugn}&bio=${data.user.bio}` + "'>" +
       data.user.disName +
       "@" +
       data.user.ugn +
@@ -172,7 +172,7 @@ io.on("connection", (client) => {
       .to(data.room)
       .emit(
         "broad",
-        "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \'" + `/profile?user=${data.user.disName}@${data.user.ugn}&bio=${data.user.bio}` + "\''>" +
+        "<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = \"" + `/profile?user=${data.user.disName}@${data.user.ugn}&bio=${data.user.bio}` + "\"'>" +
           data.user.disName +
           "@" +
           data.user.ugn +
