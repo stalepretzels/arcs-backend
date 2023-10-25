@@ -5,7 +5,7 @@ var express = require("express");
 const router = express.Router();
 
 // Routes
-router.get("/editinfo", function (req, res) {
+router.get("/edit", function (req, res) {
   res.render("editinfo.ejs");
 });
 
