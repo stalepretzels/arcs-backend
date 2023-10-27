@@ -3,6 +3,7 @@
         <link rel='manifest' href='manifest.json'>
         <meta name="theme-color" content="#1d5ea9"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="manifest.json">
     </head>
 <body>
     <%- include('partials/header.ejs'); -%>
@@ -33,11 +34,10 @@
 
         let User;
         if (localStorage.getItem('user') == undefined) {
-            window.location = '/edit';
+            window.location = '/editinfo';
         } else {
             User = JSON.parse(localStorage.getItem('user'));
         }
-        console.log(User)
 
         if (localStorage.getItem('readrules') == undefined) {
             window.location = '/rules';
@@ -125,7 +125,9 @@
 
         socket.on("connect", function (data) {
             let Mailman = new MailmanClass('join', '', User, room)
+            if (!(User.disName == undefined)) {
             Mailman.send();
+            }
         });
 
         
