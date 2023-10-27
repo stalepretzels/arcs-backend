@@ -43,12 +43,14 @@ body {
   max-width: calc(100% - 10px);
   word-wrap: break-word;
   overflow: hidden;
+  direction: ltr !important;
 }
 
 #chatform {
   width: 100%;
   display: flex;
   margin-top: 3px;
+  direction: ltr !important;
 }
 
 #chat_input {
@@ -56,6 +58,7 @@ body {
   border: none;
   border-radius: 0.5em;
   width: calc(100% - 33px);
+  direction: ltr !important;
   margin-right: 3px;
   height: 40px;
   font-family: "Inter Tight", sans-serif;
@@ -121,6 +124,7 @@ textarea {
   color: inherit;
   cursor: pointer;
   user-select: none;
+  direction: ltr !important;
 }
 
 .pfplink:hover {
@@ -255,6 +259,7 @@ textarea {
   color: inherit;
   cursor: pointer;
   user-select: none;
+  direction: ltr !important;
 }
 
 .pfplink:hover {
