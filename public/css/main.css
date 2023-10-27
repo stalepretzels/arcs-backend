@@ -43,7 +43,7 @@ body {
   max-width: calc(100% - 10px);
   word-wrap: break-word;
   overflow: hidden;
-  display: inline;
+  display: inline-block;
 }
 
 #chatform {
