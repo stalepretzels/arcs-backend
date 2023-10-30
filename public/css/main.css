@@ -43,7 +43,8 @@ body {
   max-width: calc(100% - 10px);
   word-wrap: break-word;
   overflow: hidden;
-  display: inline-block;
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 #chatform {
