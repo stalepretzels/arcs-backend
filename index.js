@@ -121,6 +121,16 @@ io.on("connection", (client) => {
     console.log(`connect_error due to ${err.message}`);
   });
 
+  client.on('command', (data)=>{
+    switch (data.type) {
+      case 'ping':
+        data.callback()
+        break;
+      default:
+        client.emit('broad', "<div id='statusmsg'>Invalid command</div>")
+    }
+  });
+  
   client.on("messages", (data) => {
     if (!(data.user.disName == undefined)) {
     client.emit(
