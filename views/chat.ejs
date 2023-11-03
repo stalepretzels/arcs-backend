@@ -34,7 +34,7 @@
 
         let User;
         if (localStorage.getItem('user') == undefined) {
-            window.location = '/editinfo';
+            window.location = '/edit';
         } else {
             User = JSON.parse(localStorage.getItem('user'));
         }
