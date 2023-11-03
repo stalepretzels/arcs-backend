@@ -81,6 +81,15 @@ this.attachment = attachment;
                 }
                 room = this.room
                     break;
+                case "command":
+                this.callback = message;
+                this.type = user;
+
+                this.pkg = {
+                    callback: this.callback,
+                    type: this.type,
+                }
+                    break;
                 }
             }
 
@@ -91,6 +100,9 @@ this.attachment = attachment;
                         break;
                     case "join":
                         socket.emit("join", this.pkg);
+                        break;
+                    case "command":
+                        socket.emit("command", this.pkg);
                         break;
                 }
             }
@@ -138,13 +150,27 @@ this.attachment = attachment;
 
         let message = $("#chat_input").val();
 
-if (!message.replace(/\s/g, '').length) { /* empty */ } else {
 
-        document.getElementById("chat_input").value = '';
-
+if (message[0] == '/') {
+switch (message.split(' ')[0]) {
+case "/ping":
+    let start = Date.now();
+    let Mailman = new MailmanClass('command', ()=>{
+    let duration = Date.now() - start;
+    console.log(duration + " ms");
+    Mailbox.append("<div id='statusmsg'>Pong! You have a ping of " + duration + " ms.</div>");
+    }, 'ping')
+    Mailman.send();
+break;
+default:
+let Mailman = new MailmanClass('command', '', 'invalid')
+          Mailman.send();
+}
+} else {
           let Mailman = new MailmanClass('message', message, User, room)
           Mailman.send();
-    }};
+    }}
+        document.getElementById("chat_input").value = '';};
 
         $("#chat_input").keypress(function (e) {
     if(e.which === 13 && !e.shiftKey) {
@@ -153,12 +179,27 @@ if (!message.replace(/\s/g, '').length) { /* empty */ } else {
         let message = $("#chat_input").val();
 
 if (!message.replace(/\s/g, '').length) { /* empty */ } else {
-
-        document.getElementById("chat_input").value = '';
-
+if (message[0] == '/') {
+switch (message.split(' ')[0]) {
+case "/ping":
+    let start = Date.now();
+    let Mailman = new MailmanClass('command', ()=>{
+    let duration = Date.now() - start;
+    console.log(duration + " ms");
+    Mailbox.append("<div id='statusmsg'>Pong! You have a ping of " + duration + " ms.</div>");
+    }, 'ping')
+    Mailman.send();
+break;
+default:
+let Mailman = new MailmanClass('command', '', 'invalid')
+          Mailman.send();
+}
+} else {
           let Mailman = new MailmanClass('message', message, User, room)
           Mailman.send();
     }}
+        document.getElementById("chat_input").value = '';
+}
 });
 
         socket.on("broad", function (data) {
