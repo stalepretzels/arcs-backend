@@ -1,13 +1,12 @@
 {
-  "name": "friendly-guacamole",
-  "version": "1.0.0",
-  "description": "online thingy",
-  "homepage": "callmeclover.github.io/friendly-guacamole",
+  "name": "arcs",
+  "packageManager": "yarn@4.0.2",
+  "description": "a chat app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon",
-    "debug": "DEBUG=* nodemon",
+    "prestart": "yarn install && yarn up",
+    "start": "yarn prestart && node index.js",
+    "dev": "yarn dlx nodemon",
     "build": "docker compose up -d"
   },
   "author": "Clover Johnson",
