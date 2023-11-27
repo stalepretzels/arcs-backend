@@ -8,9 +8,10 @@ WORKDIR /app
 COPY . /app
 
 # Install the application dependencies
-RUN yarn install
+RUN npm install
+RUN npm update
 
-EXPOSE 8443/tcp
+EXPOSE 8080/tcp
 
 # Define the entry point for the container
-CMD ["node", "index.js"]
+CMD ["npm", "start"]

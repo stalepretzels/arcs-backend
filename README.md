@@ -1,10 +1,10 @@
 <div align='center'>
 
-# ARCS Slate
+# ARCS
 
 <br>
 
-Chat app, re-written.
+Chat app.
 
 <br>
 
@@ -13,13 +13,14 @@ Chat app, re-written.
 
 <br>
 
-#### v3.0.0
+#### v2.1.0
 
 </div>
 
-This section for now isn't being updated, for now please look into commit messages and diffs to see what's changed, and todo.md to see what we're doing.
-
-New release messages will be back in v3.0.0. (this coming update)
+- [x] Fixed Dockerfile and added compose.yaml for Michael's self host update (on arcs.kielby.com)
+- [x] Removed profile picture options, and added generic one until fixed.
+- [x] Many, many bug fixes.
+- [ ] A pizza.
   
 <br>
 
