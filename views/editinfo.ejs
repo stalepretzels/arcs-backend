@@ -1,0 +1,52 @@
+<html lang="en" dir="ltr">
+  <head>
+        <link rel='manifest' href='manifest.json'>
+        <meta name="theme-color" content="#1d5ea9"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+<body>
+    <%- include('partials/header.ejs'); -%>
+    <div class='titlecon'>
+    <h1>Arcs</h1>
+    </div>
+
+
+    <div>
+            <input placeholder='Username...' id="einfo_input_username" maxlength='20' type="text" />
+            <input placeholder='Bio...' id="einfo_input_bio" type="text" />
+            <button id='einfosubmit'>submit</button>
+    </div>
+
+    <script src="/assets/jquery.js"></script>
+    <script src="/assets/chance.min.js"></script>
+    <script>
+        document.getElementById("einfosubmit").onclick = function(e) {
+          e.preventDefault();
+          let username = $("#einfo_input_username").val();
+            let bio = $("#einfo_input_bio").val();
+          let uuid;
+          if (localStorage.getItem('user') == undefined) {
+            uuid = chance.guid();
+          } else {
+            uuid = JSON.parse(localStorage.getItem('user')).uuid;
+          }
+let useridentifier
+            if (localStorage.getItem('user') == undefined || JSON.parse(localStorage.getItem('user')).ugn == undefined ) {
+            useridentifier = chance.integer({ min: 1000, max: 9999 });
+          } else {
+            useridentifier = JSON.parse(localStorage.getItem('user')).ugn;
+          }
+
+          let UserModel = {
+            disName: username,
+            uuid: uuid,
+            ugn: useridentifier,
+            bio: bio
+          };
+            localStorage.setItem('user', JSON.stringify(UserModel));
+
+            window.location = '/chat';
+        };
+    </script>
+</body>
+</html>
