@@ -251,6 +251,10 @@ textarea {
   left: 0;
 }
 
+pre {
+  font-family:  'Inter Tight', sans-serif; white-space: pre; margin: 0;
+}
+
 .pfplink {
   text-decoration: underline;
   transition: color 1.5s;
