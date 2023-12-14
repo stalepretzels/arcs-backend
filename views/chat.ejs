@@ -8,7 +8,7 @@
 <body>
     <%- include('partials/header.ejs'); -%>
     <div class='titlecon'>
-    <h1>Arcs <span style='font-weight: 200;'>Slate</span>&nbsp;<span style='font-weight: 300; font-size: 15px;'>v3.0.0-indev10</span></h1>
+    <h1>Arcs <span style='font-weight: 200;'>Slate</span>&nbsp;<span style='font-weight: 300; font-size: 15px;'>v3.0.0-indev11</span></h1>
 
 </div>
     <div id='maincontainer'>
@@ -24,7 +24,9 @@
 <script src="/assets/arrive.min.js"></script>
 
     <script>
-        let notifMuted;
+        let notifMuted, loggedIn;
+        let alreadyConnected = false;
+
         if (localStorage.getItem('notifMuted') == undefined) {
             localStorage.setItem('notifMuted', false)
             notifMuted = false;
@@ -53,7 +55,7 @@
         }
 
         class MailmanClass extends MailSystemClass {
-            constructor(pkgtype, message, user, room, attachment) {
+            constructor(pkgtype, message, user, room, attaachment) {
                 super()
                 this.pkgtype = pkgtype
                 switch (this.pkgtype) {
@@ -138,10 +140,12 @@ this.attachment = attachment;
         let room = "::GENERAL"
 
         socket.on("connect", function (data) {
-            let Mailman = new MailmanClass('join', '', User, room)
-            if (!(User.disName == undefined)) {
-            Mailman.send();
-            }
+            if (!alreadyConnected) {
+                let Mailman = new MailmanClass('join', '', User, room)
+                if (!(User.disName == undefined)) {
+                Mailman.send();
+                alreadyConnected = !alreadyConnected
+            }}
         });
 
         

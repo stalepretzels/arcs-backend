@@ -12,7 +12,6 @@
   "author": "Clover Johnson",
   "license": "ISC",
   "dependencies": {
-    "@larose/markdown-it-katex": "^2.1.1",
     "@socket.io/admin-ui": "^0.5.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -26,7 +25,6 @@
     "markdown-it-deflist": "^2.1.0",
     "markdown-it-emoji": "^2.0.2",
     "markdown-it-footnote": "^3.0.3",
-    "markdown-it-highlightjs": "^4.0.1",
     "markdown-it-ins": "^3.0.1",
     "markdown-it-mark": "^3.0.1",
     "markdown-it-sub": "^1.0.0",
