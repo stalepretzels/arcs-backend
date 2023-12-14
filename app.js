@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const striptags = require("striptags");
 const compression = require("compression");
-const { instrument } = require("@socket.io/admin-ui");
 
 const markdown = require("markdown-it")({
   html: true,
@@ -28,12 +27,7 @@ const markdown = require("markdown-it")({
 let app = express();
 let clients = [];
 let httpServer = http.createServer(app);
-let io = new socketio.Server(httpServer, {
-  cors: {
-    origin: ["https://admin.socket.io"],
-    credentials: true
-  }
-});
+let io = new socketio.Server(httpServer);
 
 instrument(io, {
   auth: {
