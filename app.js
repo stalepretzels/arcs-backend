@@ -29,14 +29,6 @@ let clients = [];
 let httpServer = http.createServer(app);
 let io = new socketio.Server(httpServer);
 
-instrument(io, {
-  auth: {
-    type: "basic",
-    username: "admin",
-    password: "$2a$10$emXkyLqEe9.A9zLmsrCkFuHfPx3ayPvHk2mEyhGcK1vR4KAt9eiWu"
-  },
-});
-
 /* Routes */
 let routes = {
   main: require("./routes/main.js"),
