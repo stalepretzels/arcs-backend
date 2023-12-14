@@ -5,8 +5,8 @@ var express = require("express");
 const router = express.Router();
 
 // Routes
-router.get("/changelog", function (req, res) {
-  res.render("changelog.ejs");
+router.get("/about", function (req, res) {
+  res.render("about.ejs");
 });
 
 router.get("/rules", function (req, res) {
