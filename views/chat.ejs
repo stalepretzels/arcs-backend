@@ -1,202 +1,221 @@
 <html lang="en" dir="ltr">
-    <head>
-        <link rel='manifest' href='manifest.json'>
-        <meta name="theme-color" content="#1d5ea9"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="manifest.json">
-    </head>
-<body>
+  <head>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1d5ea9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
     <%- include('partials/header.ejs'); -%>
-    <div class='titlecon'>
-    <h1>Arcs <span style='font-weight: 200;'>Slate</span>&nbsp;<span style='font-weight: 300; font-size: 15px;'>v3.0.0-indev11</span></h1>
-
-</div>
-    <div id='maincontainer'>
-        <div id='appendto'></div>
-        <div id='chatform'>
-            <textarea placeholder='This field supports Markdown!! 2000 character limit.' id="chat_input" type="text" maxlength='2000'></textarea>
-            <button id='chatsubmit'>>></button>
-        </div>
+    <div class="titlecon">
+      <h1>
+        Arcs <span style="font-weight: 200">Slate</span>&nbsp;<span
+          style="font-weight: 300; font-size: 15px"
+          >v3.0.0-indev11</span
+        >
+      </h1>
+    </div>
+    <div id="maincontainer">
+      <div id="appendto"></div>
+      <div id="chatform">
+        <textarea
+          placeholder="This field supports Markdown!! 2000 character limit."
+          id="chat_input"
+          type="text"
+          maxlength="2000"
+        ></textarea>
+        <button id="chatsubmit">>></button>
+      </div>
     </div>
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/socket.io.js"></script>
-<script src="/assets/arrive.min.js"></script>
+    <script src="/assets/arrive.min.js"></script>
 
     <script>
-        let notifMuted, loggedIn;
-        let alreadyConnected = false;
+      let notifMuted, loggedIn;
+      let alreadyConnected = false;
 
-        if (localStorage.getItem('notifMuted') == undefined) {
-            localStorage.setItem('notifMuted', false)
-            notifMuted = false;
-        } else {
-            notifMuted = localStorage.getItem('notifMuted')
+      if (localStorage.getItem("notifMuted") == undefined) {
+        localStorage.setItem("notifMuted", false);
+        notifMuted = false;
+      } else {
+        notifMuted = localStorage.getItem("notifMuted");
+      }
+
+      let User;
+      if (localStorage.getItem("user") == undefined) {
+        window.location = "/edit";
+      } else {
+        User = JSON.parse(localStorage.getItem("user"));
+      }
+
+      if (localStorage.getItem("readrules") == undefined) {
+        window.location = "/rules";
+      }
+
+      // Call this shit FedEx
+      class MailSystemClass {
+        constructor() {
+          // this is where id put my shared mailing resources...
+          // ...if i had any!!!
+        }
+      }
+
+      class MailmanClass extends MailSystemClass {
+        constructor(pkgtype, message, user, room, attaachment) {
+          super();
+          this.pkgtype = pkgtype;
+          switch (this.pkgtype) {
+            case "message":
+              this.message = message;
+              //this.attachment = attachment;
+              this.room = room;
+
+              this.pkg = {
+                message: this.message,
+                sent: new Date(Date.now()),
+                room: this.room,
+                user: user,
+                //attachment: attachment
+              };
+              break;
+            case "join":
+              this.room = room;
+              this.preroom = message;
+
+              this.pkg = {
+                room: this.room,
+                preroom: this.preroom,
+                user: user,
+              };
+              room = this.room;
+              break;
+            case "command":
+              this.callback = message;
+              this.type = user;
+
+              this.pkg = {
+                callback: this.callback,
+                type: this.type,
+              };
+              break;
+          }
         }
 
-        let User;
-        if (localStorage.getItem('user') == undefined) {
-            window.location = '/edit';
-        } else {
-            User = JSON.parse(localStorage.getItem('user'));
+        send() {
+          switch (this.pkgtype) {
+            case "message":
+              socket.emit("messages", this.pkg);
+              break;
+            case "join":
+              socket.emit("join", this.pkg);
+              break;
+            case "command":
+              socket.emit("command", this.pkg);
+              break;
+          }
+        }
+      }
+
+      let has_focus;
+
+      class MailboxClass extends MailSystemClass {
+        constructor() {
+          super();
         }
 
-        if (localStorage.getItem('readrules') == undefined) {
-            window.location = '/rules';
-        }
-
-        // Call this shit FedEx
-        class MailSystemClass {
-            constructor() {
-                // this is where id put my shared mailing resources...
-
-                // ...if i had any!!!
-            }
-        }
-
-        class MailmanClass extends MailSystemClass {
-            constructor(pkgtype, message, user, room, attaachment) {
-                super()
-                this.pkgtype = pkgtype
-                switch (this.pkgtype) {
-                    case "message":
-                    this.message = message;
-//this.attachment = attachment;
-                this.room = room;
-
-                this.pkg = {
-                    message: this.message,
-                    sent: new Date(Date.now()),
-                    room: this.room,
-                    user: user,
-                    //attachment: attachment
-                }
-                    break;
-                    case "join":
-                this.room = room;
-                this.preroom = message;
-
-                this.pkg = {
-                    room: this.room,
-                    preroom: this.preroom,
-                    user: user
-                }
-                room = this.room
-                    break;
-                case "command":
-                this.callback = message;
-                this.type = user;
-
-                this.pkg = {
-                    callback: this.callback,
-                    type: this.type,
-                }
-                    break;
-                }
-            }
-
-            send() {
-                switch (this.pkgtype) {
-                    case "message":
-                        socket.emit("messages", this.pkg);
-                        break;
-                    case "join":
-                        socket.emit("join", this.pkg);
-                        break;
-                    case "command":
-                        socket.emit("command", this.pkg);
-                        break;
-                }
-            }
-        }
-
-        let has_focus;
-
-        class MailboxClass extends MailSystemClass {
-            constructor() {
-                super()
-            }
-
-            append(pkg) {
-                $("#appendto").append(pkg);
-                document.getElementById("appendto").scrollTo({
+        append(pkg) {
+          $("#appendto").append(pkg);
+          document.getElementById("appendto").scrollTo({
             top: document.getElementById("appendto").scrollHeight,
             left: 0,
             behavior: "smooth",
           });
-            }
-
-            sendNotif(pkg) {
-                if (Notification.permission == 'granted' && !notifMuted == true && !has_focus == true) {
-                    new Notification(pkg.user.disName + '@' + pkg.user.ugn, {'body': pkg.message})            
-                }
-            }
         }
 
-        const socket = io();
-        const MailSystem = new MailSystemClass();
-        const Mailbox = new MailboxClass();
+        sendNotif(pkg) {
+          if (
+            Notification.permission == "granted" &&
+            !notifMuted == true &&
+            !has_focus == true
+          ) {
+            new Notification(pkg.user.disName + "@" + pkg.user.ugn, {
+              body: pkg.message,
+            });
+          }
+        }
+      }
 
-        let room = "::GENERAL"
+      const socket = io();
+      const MailSystem = new MailSystemClass();
+      const Mailbox = new MailboxClass();
 
-        socket.on("connect", function (data) {
-            if (!alreadyConnected) {
-                let Mailman = new MailmanClass('join', '', User, room)
-                if (!(User.disName == undefined)) {
-                Mailman.send();
-                alreadyConnected = !alreadyConnected
-            }}
-        });
+      let room = "::GENERAL";
 
-        
-        document.getElementById("chatsubmit").onclick = function(e) {
+      socket.on("connect", function (data) {
+        if (!alreadyConnected) {
+          let Mailman = new MailmanClass("join", "", User, room);
+          if (!(User.disName == undefined)) {
+            Mailman.send();
+            alreadyConnected = !alreadyConnected;
+          }
+        }
+      });
+
+      document.getElementById("chatsubmit").onclick = function (e) {
+        e.preventDefault();
+
+        let message = $("#chat_input").val();
+
+        if (!message.replace(/\s/g, "").length) {
+          /* empty */
+        } else {
+          document.getElementById("chat_input").value = "";
+
+          let Mailman = new MailmanClass("message", message, User, room);
+          Mailman.send();
+        }
+      };
+
+      $("#chat_input").keypress(function (e) {
+        if (e.which === 13 && !e.shiftKey) {
           e.preventDefault();
 
-        let message = $("#chat_input").val();
+          let message = $("#chat_input").val();
 
-if (!message.replace(/\s/g, '').length) { /* empty */ } else {
+          if (!message.replace(/\s/g, "").length) {
+            /* empty */
+          } else {
+            document.getElementById("chat_input").value = "";
 
-        document.getElementById("chat_input").value = '';
+            let Mailman = new MailmanClass("message", message, User, room);
+            Mailman.send();
+          }
+        }
+      });
 
-          let Mailman = new MailmanClass('message', message, User, room)
+      socket.on("broad", function (data) {
+        Mailbox.append(data);
+      });
+
+      socket.on("notification", function (data) {
+        Mailbox.sendNotif(data);
+      });
+
+      document.arrive("#date", function (element) {
+        element.textContent = new Date(Date.now()).toLocaleString();
+      });
+
+      function joinRoomLogic(rtj) {
+        if (room == rtj) {
+          // user is already in room
+        } else {
+          let Mailman = new MailmanClass("join", room, User, rtj);
           Mailman.send();
-    }};
-
-        $("#chat_input").keypress(function (e) {
-    if(e.which === 13 && !e.shiftKey) {
-        e.preventDefault();
-    
-        let message = $("#chat_input").val();
-
-if (!message.replace(/\s/g, '').length) { /* empty */ } else {
-
-        document.getElementById("chat_input").value = '';
-
-          let Mailman = new MailmanClass('message', message, User, room)
-          Mailman.send();
-    }}
-});
-
-        socket.on("broad", function (data) {
-          Mailbox.append(data);
-        });
-
-        socket.on("notification", function (data) {
-          Mailbox.sendNotif(data);
-        });
-
-    document.arrive("#date", function(element) {
-    element.textContent = new Date(Date.now()).toLocaleString()
-});
-
-function joinRoomLogic(rtj) {
-if (room == rtj) {
-    // user is already in room
-} else {
-let Mailman = new MailmanClass("join", room, User, rtj)
-          Mailman.send();
-          room = rtj; 
-}}
+          room = rtj;
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
