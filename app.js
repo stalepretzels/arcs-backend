@@ -38,7 +38,7 @@ let routes = {
 
 // Functions
 function cleanseMessage(message) {
-    return striptags(markdown.render(striptags(`<pre style="font-family:  'Inter Tight', sans-serif; white-space: nowrap; margin: 0;">${message}</pre>`, ['pre'])), [
+    return striptags(markdown.render(striptags(`<pre style="font-family:  'Inter Tight', sans-serif; white-space: normal; margin: 0;">${message}</pre>`, ['pre'])), [
             'strong',
             'i',
             'em',
