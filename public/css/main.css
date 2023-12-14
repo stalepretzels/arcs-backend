@@ -10,6 +10,12 @@ body {
   unicode-bidi: embed;
 }
 
+pre {
+  font-family:  'Inter Tight', sans-serif;
+  white-space: pre;
+  margin: 0;
+}
+
 .leftmenu {
   position: fixed;
   top: 0;
@@ -252,7 +258,9 @@ textarea {
 }
 
 pre {
-  font-family:  'Inter Tight', sans-serif; white-space: pre; margin: 0;
+  font-family:  'Inter Tight', sans-serif;
+  white-space: pre;
+  margin: 0;
 }
 
 .pfplink {
