@@ -68,8 +68,8 @@ function cleanseMessage(message) {
 
 function createMessage(username, message, bio) {
   let cleansedMessage = cleanseMessage(message);
-  let formattedUsername = `<span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username} </span>`;
-  let formattedDate = `<span style='font-size: small;'>[at <span id='date'></span>]</span>`;
+  let formattedUsername = `<span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username}</span>`;
+  let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
   let formattedMessage = `<div id='message'>${cleansedMessage}</div>`;
   let formattedDiv = `<div style='margin: 10px 0;'><span>${formattedUsername}${formattedDate}</span>${formattedMessage}</div>`;
 
