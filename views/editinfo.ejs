@@ -20,33 +20,31 @@
     <script src="/assets/jquery.js"></script>
     <script src="/assets/chance.min.js"></script>
     <script>
-        document.getElementById("einfosubmit").onclick = function(e) {
-          e.preventDefault();
-          let username = $("#einfo_input_username").val();
-            let bio = $("#einfo_input_bio").val();
-          let uuid;
-          if (localStorage.getItem('user') == undefined) {
-            uuid = chance.guid();
-          } else {
-            uuid = JSON.parse(localStorage.getItem('user')).uuid;
-          }
-let useridentifier
-            if (localStorage.getItem('user') == undefined || JSON.parse(localStorage.getItem('user')).ugn == undefined ) {
-            useridentifier = chance.integer({ min: 1000, max: 9999 });
-          } else {
-            useridentifier = JSON.parse(localStorage.getItem('user')).ugn;
-          }
-
-          let UserModel = {
-            disName: username,
-            uuid: uuid,
-            ugn: useridentifier,
-            bio: bio
-          };
-            localStorage.setItem('user', JSON.stringify(UserModel));
-
-            window.location = '/chat';
-        };
+        document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("click", function(event) {
+    if (event.target.matches("#einfosubmit")) {
+      event.preventDefault();
+      
+      let username = $("#einfo_input_username").val();
+      let bio = $("#einfo_input_bio").val();
+      
+      let user = JSON.parse(localStorage.getItem('user')) || {};
+      let uuid = user.uuid || chance.guid();
+      let useridentifier = user.ugn || chance.integer({ min: 1000, max: 9999 });
+      
+      let UserModel = {
+        disName: username,
+        uuid: uuid,
+        ugn: useridentifier,
+        bio: bio
+      };
+      
+      localStorage.setItem('user', JSON.stringify(UserModel));
+      
+      window.location = '/chat';
+    }
+  });
+});
     </script>
 </body>
 </html>

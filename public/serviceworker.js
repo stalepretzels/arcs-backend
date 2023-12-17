@@ -65,7 +65,7 @@ event.waitUntil(
       "/chat.ejs",
       "/editinfo.ejs",
       "/rules.ejs",
-      "/changelog.ejs",
+      "/about.ejs",
       "/partials/header.ejs",
       "/css/main.css",
       "/app.js",
@@ -74,6 +74,7 @@ event.waitUntil(
       "/logo.png",
       "/maskable.png",
       "/favicon.ico",
+      "/error.ejs"
   ]),
 );
 });

@@ -38,10 +38,7 @@ let routes = {
 
 // Functions
 function cleanseMessage(message) {
-    return striptags(markdown.render(striptags(`<pre>${message}</pre>`, ['pre'])), [
-            'strong',
-            'i',
-            'em',
+    return `<pre>${striptags(markdown.render(striptags(message)), ['strong','i','em',
             'code',
             'a',
             'div',
@@ -63,12 +60,12 @@ function cleanseMessage(message) {
             'h1',
             'h2',
             'h3','h4','h5','h6'
-          ])
+          ])}`
 }
 
 function createMessage(username, message, bio) {
   let msg =
-  `<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username} </span><span style='font-size: small;'>[at <span id='date'></span>]</span></span><div id='message'>${cleanseMessage(message)}</div></div>`
+  `<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username}</span><span style='font-size: small;'> [at <span id='date'></span>]</span></span><div id='message'>${cleanseMessage(message)}</div></div>`
 
   return msg;
 }
@@ -86,6 +83,25 @@ app.use(cookieParser());
 app.use("/", routes.main);
 app.use("/", routes.login);
 app.use("/", routes.extras);
+app.use(function(req, res, next) {
+  res.status(404);
+
+  // respond with html page
+  if (req.accepts('html')) {
+    res.render('error.ejs', { url: req.url });
+    return;
+  }
+
+  // respond with json
+  if (req.accepts('json')) {
+    res.json({ error: '404 Not found' });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('404 Not found');
+});
+
 
 // Socket.io
 io.on('connection', (client) => {
@@ -138,13 +154,13 @@ io.on('connection', (client) => {
   client.on('messages', (data) => {
     if (!(data.user.disName == undefined)) {
       client.emit(
-        'broad', createMessage(data.user.disName, data.message, data.user.bio)
+        'broad', createMessage(`${data.user.disName}@${data.user.ugn}`, data.message, data.user.bio)
       )
       client.to(data.room).emit('notification', data)
       client
         .to(data.room)
         .emit(
-          'broad', createMessage(data.user.disName, data.message, data.user.bio)
+          'broad', createMessage(`${data.user.disName}@${data.user.ugn}`, data.message, data.user.bio)
         )
     }
   })

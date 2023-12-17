@@ -17,13 +17,15 @@
     </div>
     <div id="maincontainer">
       <div id="appendto"></div>
-      <div id="chatform">
+      <div id="chatform" style='display: flex; align-items: center;'>
         <textarea
           placeholder="This field supports Markdown!! 2000 character limit."
           id="chat_input"
           type="text"
           maxlength="2000"
         ></textarea>
+<input type="file" id="selectedFile" accept="image/*" style="display: none;" />
+<button class="chatfiles">Browse...</button>
         <button id="chatsubmit">>></button>
       </div>
     </div>
@@ -34,7 +36,8 @@
 
     <script>
       let notifMuted, loggedIn;
-      let alreadyConnected = false;
+      let alreadyConnected = false,
+isSlowed = false;
 
       if (localStorage.getItem("notifMuted") == undefined) {
         localStorage.setItem("notifMuted", false);
