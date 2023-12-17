@@ -1,8 +1,8 @@
 {
   "name": "Arcs",
   "short_name": "Arcs",
-  "start_url": "/chat",
-  "description": "A chat app.",
+  "start_url": "",
+  "description": "A free and efficient chat app.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
