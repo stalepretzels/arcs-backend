@@ -38,7 +38,7 @@ let routes = {
 
 // Functions
 function cleanseMessage(message) {
-    return `<pre>${striptags(markdown.render(striptags(message)), [
+    return striptags(markdown.render(striptags(message)), [
             'strong',
             'i',
             'em',
@@ -62,15 +62,15 @@ function cleanseMessage(message) {
             'br',
             'h1',
             'h2',
-            'h3','h4','h5','h6', 'br'
-          ])}</pre>`
+            'h3','h4','h5','h6'
+          ])
 }
 
 function createMessage(username, message, bio) {
   let cleansedMessage = cleanseMessage(message);
   let formattedUsername = `<span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username}</span>`;
   let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
-  let formattedMessage = `<div id='message'>${cleansedMessage}</div>`;
+  let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
   let formattedDiv = `<div style='margin: 10px 0;'><span>${formattedUsername}${formattedDate}</span>${formattedMessage}</div>`;
 
   return formattedDiv;
