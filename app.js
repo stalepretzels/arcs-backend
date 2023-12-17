@@ -38,7 +38,7 @@ let routes = {
 
 // Functions
 function cleanseMessage(message) {
-    return striptags(markdown.render(striptags(`<pre>${message}</pre>`, ['pre'])), [
+    return `<pre>${striptags(markdown.render(striptags(message)), [
             'strong',
             'i',
             'em',
@@ -63,7 +63,7 @@ function cleanseMessage(message) {
             'h1',
             'h2',
             'h3','h4','h5','h6'
-          ])
+          ])}</pre>`
 }
 
 function createMessage(username, message, bio) {

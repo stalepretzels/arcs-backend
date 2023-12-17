@@ -37,7 +37,7 @@ body {
 
 pre {
   font-family:  'Inter Tight', sans-serif;
-  white-space: pre;
+  white-space: pre-wrap;
   margin: 0;
 }
 
