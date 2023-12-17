@@ -67,10 +67,13 @@ function cleanseMessage(message) {
 }
 
 function createMessage(username, message, bio) {
-  let msg =
-  `<div style='margin: 10px 0;'><span><span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username} </span><span style='font-size: small;'>[at <span id='date'></span>]</span></span><div id='message'>${cleanseMessage(message)}</div></div>`
+  let cleansedMessage = cleanseMessage(message);
+  let formattedUsername = `<span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username} </span>`;
+  let formattedDate = `<span style='font-size: small;'>[at <span id='date'></span>]</span>`;
+  let formattedMessage = `<div id='message'>${cleansedMessage}</div>`;
+  let formattedDiv = `<div style='margin: 10px 0;'><span>${formattedUsername}${formattedDate}</span>${formattedMessage}</div>`;
 
-  return msg;
+  return formattedDiv;
 }
 
 // Initialization
@@ -86,68 +89,58 @@ app.use(cookieParser());
 app.use("/", routes.main);
 app.use("/", routes.login);
 app.use("/", routes.extras);
+app.use(function(req, res, next) {
+  res.status(404);
+
+  // respond with html page
+  if (req.accepts('html')) {
+    res.render('error.ejs', { url: req.url });
+    return;
+  }
+
+  // respond with json
+  if (req.accepts('json')) {
+    res.json({ error: '404 Not found' });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('404 Not found');
+});
 
 // Socket.io
 io.on('connection', (client) => {
   console.log('Client connected...')
   client.join('::GENERAL')
 
-  client.on('join', function (data) {
-    if (!(data.user.disName == undefined)) {
-      if (!(data.preroom == '')) {
-        client.leave(data.preroom)
-        client.join(data.room)
-        client
-          .to(data.room)
-          .emit(
-            'broad',
-            `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`
-          )
-        client
-          .to(data.preroom)
-          .emit(
-            'broad',
-            `<div class='statusmsg'>${data.user.disName}@${data.user.ugn}left this chat room.</div>`
-          )
-        client.emit(
-          'broad',
-          `<div class='statusmsg'>You joined ${data.room}.</div>`
-        )
+  client.on('join', function(data) {
+    if (data.user.disName !== undefined) {
+      if (data.preroom !== '') {
+        client.leave(data.preroom);
+        client.join(data.room);
+        client.to(data.room).emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`);
+        client.to(data.preroom).emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} left this chat room.</div>`);
+        client.emit('broad', `<div class='statusmsg'>You joined ${data.room}.</div>`);
       } else {
-        console.log(
-          `${data.user.disName}@${data.user.ugn} joined.`
-        )
-        client
-          .to('::GENERAL')
-          .emit(
-            'broad',
-            `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`
-          )
-        client.emit(
-          'broad',
-          "<div class='statusmsg'>You joined the chat room.</div>"
-        )
+        console.log(`${data.user.disName}@${data.user.ugn} joined.`);
+        client.to('::GENERAL').emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`);
+        client.emit('broad', "<div class='statusmsg'>You joined the chat room.</div>");
       }
     }
-  })
+  });
 
   client.on('connect_error', (err) => {
     console.log(`connect_error due to ${err.message}`)
   })
 
   client.on('messages', (data) => {
-    if (!(data.user.disName == undefined)) {
-      client.emit(
-        'broad', createMessage(data.user.disName, data.message, data.user.bio)
-      )
-      client.to(data.room).emit('notification', data)
-      client
-        .to(data.room)
-        .emit(
-          'broad', createMessage(data.user.disName, data.message, data.user.bio)
-        )
+    if (data.user.disName !== undefined) {
+      const message = createMessage(`${data.user.disName}@${data.user.ugn}`, data.message, data.user.bio);
+      client.emit('broad', message);
+      client.to(data.room).emit('notification', data);
+      client.to(data.room).emit('broad', message);
     }
-  })
+  });
 })
 
 httpServer.listen(8443, () => {
