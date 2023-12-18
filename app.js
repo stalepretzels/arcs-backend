@@ -22,6 +22,11 @@ const markdown = require("markdown-it")({
   .use(require("markdown-it-sup")) // these
   .use(require("markdown-it-mark")) // it
   .use(require("markdown-it-anchor")) // looks
+  .use(require('markdown-it-link-attributes'), {
+  attrs: {
+    target: '_blank',
+  }
+})
 
 // Declarations
 let app = express();
