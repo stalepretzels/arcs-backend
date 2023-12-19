@@ -1,45 +1,33 @@
 // Imports
-const socketio = require("socket.io");
-const http = require("http");
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
+const fastify = require("fastify")();
+const fastifyIO = require("fastify-socket.io");
+const cors = require("@fastify/cors");
 const striptags = require("striptags");
-const compression = require("compression");
-
+const path = require('path');
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
   typographer: true,
   breaks: true,
 })
-  .use(require("markdown-it-emoji")) // there
-  .use(require("markdown-it-abbr")) // are
-  .use(require("markdown-it-deflist")) // way
-  .use(require("markdown-it-footnote")) // too
-  .use(require("markdown-it-ins")) // many
-  .use(require("markdown-it-sub")) // of
-  .use(require("markdown-it-sup")) // these
-  .use(require("markdown-it-mark")) // it
-  .use(require("markdown-it-anchor")) // looks
+  .use(require("markdown-it-emoji")) 
+  .use(require("markdown-it-abbr")) 
+  .use(require("markdown-it-deflist")) 
+  .use(require("markdown-it-footnote")) 
+  .use(require("markdown-it-ins")) 
+  .use(require("markdown-it-sub"))
+  .use(require("markdown-it-sup"))
+  .use(require("markdown-it-mark"))
+  .use(require("markdown-it-anchor"))
   .use(require('markdown-it-link-attributes'), {
   attrs: {
     target: '_blank',
   }
 })
+  .use(require("markdown-it-task-lists"));
 
 // Declarations
-let app = express();
-let clients = [];
-let httpServer = http.createServer(app);
-let io = new socketio.Server(httpServer);
-
-/* Routes */
-let routes = {
-  main: require("./routes/main.js"),
-  login: require("./routes/login.js"),
-  extras: require("./routes/extras.js"),
-};
+/* none needed */
 
 // Functions
 function cleanseMessage(message) {
@@ -67,7 +55,7 @@ function cleanseMessage(message) {
             'br',
             'h1',
             'h2',
-            'h3','h4','h5','h6'
+            'h3','h4','h5','h6', 'ul', 'input'
           ])
 }
 
@@ -81,40 +69,60 @@ function createMessage(username, message, bio) {
   return formattedDiv;
 }
 
-// Initialization
-app.use(compression())
-app.use(express.static("public"));
-app.set("view engine", "ejs");
-app.use(express.json());
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-/* Routes */
-app.use("/", routes.main);
-app.use("/", routes.login);
-app.use("/", routes.extras);
-app.use(function(req, res, next) {
-  res.status(404);
-
-  // respond with html page
-  if (req.accepts('html')) {
-    res.render('error.ejs', { url: req.url });
-    return;
-  }
-
-  // respond with json
-  if (req.accepts('json')) {
-    res.json({ error: '404 Not found' });
-    return;
-  }
-
-  // default to plain-text. send()
-  res.type('txt').send('404 Not found');
+// Init
+fastify.register(fastifyIO);
+fastify.register(cors);
+fastify.register(
+  require('@fastify/compress'),
+  { global: true }
+);
+fastify.register(require("@fastify/view"), {
+  engine: {
+    ejs: require("ejs"),
+  },
+});
+fastify.register(require('@fastify/static'), {
+  root: path.join(__dirname, 'public'),
 });
 
-// Socket.io
-io.on('connection', (client) => {
+fastify.setErrorHandler(function (error, req, res) {
+    code = error.statusCode || 500
+    msg = error.message || "No error message."                                                     
+    res.status(code)
+    res.view("/views/error.ejs")
+      })
+
+// Routes
+fastify.get("/", function (req, res) {
+  res.view("/views/main.ejs");
+});
+
+fastify.get("/chat", function (req, res) {
+    res.view("/views/chat.ejs");
+});
+
+fastify.get("/profile", function (req, res) {
+  user = req.query.user
+  bio = req.query.bio
+
+  res.view("/views/profile.ejs");
+});
+
+fastify.get("/edit", function (req, res) {
+  res.view("/views/editinfo.ejs");
+});
+
+fastify.get("/about", function (req, res) {
+  res.view("/views/about.ejs");
+});
+
+fastify.get("/rules", function (req, res) {
+    res.view("/views/rules.ejs");
+});
+
+fastify.ready().then(() => {
+  
+fastify.io.on('connection', (client) => {
   console.log('Client connected...')
   client.join('::GENERAL')
 
@@ -147,7 +155,6 @@ io.on('connection', (client) => {
     }
   });
 })
-
-httpServer.listen(8443, () => {
-  console.log("running arcs at localhost:8443");
 });
+                                                         
+fastify.listen({ path: 'passenger', host: '127.0.0.1' });

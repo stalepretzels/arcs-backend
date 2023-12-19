@@ -107,10 +107,13 @@ isSlowed = false;
         }
 
         send() {
+
           switch (this.pkgtype) {
             case "message":
               socket.emit("messages", this.pkg);
-              break;
+let element = document.getElementById('appendto')
+      element.scrollTop = element.scrollHeight - element.clientHeight
+             break;
             case "join":
               socket.emit("join", this.pkg);
               break;
@@ -129,23 +132,24 @@ isSlowed = false;
         }
 
         append(pkg) {
+let element = document.getElementById('appendto')
+let isScrolledToBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1
           $("#appendto").append(pkg);
-          document.getElementById("appendto").scrollTo({
-            top: document.getElementById("appendto").scrollHeight,
-            left: 0,
-            behavior: "smooth",
-          });
+          if (isScrolledToBottom) {
+      element.scrollTop = element.scrollHeight - element.clientHeight
+    }
         }
 
         sendNotif(pkg) {
           if (
             Notification.permission == "granted" &&
-            !notifMuted == true &&
-            !has_focus == true
+            !notifMuted
           ) {
+if (!document.hasFocus()) {
             new Notification(pkg.user.disName + "@" + pkg.user.ugn, {
               body: pkg.message,
             });
+}
           }
         }
       }
