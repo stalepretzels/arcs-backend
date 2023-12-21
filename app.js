@@ -1,20 +1,26 @@
 // Imports
-const fastify = require("fastify")();
+const pino = require('pino');
+const pretty = require('pino-pretty');
+const logger = pino(pretty());
+const fastify = require("fastify")({ logger: logger });
 const fastifyIO = require("fastify-socket.io");
 const cors = require("@fastify/cors");
 const striptags = require("striptags");
+const ejs = require('ejs');
+const fs = require('fs');
 const path = require('path');
+const fmsql = require('@fastify/mysql');
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
   typographer: true,
   breaks: true,
 })
-  .use(require("markdown-it-emoji")) 
-  .use(require("markdown-it-abbr")) 
-  .use(require("markdown-it-deflist")) 
-  .use(require("markdown-it-footnote")) 
-  .use(require("markdown-it-ins")) 
+  .use(require("markdown-it-emoji"))
+  .use(require("markdown-it-abbr"))
+  .use(require("markdown-it-deflist"))
+  .use(require("markdown-it-footnote"))
+  .use(require("markdown-it-ins"))
   .use(require("markdown-it-sub"))
   .use(require("markdown-it-sup"))
   .use(require("markdown-it-mark"))
@@ -28,7 +34,7 @@ const markdown = require("markdown-it")({
 
 // Declarations
 /* none needed */
-
+  
 // Functions
 function cleanseMessage(message) {
     return striptags(markdown.render(striptags(message)), [
@@ -85,14 +91,29 @@ fastify.register(require('@fastify/static'), {
   root: path.join(__dirname, 'public'),
 });
 
-fastify.setErrorHandler(function (error, req, res) {
-    code = error.statusCode || 500
-    msg = error.message || "No error message."                                                     
-    res.status(code)
-    res.view("/views/error.ejs")
-      })
+fastify.register(fmsql, {
+  connectionString: `mysql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
+})
+  
+fastify.register(function (instance, options, done) {
+  instance.setNotFoundHandler(function (req, res) {
+                                                        code = 404
+                                                        msg = "Can't find that webpage."
+                                                        res.view("/views/error.ejs") 
+  })
+  done()
+}, { prefix: '/' })
+                                                         
+fastify.setErrorHandler(function (err, req, res) {
+  request.log.warn(err)
+  var statusCode = err.statusCode >= 400 ? err.statusCode : 500
+  res
+    .code(statusCode)
+    .type('text/html')
+    .send(ejs.render(fs.readFileSync('./views/error.ejs', 'utf8'), { code: statusCode, msg: err.message }))
+})
 
-// Routes
+// GET Routes                                                         
 fastify.get("/", function (req, res) {
   res.view("/views/main.ejs");
 });
@@ -119,11 +140,37 @@ fastify.get("/about", function (req, res) {
 fastify.get("/rules", function (req, res) {
     res.view("/views/rules.ejs");
 });
+                                                         
+// POST Routes                                                         
+fastify.post('/api/user/verify', async (request, reply) => {
+  const { username, ugn, bio, password } = request.body;
 
+  try {
+    const connection = fastify.mysql.getConnection();
+
+    // Query the database to check if the user exists
+    const result = await connection.query('SELECT COUNT(*) AS count FROM users WHERE username = ?', [username]);
+    const userExists = result[0].count > 0;
+
+    // Close the database connection
+    connection.release();
+
+    if (userExists) {
+      reply.send({ success: false });
+    } else {
+      reply.send({ success: true });
+    }
+  } catch (error) {
+    console.error(error);
+    reply.code(500).send({ success: false, error: 'Internal Server Error' });
+  }
+});
+                                                         
+                                                         
 fastify.ready().then(() => {
   
 fastify.io.on('connection', (client) => {
-  console.log('Client connected...')
+  logger.info('Client connected...')
   client.join('::GENERAL')
 
   client.on('join', function(data) {
@@ -135,7 +182,7 @@ fastify.io.on('connection', (client) => {
         client.to(data.preroom).emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} left this chat room.</div>`);
         client.emit('broad', `<div class='statusmsg'>You joined ${data.room}.</div>`);
       } else {
-        console.log(`${data.user.disName}@${data.user.ugn} joined.`);
+        logger.info(`${data.user.disName}@${data.user.ugn} joined.`);
         client.to('::GENERAL').emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`);
         client.emit('broad', "<div class='statusmsg'>You joined the chat room.</div>");
       }
@@ -143,7 +190,7 @@ fastify.io.on('connection', (client) => {
   });
 
   client.on('connect_error', (err) => {
-    console.log(`connect_error due to ${err.message}`)
+    logger.error(`connect_error due to ${err.message}`)
   })
 
   client.on('messages', (data) => {

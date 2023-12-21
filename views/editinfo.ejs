@@ -1,50 +1,48 @@
 <html lang="en" dir="ltr">
-  <head>
-        <link rel='manifest' href='manifest.json'>
-        <meta name="theme-color" content="#1d5ea9"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
+<head>
+  <link rel='manifest' href='manifest.json'>
+  <meta name="theme-color" content="#1d5ea9"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <body>
-    <%- include('partials/header.ejs'); -%>
-    <div class='titlecon'>
-    <h1>Arcs</h1>
-    </div>
+  <%- include('partials/header.ejs'); -%>
+  <div class='titlecon'>
+    <h1>Arcs <span style="font-weight: 200">Slate</span></h1>
+  </div>
 
+  <form action="" class="userform">
+      <input placeholder='Username...' id="einfo_input_username" maxlength='20' type="text" required />
+      <input placeholder='Bio...' id="einfo_input_bio" type="text" />
 
-    <div>
-            <input placeholder='Username...' id="einfo_input_username" maxlength='20' type="text" />
-            <input placeholder='Bio...' id="einfo_input_bio" type="text" />
-            <button id='einfosubmit'>submit</button>
-    </div>
-
-    <script src="/assets/jquery.js"></script>
-    <script src="/assets/chance.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-  document.addEventListener("click", function(event) {
-    if (event.target.matches("#einfosubmit")) {
-      event.preventDefault();
-      
-      let username = $("#einfo_input_username").val();
-      let bio = $("#einfo_input_bio").val();
-      
-      let user = JSON.parse(localStorage.getItem('user')) || {};
-      let uuid = user.uuid || chance.guid();
-      let useridentifier = user.ugn || chance.integer({ min: 1000, max: 9999 });
-      
-      let UserModel = {
-        disName: username,
-        uuid: uuid,
-        ugn: useridentifier,
-        bio: bio
-      };
-      
-      localStorage.setItem('user', JSON.stringify(UserModel));
-      
-      window.location = '/chat';
-    }
-  });
-});
-    </script>
+      <input type="submit" class="userform" />
+  </form>
+  <script src="/assets/jquery.js"></script>
+  <script src="/assets/chance.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelector('form').addEventListener("submit", function(event) {
+          event.preventDefault();
+          
+          let username = $("#einfo_input_username").val();
+          let bio = $("#einfo_input_bio").val();
+          
+          let user = JSON.parse(localStorage.getItem('user')) || {};
+          let uuid = user.uuid || chance.guid();
+          let useridentifier = user.ugn || chance.integer({ min: 1000, max: 9999 });
+          
+          let UserModel = {
+            disName: username,
+            uuid: uuid,
+            ugn: useridentifier,
+            bio: bio
+          };
+          
+          localStorage.setItem('user', JSON.stringify(UserModel));
+          
+          window.location = '/chat';
+      });
+    });
+  </script>
 </body>
 </html>
