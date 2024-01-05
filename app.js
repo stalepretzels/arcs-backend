@@ -1,8 +1,5 @@
 // Imports
-const pino = require('pino');
-const pretty = require('pino-pretty');
-const logger = pino(pretty());
-const fastify = require("fastify")({ logger: logger });
+const fastify = require("fastify")();
 const fastifyIO = require("fastify-socket.io");
 const cors = require("@fastify/cors");
 const striptags = require("striptags");
@@ -128,7 +125,7 @@ fastify.post('/api/user/verify', async (request, reply) => {
 fastify.ready().then(() => {
   
 fastify.io.on('connection', (client) => {
-  logger.info('Client connected...')
+  console.log('Client connected...')
   client.join('::GENERAL')
 
   client.on('join', function(data) {
@@ -140,7 +137,7 @@ fastify.io.on('connection', (client) => {
         client.to(data.preroom).emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} left this chat room.</div>`);
         client.emit('broad', `<div class='statusmsg'>You joined ${data.room}.</div>`);
       } else {
-        logger.info(`${data.user.disName}@${data.user.ugn} joined.`);
+        console.log(`${data.user.disName}@${data.user.ugn} joined.`);
         client.to('::GENERAL').emit('broad', `<div class='statusmsg'>${data.user.disName}@${data.user.ugn} joined this chat room.</div>`);
         client.emit('broad', "<div class='statusmsg'>You joined the chat room.</div>");
       }
@@ -148,7 +145,7 @@ fastify.io.on('connection', (client) => {
   });
 
   client.on('connect_error', (err) => {
-    logger.error(`connect_error due to ${err.message}`)
+    console.error(`connect_error due to ${err.message}`)
   })
 
   client.on('messages', (data) => {
