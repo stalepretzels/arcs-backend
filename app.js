@@ -67,15 +67,10 @@ function cleanseMessage(message) {
 function createMessage(username, message, bio) {
   let cleansedMessage = cleanseMessage(message);
   let formattedDiv;
-    //if (!(username[2] === lastUUIDts)) {
   let formattedUsername = `<a href='/profile/${encodeURIComponent(username[0] + "@" + username[1])}'>${username[0]}@${username[1]}</a>`;
     let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
   let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
   formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay"><img class="msgPfp" width="26" height="26" src="https://api.dicebear.com/7.x/shapes/svg?seed=${username[2]}&radius=20&size=26"><span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
-  /*} else {
-  let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
-  formattedDiv = `<div style='margin: 0 0 10px 0;'>${formattedMessage}</div>`;
-  }*/
   return formattedDiv;
 }
 
