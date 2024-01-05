@@ -5,7 +5,7 @@ const cors = require("@fastify/cors");
 const striptags = require("striptags");
 const fs = require('read-file');
 const path = require('path');
-const fmsql = require('mysql');
+const mysql = require('mysql');
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
@@ -32,6 +32,7 @@ const markdown = require("markdown-it")({
 let version = fs.sync(path.join(__dirname, 'version.txt'))
   .toString()
   .trim();
+let lastUUIDts = "";
 
 // Functions
 function cleanseMessage(message) {
@@ -65,11 +66,16 @@ function cleanseMessage(message) {
 
 function createMessage(username, message, bio) {
   let cleansedMessage = cleanseMessage(message);
-  let formattedUsername = `<span class='pfplink' onclick='window.location = "/profile?user=${username}&bio=${bio}"'>${username}</span>`;
-  let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
+  let formattedDiv;
+    //if (!(username[2] === lastUUIDts)) {
+  let formattedUsername = `<a href='/profile/${encodeURIComponent(username[0] + "@" + username[1])}'>${username[0]}@${username[1]}</a>`;
+    let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
   let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
-  let formattedDiv = `<div style='margin: 10px 0;'><span>${formattedUsername}${formattedDate}</span>${formattedMessage}</div>`;
-
+  formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay"><img class="msgPfp" width="26" height="26" src="https://api.dicebear.com/7.x/shapes/svg?seed=${username[2]}&radius=20&size=26"><span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
+  /*} else {
+  let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
+  formattedDiv = `<div style='margin: 0 0 10px 0;'>${formattedMessage}</div>`;
+  }*/
   return formattedDiv;
 }
 
@@ -93,45 +99,14 @@ var connection = mysql.createConnection({
   database: process.env.DB_NAME,
                                                          password: process.env.DB_PASS
 });  
+connection.connect();
 
 // GET Routes
 fastify.get('/api/version', async (request, reply) => {
   reply.send({ version });
 });
 
-// POST Routes                                                         
-fastify.post('/api/user/checkexists', async (request, reply) => {
-  const { email } = request.body;
-
-  try {
-    connection.connect();
-
-    // Query the database to check if the email exists
-    const query = 'SELECT COUNT(*) AS count FROM userbase WHERE email = ?';
-    const params = [email];
-
-    connection.query(query, params, (error, result) => {
-      if (error) {
-        console.error(error);
-        reply.code(500).send({ success: false, error: 'Internal Server Error' });
-      } else {
-        const emailExists = result[0].count > 0;
-
-        if (emailExists) {
-          reply.send({ success: false });
-        } else {
-          reply.send({ success: true });
-        }
-      }
-
-      // Close the database connection
-      connection.end();
-    });
-  } catch (error) {
-    console.error(error);
-    reply.code(500).send({ success: false, error: 'Internal Server Error' });
-  }
-});
+// POST Routes      
                                                          
                                                          
 fastify.ready().then(() => {
@@ -162,9 +137,10 @@ fastify.io.on('connection', (client) => {
 
   client.on('messages', (data) => {
     if (data.user.disName !== undefined) {
-      const message = createMessage(`${data.user.disName}@${data.user.ugn}`, data.message, data.user.bio);
+      const message = createMessage([data.user.disName, data.user.ugn, data.user.uuid], data.message, data.user.bio);
       client.emit('broad', message);
       client.to(data.room).emit('notification', data);
+      lastUUIDts = data.user.uuid;
       client.to(data.room).emit('broad', message);
     }
   });
