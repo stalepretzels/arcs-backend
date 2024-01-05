@@ -6,8 +6,7 @@ const fastify = require("fastify")({ logger: logger });
 const fastifyIO = require("fastify-socket.io");
 const cors = require("@fastify/cors");
 const striptags = require("striptags");
-const ejs = require('ejs');
-const fs = require('fs');
+const fs = require('read-file');
 const path = require('path');
 const fmsql = require('@fastify/mysql');
 const markdown = require("markdown-it")({
@@ -33,8 +32,10 @@ const markdown = require("markdown-it")({
   .use(require("markdown-it-task-lists"));
 
 // Declarations
-/* none needed */
-  
+let version = fs.sync(path.join(__dirname, 'version.txt'))
+  .toString()
+  .trim();
+
 // Functions
 function cleanseMessage(message) {
     return striptags(markdown.render(striptags(message)), [
@@ -82,65 +83,16 @@ fastify.register(
   require('@fastify/compress'),
   { global: true }
 );
-fastify.register(require("@fastify/view"), {
-  engine: {
-    ejs: require("ejs"),
-  },
-});
-fastify.register(require('@fastify/static'), {
-  root: path.join(__dirname, 'public'),
-});
 
 fastify.register(fmsql, {
   connectionString: `mysql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
 })
-  
-fastify.register(function (instance, options, done) {
-  instance.setNotFoundHandler(function (req, res) {
-                                                        code = 404
-                                                        msg = "Can't find that webpage."
-                                                        res.view("/views/error.ejs") 
-  })
-  done()
-}, { prefix: '/' })
-                                                         
-fastify.setErrorHandler(function (err, req, res) {
-  request.log.warn(err)
-  var statusCode = err.statusCode >= 400 ? err.statusCode : 500
-  res
-    .code(statusCode)
-    .type('text/html')
-    .send(ejs.render(fs.readFileSync('./views/error.ejs', 'utf8'), { code: statusCode, msg: err.message }))
-})
 
-// GET Routes                                                         
-fastify.get("/", function (req, res) {
-  res.view("/views/main.ejs");
+// GET Routes
+fastify.get('/api/version', async (request, reply) => {
+  reply.send({ version });
 });
 
-fastify.get("/chat", function (req, res) {
-    res.view("/views/chat.ejs");
-});
-
-fastify.get("/profile", function (req, res) {
-  user = req.query.user
-  bio = req.query.bio
-
-  res.view("/views/profile.ejs");
-});
-
-fastify.get("/edit", function (req, res) {
-  res.view("/views/editinfo.ejs");
-});
-
-fastify.get("/about", function (req, res) {
-  res.view("/views/about.ejs");
-});
-
-fastify.get("/rules", function (req, res) {
-    res.view("/views/rules.ejs");
-});
-                                                         
 // POST Routes                                                         
 fastify.post('/api/user/verify', async (request, reply) => {
   const { username, ugn, bio, password } = request.body;
