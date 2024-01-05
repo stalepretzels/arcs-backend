@@ -77,8 +77,14 @@ function createMessage(username, message, bio) {
 }
 
 // Init
-fastify.register(fastifyIO);
-fastify.register(cors);
+fastify.register(fastifyIO, {
+  cors: {
+    origin: "*"
+  }
+});
+fastify.register(cors, {
+  origin: "*"
+});
 fastify.register(
   require('@fastify/compress'),
   { global: true }
