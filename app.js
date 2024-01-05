@@ -5,7 +5,7 @@ const cors = require("@fastify/cors");
 const striptags = require("striptags");
 const fs = require('read-file');
 const path = require('path');
-const fmsql = require('@fastify/mysql');
+const fmsql = require('mysql');
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
@@ -87,9 +87,12 @@ fastify.register(
   { global: true }
 );
 
-fastify.register(fmsql, {
-  connectionString: `mysql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
-})
+var connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
+                                                         password: process.env.DB_PASS
+});  
 
 // GET Routes
 fastify.get('/api/version', async (request, reply) => {
@@ -97,24 +100,33 @@ fastify.get('/api/version', async (request, reply) => {
 });
 
 // POST Routes                                                         
-fastify.post('/api/user/verify', async (request, reply) => {
-  const { username, ugn, bio, password } = request.body;
+fastify.post('/api/user/checkexists', async (request, reply) => {
+  const { email } = request.body;
 
   try {
-    const connection = fastify.mysql.getConnection();
+    connection.connect();
 
-    // Query the database to check if the user exists
-    const result = await connection.query('SELECT COUNT(*) AS count FROM users WHERE username = ?', [username]);
-    const userExists = result[0].count > 0;
+    // Query the database to check if the email exists
+    const query = 'SELECT COUNT(*) AS count FROM userbase WHERE email = ?';
+    const params = [email];
 
-    // Close the database connection
-    connection.release();
+    connection.query(query, params, (error, result) => {
+      if (error) {
+        console.error(error);
+        reply.code(500).send({ success: false, error: 'Internal Server Error' });
+      } else {
+        const emailExists = result[0].count > 0;
 
-    if (userExists) {
-      reply.send({ success: false });
-    } else {
-      reply.send({ success: true });
-    }
+        if (emailExists) {
+          reply.send({ success: false });
+        } else {
+          reply.send({ success: true });
+        }
+      }
+
+      // Close the database connection
+      connection.end();
+    });
   } catch (error) {
     console.error(error);
     reply.code(500).send({ success: false, error: 'Internal Server Error' });
