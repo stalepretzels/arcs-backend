@@ -6,6 +6,7 @@ const striptags = require("striptags");
 const fs = require('read-file');
 const path = require('path');
 const mysql = require('mysql');
+const jdenticon = require('jdenticon');
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
@@ -70,7 +71,7 @@ function createMessage(username, message, bio) {
   let formattedUsername = `<a href='/profile/${encodeURIComponent(username[0] + "@" + username[1])}'>${username[0]}@${username[1]}</a>`;
     let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
   let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`; 
-  formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay"><svg class="msgPfp" width="26" height="26" data-jdenticon-value="${username[2]}"></svg><span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
+  formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay">${jdenticon.toSvg(username[2], 26)}<span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
   return formattedDiv;
 }
 
