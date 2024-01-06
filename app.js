@@ -69,8 +69,8 @@ function createMessage(username, message, bio) {
   let formattedDiv;
   let formattedUsername = `<a href='/profile/${encodeURIComponent(username[0] + "@" + username[1])}'>${username[0]}@${username[1]}</a>`;
     let formattedDate = `<span style='font-size: small;'> [at <span id='date'></span>]</span>`;
-  let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`;
-  formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay"><img class="msgPfp" width="26" height="26" src="https://api.dicebear.com/7.x/shapes/svg?seed=${username[2]}&radius=20&size=26"><span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
+  let formattedMessage = `<div id='message'><pre>${cleansedMessage}</pre></div>`; 
+  formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay"><svg class="msgPfp" width="26" height="26" data-jdenticon-value="${username[2]}"></svg><span>${formattedUsername}${formattedDate}</span></div>${formattedMessage}</div>`;
   return formattedDiv;
 }
 
