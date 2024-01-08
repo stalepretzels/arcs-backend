@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@databases/mysql": "^6.0.0",
-    "twemoji": "^14.0.2",
     "@fastify/compress": "^6.5.0",
     "@fastify/cors": "^8.5.0",
     "@fastify/mysql": "^4.2.0",

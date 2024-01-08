@@ -7,7 +7,6 @@ const fs = require("read-file");
 const path = require("path");
 const mysql = require("mysql");
 const jdenticon = require("jdenticon");
-const twemoji = require("twemoji")
 const markdown = require("markdown-it")({
   html: true,
   linkify: true,
@@ -29,10 +28,6 @@ const markdown = require("markdown-it")({
     },
   })
   .use(require("markdown-it-task-lists"));
-
-  markdown.renderer.rules.emoji = function(token, idx) {
-    return twemoji.parse(token[idx].content);
-  };
 
 // Declarations
 let version = fs.sync(path.join(__dirname, "version.txt")).toString().trim();
