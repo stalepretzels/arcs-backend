@@ -160,7 +160,7 @@ fastify.ready().then(() => {
           [data.user.disName, data.user.ugn, data.user.uuid],
           data.message,
           data.user.bio,
-          data.sent
+          data.date
         );
         client.emit("broad", message);
         client.to(data.room).emit("notification", data);
