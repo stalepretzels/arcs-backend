@@ -78,7 +78,7 @@ function createMessage(username, message, bio, date) {
   formattedDiv = `<div style='margin: 10px 0;'><div class="userDisplay">${jdenticon.toSvg(
     username[2],
     26
-  )}<span>${formattedUsername} [at ${formattedDate}]</span></div>${formattedMessage}</div>`;
+  )}<span>${formattedUsername} <span class="msgTime">[at ${formattedDate}]</span></span></div>${formattedMessage}</div>`;
   return formattedDiv;
 }
 
