@@ -7,7 +7,7 @@ defmodule ArcsWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_arcs_key",
-    signing_salt: "s68FlrQO",
+    signing_salt: "pM58THBt",
     same_site: "Lax"
   ]
 
