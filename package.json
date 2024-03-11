@@ -32,7 +32,7 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "@callmeclover_/censor": "^0.2.0",
+    "bad-words-next": "^2.2.1",
     "mdurl": "^1.0.1",
     "mysql": "^2.18.1",
     "read-file": "^0.2.0",

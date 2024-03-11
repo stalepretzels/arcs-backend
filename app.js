@@ -5,7 +5,6 @@ const cors = require("@fastify/cors");
 const striptags = require("striptags");
 const fs = require("read-file");
 const path = require("path");
-const censor = require("@callmeclover_/censor");
 const mysql = require("mysql");
 const jdenticon = require("jdenticon");
 const markdown = require("markdown-it")({
@@ -29,13 +28,34 @@ const markdown = require("markdown-it")({
     },
   })
   .use(require("markdown-it-task-lists"));
+const BadWordsNext = require('bad-words-next')
+
+const en = require('bad-words-next/data/en.json')
+const es = require('bad-words-next/data/es.json')
+const fr = require('bad-words-next/data/fr.json')
+const de = require('bad-words-next/data/de.json')
+const ru = require('bad-words-next/data/ru.json')
+const rl = require('bad-words-next/data/ru_lat.json')
+const ua = require('bad-words-next/data/ua.json')
+const pl = require('bad-words-next/data/pl.json')
+const ch = require('bad-words-next/data/ch.json')
 
 // Declarations
+const badwords = new BadWordsNext()
+badwords.add(en)
+badwords.add(es)
+badwords.add(fr)
+badwords.add(de)
+badwords.add(ru)
+badwords.add(rl)
+badwords.add(ua)
+badwords.add(pl)
+badwords.add(ch)
 let version = fs.sync(path.join(__dirname, "version.txt")).toString().trim();
 
 // Functions
 function cleanseMessage(message) {
-  return striptags(markdown.render(censor.censor(striptags(message))), [
+  return striptags(markdown.render(badwords.filter(striptags(message))), [
     "strong",
     "i",
     "em",
