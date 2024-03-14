@@ -1,4 +1,5 @@
 defmodule ChatWeb.Router do
+  import Phoenix.LiveDashboard.Router
   use ChatWeb, :router
 
   pipeline :browser do
@@ -29,4 +30,19 @@ defmodule ChatWeb.Router do
   # scope "/api", ChatWeb do
   #   pipe_through :api
   # end
+  
+  pipeline :admins_only do
+  plug :admin_basic_auth
+end
+
+scope "/" do
+  pipe_through [:browser, :admins_only]
+  live_dashboard "/dashboard", metrics: ChatWeb.Telemetry
+end
+
+defp admin_basic_auth(conn, _opts) do
+  username = "cadmins"
+  password = "VDC9Q%!mcvVrZ5"
+  Plug.BasicAuth.basic_auth(conn, username: username, password: password)
+end
 end

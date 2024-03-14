@@ -1,4 +1,4 @@
-defmodule Chat.Message do
+defmodule Arcs.Message do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query

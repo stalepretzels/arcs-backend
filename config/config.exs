@@ -7,14 +7,14 @@
 # General application configuration
 import Config
 
-config :chat,
+config :arcs,
   ecto_repos: [Chat.Repo]
 
 # Configures the endpoint
-config :chat, ChatWeb.Endpoint,
+config :chat, ArcsWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
-    formats: [html: ChatWeb.ErrorHTML, json: ChatWeb.ErrorJSON],
+    formats: [html: ArcsWeb.ErrorHTML, json: ArcsWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Chat.PubSub,
@@ -32,7 +32,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.2.4",
+  version: "3.3.2",
   default: [
     args: ~w(
       --config=tailwind.config.js

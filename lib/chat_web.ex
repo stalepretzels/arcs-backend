@@ -1,12 +1,12 @@
-defmodule ChatWeb do
+defmodule ArcsWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use ChatWeb, :controller
-      use ChatWeb, :html
+      use ArcsWeb, :controller
+      use ArcsWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,7 +40,7 @@ defmodule ChatWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: ChatWeb.Layouts]
+        layouts: [html: ArcsWeb.Layouts]
 
       import Plug.Conn
 
@@ -51,7 +51,7 @@ defmodule ChatWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {ChatWeb.Layouts, :app}
+        layout: {ArcsWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -83,7 +83,7 @@ defmodule ChatWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import ChatWeb.CoreComponents
+      import ArcsWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -96,9 +96,9 @@ defmodule ChatWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: ChatWeb.Endpoint,
-        router: ChatWeb.Router,
-        statics: ChatWeb.static_paths()
+        endpoint: ArcsWeb.Endpoint,
+        router: ArcsWeb.Router,
+        statics: ArcsWeb.static_paths()
     end
   end
 

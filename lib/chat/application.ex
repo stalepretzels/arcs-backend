@@ -1,4 +1,4 @@
-defmodule Chat.Application do
+defmodule Arcs.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,16 +9,16 @@ defmodule Chat.Application do
   def start(_type, _args) do
     children = [
       # Start the Telemetry supervisor
-      ChatWeb.Telemetry,
+      ArcsWeb.Telemetry,
       # Start the Ecto repository
-      Chat.Repo,
+      Arcs.Repo,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Chat.PubSub},
-      ChatWeb.Presence,
+      {Phoenix.PubSub, name: Arcs.PubSub},
+      ArcsWeb.Presence,
       # Start the Endpoint (http/https)
-      ChatWeb.Endpoint
-      # Start a worker by calling: Chat.Worker.start_link(arg)
-      # {Chat.Worker, arg}
+      ArcsWeb.Endpoint
+      # Start a worker by calling: Arcs.Worker.start_link(arg)
+      # {Arcs.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -31,7 +31,7 @@ defmodule Chat.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    ChatWeb.Endpoint.config_change(changed, removed)
+    ArcsWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

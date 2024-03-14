@@ -1,6 +1,8 @@
 defmodule ChatWeb.RoomChannel do
   use ChatWeb, :channel
+  import Earmark
   alias ChatWeb.Presence
+  alias Bartender
 
   @impl true
   def join("room:lobby", payload, socket) do
@@ -23,18 +25,21 @@ defmodule ChatWeb.RoomChannel do
   # broadcast to everyone in the current topic (room:lobby).
   @impl true
   def handle_in("shout", payload, socket) do
-    # Insert message in database
-    {:ok, msg} = Chat.Message.changeset(%Chat.Message{}, payload) |> Chat.Repo.insert()
+   # Censor the message using Bartender
+   modified_message = Bartender.filter_profanity(Earmark.as_html!("#{payload["message"]}"))
+   
+   # Insert censored message in database
+   {:ok, msg} = Chat.Message.changeset(%Chat.Message{}, %{payload | "message" => modified_message}) |> Chat.Repo.insert()
 
     # Assigning name to socket assigns and tracking presence
     socket
     |> assign(:username, msg.name)
     |> track_presence()
-    |> broadcast("shout", Map.put_new(payload, :id, msg.id))
+    |> broadcast("shout", Map.put_new(%{payload | "message" => modified_message}, :id, msg.id))
 
     {:noreply, socket}
   end
-
+  
   @impl true
   def handle_info(:after_join, socket) do
     # Get messages and list them

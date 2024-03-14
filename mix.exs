@@ -1,15 +1,17 @@
-defmodule Chat.MixProject do
+defmodule Arcs.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :chat,
-      version: "1.17.0",
+      app: :arcs,
+      version: "3.0.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      compilers: [:rustler] ++ Mix.compilers(),
+    rustler_crates: [bartender: []],
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         c: :test,
@@ -29,7 +31,7 @@ defmodule Chat.MixProject do
   def application do
     [
       mod: {Chat.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -44,10 +46,15 @@ defmodule Chat.MixProject do
     [
       {:phoenix, "~> 1.7.0-rc.2", override: true},
       {:phoenix_ecto, "~> 4.4"},
+      {:expletive, "~> 0.1.0"},
       {:ecto_sql, "~> 3.6"},
+      {:rustler, github: "rusterlium/rustler", 
+      ref: "e343b8ca", sparse: "rustler_mix"},
+      {:phoenix_live_dashboard, "~> 0.7"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:earmark, "~> 1.4"},
       {:phoenix_live_view, "~> 0.20.0"},
       {:heroicons, "~> 0.5"},
       {:floki, ">= 0.30.0", only: :test},

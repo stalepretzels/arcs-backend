@@ -1,11 +1,11 @@
 import Config
 
 # Configure your database
-config :chat, Chat.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "chat_dev",
+config :arcs, Arcs.Repo,
+  username: "p1277_testdb",
+  password: "sn.uUir2ig6oPoSARHM,R5j+iVB'Jf",
+  hostname: "pgsql1.serv00.com",
+  database: "p1277_testdb",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -16,10 +16,10 @@ config :chat, Chat.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :chat, ChatWeb.Endpoint,
+config :arcs, ArcsWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: 9067],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -57,12 +57,12 @@ config :chat, ChatWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"lib/chat_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/arcs_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :chat, dev_routes: true
+config :arcs, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

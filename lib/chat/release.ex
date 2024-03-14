@@ -1,9 +1,9 @@
-defmodule Chat.Release do
+defmodule Arcs.Release do
   @moduledoc """
   Used for executing DB release tasks when run in production without Mix
   installed.
   """
-  @app :chat
+  @app :arcs
 
   def migrate do
     load_app()
