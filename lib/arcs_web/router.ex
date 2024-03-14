@@ -1,12 +1,12 @@
-defmodule ChatWeb.Router do
+defmodule ArcsWeb.Router do
   import Phoenix.LiveDashboard.Router
-  use ChatWeb, :router
+  use ArcsWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {ChatWeb.Layouts, :root}
+    plug :put_root_layout, {ArcsWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -18,7 +18,7 @@ defmodule ChatWeb.Router do
   # define the new pipeline using auth_plug
   pipeline :authOptional, do: plug(AuthPlugOptional)
 
-  scope "/", ChatWeb do
+  scope "/", ArcsWeb do
     pipe_through [:browser, :authOptional]
 
     get "/", PageController, :home
@@ -27,7 +27,7 @@ defmodule ChatWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ChatWeb do
+  # scope "/api", ArcsWeb do
   #   pipe_through :api
   # end
   
@@ -37,7 +37,7 @@ end
 
 scope "/" do
   pipe_through [:browser, :admins_only]
-  live_dashboard "/dashboard", metrics: ChatWeb.Telemetry
+  live_dashboard "/dashboard", metrics: ArcsWeb.Telemetry
 end
 
 defp admin_basic_auth(conn, _opts) do

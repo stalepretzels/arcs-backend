@@ -1,4 +1,4 @@
-defmodule ChatWeb.CoreComponents do
+defmodule ArcsWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
@@ -594,9 +594,9 @@ defmodule ChatWeb.CoreComponents do
     # uncommenting and adjusting the following code:
 
     # if count = opts[:count] do
-    #   Gettext.dngettext(ChatWeb.Gettext, "errors", msg, msg, count, opts)
+    #   Gettext.dngettext(ArcsWeb.Gettext, "errors", msg, msg, count, opts)
     # else
-    #   Gettext.dgettext(ChatWeb.Gettext, "errors", msg, opts)
+    #   Gettext.dgettext(ArcsWeb.Gettext, "errors", msg, opts)
     # end
 
     Enum.reduce(opts, msg, fn {key, value}, acc ->

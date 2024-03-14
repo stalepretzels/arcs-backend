@@ -41,10 +41,10 @@ create a file called `presence.ex`
 and add the following code.
 
 ```elixir
-defmodule ChatWeb.Presence do
+defmodule ArcsWeb.Presence do
   use Phoenix.Presence,
     otp_app: :chat,
-    pubsub_server: Chat.PubSub
+    pubsub_server: Arcs.PubSub
 end
 ```
 
@@ -57,24 +57,24 @@ and being fed to `:otp_app`.
 Next, we need to add this new supervisor
 to the supervision tree
 in `lib/chat/application.ex`.
-Make sure to add `ChatWeb.Presence`
-**before `ChatWeb.Endpoint`**
+Make sure to add `ArcsWeb.Presence`
+**before `ArcsWeb.Endpoint`**
 and **after the `PubSub` child**.
 
 ```elixir
     children = [
-      ChatWeb.Telemetry,
-      Chat.Repo,
-      {Phoenix.PubSub, name: Chat.PubSub},
-      ChatWeb.Presence,                 # add this line
-      ChatWeb.Endpoint
+      ArcsWeb.Telemetry,
+      Arcs.Repo,
+      {Phoenix.PubSub, name: Arcs.PubSub},
+      ArcsWeb.Presence,                 # add this line
+      ArcsWeb.Endpoint
     ]
 ```
 
 And we're done! 🎉
 
 We can now freely use `Presence`
-by importing `alias ChatWeb.Presence`
+by importing `alias ArcsWeb.Presence`
 in `lib/chat_web/channels/room_channel.ex`.
 
 
@@ -116,7 +116,7 @@ let's import `Presence`
 and start tracking processes.
 
 ```elixir
-alias ChatWeb.Presence
+alias ArcsWeb.Presence
 ```
 
 Change the `handle_info(:after_join, socket)` function
@@ -125,7 +125,7 @@ so it looks like the following.
 ```elixir
 def handle_info(:after_join, socket) do
     # Get messages and list them
-    Chat.Message.get_messages()
+    Arcs.Message.get_messages()
     |> Enum.reverse()     # reverts the enum to display the latest message at the bottom of the page
     |> Enum.each(fn msg ->
       push(socket, "shout", %{
@@ -151,7 +151,7 @@ change it like so:
 ```elixir
   def handle_in("shout", payload, socket) do
     # Insert message in database
-    {:ok, msg} = Chat.Message.changeset(%Chat.Message{}, payload) |> Chat.Repo.insert()
+    {:ok, msg} = Arcs.Message.changeset(%Arcs.Message{}, payload) |> Arcs.Repo.insert()
 
     # Assigning name to socket assigns and tracking presence
     socket

@@ -5,7 +5,7 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :chat, Chat.Repo,
+config :arcs, Arcs.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
@@ -15,7 +15,7 @@ config :chat, Chat.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :chat, ChatWeb.Endpoint,
+config :arcs, ArcsWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "Q1WJjPpcI6Vs2ieJQMcs1DjL4JPZ0HafQ3afIzEUMx7fN/K0HO0+85e02OhUQS9n",
   server: false

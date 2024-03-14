@@ -1,11 +1,11 @@
-defmodule ChatWeb.RoomChannelTest do
-  use ChatWeb.ChannelCase
+defmodule ArcsWeb.RoomChannelTest do
+  use ArcsWeb.ChannelCase
 
   setup do
     {:ok, _, socket} =
-      ChatWeb.UserSocket
+      ArcsWeb.UserSocket
       |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(ChatWeb.RoomChannel, "room:lobby")
+      |> subscribe_and_join(ArcsWeb.RoomChannel, "room:lobby")
 
     %{socket: socket}
   end
@@ -28,12 +28,12 @@ defmodule ChatWeb.RoomChannelTest do
   test ":after_join sends all existing messages", %{socket: socket} do
     # insert a new message to send in the :after_join
     payload = %{name: "Alex", message: "test"}
-    Chat.Message.changeset(%Chat.Message{}, payload) |> Chat.Repo.insert()
+    Arcs.Message.changeset(%Arcs.Message{}, payload) |> Arcs.Repo.insert()
 
     {:ok, _, socket2} =
-      ChatWeb.UserSocket
+      ArcsWeb.UserSocket
       |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(ChatWeb.RoomChannel, "room:lobby")
+      |> subscribe_and_join(ArcsWeb.RoomChannel, "room:lobby")
 
     assert socket2.join_ref != socket.join_ref
   end

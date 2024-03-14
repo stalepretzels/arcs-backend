@@ -1,5 +1,5 @@
-defmodule ChatWeb.PageController do
-  use ChatWeb, :controller
+defmodule ArcsWeb.PageController do
+  use ArcsWeb, :controller
 
   def home(conn, _params) do
     # The home page is often custom made,

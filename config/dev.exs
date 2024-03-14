@@ -53,7 +53,7 @@ config :arcs, ArcsWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :chat, ChatWeb.Endpoint,
+config :arcs, ArcsWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

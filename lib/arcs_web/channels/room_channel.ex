@@ -1,7 +1,7 @@
-defmodule ChatWeb.RoomChannel do
-  use ChatWeb, :channel
+defmodule ArcsWeb.RoomChannel do
+  use ArcsWeb, :channel
   import Earmark
-  alias ChatWeb.Presence
+  alias ArcsWeb.Presence
   alias Bartender
 
   @impl true
@@ -29,7 +29,7 @@ defmodule ChatWeb.RoomChannel do
    modified_message = Bartender.filter_profanity(Earmark.as_html!("#{payload["message"]}"))
    
    # Insert censored message in database
-   {:ok, msg} = Chat.Message.changeset(%Chat.Message{}, %{payload | "message" => modified_message}) |> Chat.Repo.insert()
+   {:ok, msg} = Arcs.Message.changeset(%Arcs.Message{}, %{payload | "message" => modified_message}) |> Arcs.Repo.insert()
 
     # Assigning name to socket assigns and tracking presence
     socket
@@ -43,7 +43,7 @@ defmodule ChatWeb.RoomChannel do
   @impl true
   def handle_info(:after_join, socket) do
     # Get messages and list them
-    Chat.Message.get_messages()
+    Arcs.Message.get_messages()
     # reverts the enum to display the latest message at the bottom of the page
     |> Enum.reverse()
     |> Enum.each(fn msg ->

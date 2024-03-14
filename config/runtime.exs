@@ -51,7 +51,7 @@ if config_env() == :prod do
   host = "localhost"
   port = String.to_integer("9067")
 
-  config :chat, ArcsWeb.Endpoint,
+  config :arcs, ArcsWeb.Endpoint,
     url: [host: host, port: 9067, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
@@ -68,7 +68,7 @@ if config_env() == :prod do
   # To get SSL working, you will need to add the `https` key
   # to your endpoint configuration:
   #
-  #     config :chat, ChatWeb.Endpoint,
+  #     config :arcs, ArcsWeb.Endpoint,
   #       https: [
   #         ...,
   #         port: 443,
@@ -90,7 +90,7 @@ if config_env() == :prod do
   # We also recommend setting `force_ssl` in your endpoint, ensuring
   # no data is ever sent via http, always redirecting to https:
   #
-  #     config :chat, ChatWeb.Endpoint,
+  #     config :arcs, ArcsWeb.Endpoint,
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.

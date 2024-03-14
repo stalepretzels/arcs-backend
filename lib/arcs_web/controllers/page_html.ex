@@ -1,5 +1,5 @@
-defmodule ChatWeb.PageHTML do
-  use ChatWeb, :html
+defmodule ArcsWeb.PageHTML do
+  use ArcsWeb, :html
 
   embed_templates "page_html/*"
 

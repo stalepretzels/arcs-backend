@@ -8,16 +8,16 @@
 import Config
 
 config :arcs,
-  ecto_repos: [Chat.Repo]
+  ecto_repos: [Arcs.Repo]
 
 # Configures the endpoint
-config :chat, ArcsWeb.Endpoint,
+config :arcs, ArcsWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
     formats: [html: ArcsWeb.ErrorHTML, json: ArcsWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Chat.PubSub,
+  pubsub_server: Arcs.PubSub,
   live_view: [signing_salt: "lvvIz0Oa"]
 
 # Configure esbuild (the version is required)

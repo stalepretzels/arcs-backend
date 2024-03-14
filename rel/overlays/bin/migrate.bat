@@ -1,1 +1,1 @@
-call "%~dp0\chat" eval Chat.Release.migrate
+call "%~dp0\chat" eval Arcs.Release.migrate

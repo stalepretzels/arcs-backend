@@ -18,9 +18,9 @@ defmodule Arcs.Message do
   end
 
   def get_messages(limit \\ 20) do
-    Chat.Message
+    Arcs.Message
     |> limit(^limit)
     |> order_by(desc: :inserted_at)
-    |> Chat.Repo.all()
+    |> Arcs.Repo.all()
   end
 end

@@ -120,8 +120,8 @@ Create a new file:
 and add the following code:
 
 ```elixir
-defmodule ChatWeb.AuthController do
-  use ChatWeb, :controller
+defmodule ArcsWeb.AuthController do
+  use ArcsWeb, :controller
 
   def login(conn, _params) do
     redirect(conn, external: AuthPlug.get_auth_url(conn, "/"))
@@ -153,8 +153,8 @@ Create a file with the path:
 Add the following code to it:
 
 ```elixir
-defmodule ChatWeb.AuthControllerTest do
-  use ChatWeb.ConnCase, async: true
+defmodule ArcsWeb.AuthControllerTest do
+  use ArcsWeb.ConnCase, async: true
 
   test "Logout link displayed when loggedin", %{conn: conn} do
     data = %{email: "test@dwyl.com", givenName: "Simon", picture: "this", auth_provider: "GitHub"}
@@ -276,7 +276,7 @@ change the `<header>` tag to look like so.
     <header class="bg-slate-800 w-full h-[4rem] top-0 fixed flex flex-col justify-center z-10">
       <div class="flex flex-row justify-center items-center">
         <h1 class="w-4/5 md:text-3xl text-center font-mono text-white">
-          Phoenix Chat Example
+          Arcs
         </h1>
         <div class="float-right mr-3">
           <%= if @loggedin do %>

@@ -1,5 +1,5 @@
-defmodule ChatWeb.AuthController do
-  use ChatWeb, :controller
+defmodule ArcsWeb.AuthController do
+  use ArcsWeb, :controller
 
   def login(conn, _params) do
     redirect(conn, external: AuthPlug.get_auth_url(conn, "/"))

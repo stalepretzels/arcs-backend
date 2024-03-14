@@ -1,5 +1,5 @@
-defmodule ChatWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :chat
+defmodule ArcsWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :arcs
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -13,7 +13,7 @@ defmodule ChatWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
-  socket "/socket", ChatWeb.UserSocket, websocket: true, longpoll: false
+  socket "/socket", ArcsWeb.UserSocket, websocket: true, longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -21,9 +21,9 @@ defmodule ChatWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :chat,
+    from: :arcs,
     gzip: false,
-    only: ChatWeb.static_paths()
+    only: ArcsWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -31,7 +31,7 @@ defmodule ChatWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :chat
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :arcs
   end
   
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -48,5 +48,5 @@ defmodule ChatWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug ChatWeb.Router
+  plug ArcsWeb.Router
 end

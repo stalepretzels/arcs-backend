@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "Chat" %>
+      <%= assigns[:page_title] || "Arcs" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -15,7 +15,7 @@
     <header class="bg-slate-800 w-full h-[4rem] top-0 fixed flex flex-col justify-center z-10">
       <div class="flex flex-row justify-center items-center">
         <h1 class="w-4/5 md:text-3xl text-center font-mono text-white">
-          Phoenix Chat Example
+          Arcs
         </h1>
         <div class="float-right mr-3">
           <%= if @loggedin do %>

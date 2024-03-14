@@ -1,4 +1,4 @@
-defmodule ChatWeb.Telemetry do
+defmodule ArcsWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -86,7 +86,7 @@ defmodule ChatWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {ChatWeb, :count_people, []}
+      # {ArcsWeb, :count_people, []}
     ]
   end
 end

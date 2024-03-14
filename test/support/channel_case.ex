@@ -1,4 +1,4 @@
-defmodule ChatWeb.ChannelCase do
+defmodule ArcsWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -11,7 +11,7 @@ defmodule ChatWeb.ChannelCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use ChatWeb.ChannelCase, async: true`, although
+  by setting `use ArcsWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -21,15 +21,15 @@ defmodule ChatWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import ChatWeb.ChannelCase
+      import ArcsWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint ChatWeb.Endpoint
+      @endpoint ArcsWeb.Endpoint
     end
   end
 
   setup tags do
-    Chat.DataCase.setup_sandbox(tags)
+    Arcs.DataCase.setup_sandbox(tags)
     :ok
   end
 end
