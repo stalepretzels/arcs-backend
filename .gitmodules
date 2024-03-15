@@ -1,0 +1,3 @@
+[submodule "bartender"]
+	path = bartender
+	url = https://github.com/stalepretzels/bartender
