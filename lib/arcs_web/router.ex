@@ -26,10 +26,11 @@ defmodule ArcsWeb.Router do
     get "/logout", AuthController, :logout
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ArcsWeb do
-  #   pipe_through :api
-  # end
+  # scope "/api", Arcs do
+  #  pipe_through :api
+
+  #  post "/auth/signup", AuthController, :authenticate
+  #end
   
   pipeline :admins_only do
   plug :admin_basic_auth
