@@ -26,7 +26,7 @@ defmodule ArcsWeb.RoomChannel do
   @impl true
   def handle_in("shout", payload, socket) do
    # Censor the message using Bartender
-   modified_message = Bartender.filter_profanity(Earmark.as_html!("#{payload["message"]}"))
+   modified_message = Bartender.censor(Earmark.as_html!("#{payload["message"]}"))
    
    # Insert censored message in database
    {:ok, msg} = Arcs.Message.changeset(%Arcs.Message{}, %{payload | "message" => modified_message}) |> Arcs.Repo.insert()
