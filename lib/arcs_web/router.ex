@@ -2,9 +2,6 @@ defmodule ArcsWeb.Router do
   import Phoenix.LiveDashboard.Router
   use ArcsWeb, :router
   
-  plug :match
-  plug :dispatch
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -29,16 +26,11 @@ defmodule ArcsWeb.Router do
     get "/logout", AuthController, :logout
   end
 
-  scope "/api", Arcs do
-    pipe_through :api
+  #scope "/api", Arcs do
+  #  pipe_through :api
 
   #  post "/auth/signup", AuthController, :authenticate
-  
-    get "/version" do
-      send_resp(conn, 200, File.read!("version.txt"))
-    end
-  
-  end
+  #end
   
   pipeline :admins_only do
   plug :admin_basic_auth
