@@ -25,7 +25,7 @@ defmodule ArcsWeb.RoomChannel do
   # broadcast to everyone in the current topic (room:lobby).
   @impl true
   def handle_in("shout", payload, socket) do
-  if !(Regex.replace(~r/\s+/, payload["message"], "") == "") 
+  if !(Regex.replace(~r/\s+/, payload["message"], "") == "") do
    # Censor the message using Bartender
    modified_message = Bartender.censor(Earmark.as_html!("#{payload["message"]}"))
    
