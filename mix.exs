@@ -48,8 +48,6 @@ defmodule Arcs.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:bartender, "~> 0.1.3", hex: :bartender_filter},
       {:ecto_sql, "~> 3.6"},
-      {:rustler, github: "rusterlium/rustler", 
-      ref: "e343b8ca", sparse: "rustler_mix"},
       {:phoenix_live_dashboard, "~> 0.7"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.0"},
