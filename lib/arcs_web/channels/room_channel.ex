@@ -40,6 +40,8 @@ defmodule ArcsWeb.RoomChannel do
 
     {:noreply, socket}
   end
+
+  {:noreply, socket}
   end
   
   @impl true
