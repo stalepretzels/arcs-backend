@@ -27,7 +27,7 @@ defmodule ArcsWeb.RoomChannel do
   def handle_in("shout", payload, socket) do
   if !(Regex.replace(~r/\s+/, payload["message"], "") == "") do
    # Censor the message using Bartender
-   modified_message = "#{payload["message"]}" |> String.replace(~r"<", "&lt;") |> String.replace(~r">", "&gt;") |> Earmark.as_html!() |> Regex.replace(~r"^<p>|<\/p>$", "") |> Bartender.censor()
+   modified_message = Bartender.censor(Regex.replace(~r"^<p>|<\/p>$", Earmark.as_html!(String.replace(~r">", String.replace(~r"<", "#{payload["message"]}", "&lt;"), "&gt;")), ""))
    
    # Insert censored message in database
    {:ok, msg} = Arcs.Message.changeset(%Arcs.Message{}, %{payload | "message" => modified_message}) |> Arcs.Repo.insert()
