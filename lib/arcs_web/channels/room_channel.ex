@@ -1,6 +1,6 @@
 defmodule ArcsWeb.RoomChannel do
   use ArcsWeb, :channel
-  import Earmark
+  alias Earmark
   alias ArcsWeb.Presence
   alias Bartender
 

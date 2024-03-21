@@ -46,7 +46,7 @@ defmodule Arcs.MixProject do
     [
       {:phoenix, "~> 1.7.0-rc.2", override: true},
       {:phoenix_ecto, "~> 4.4"},
-      {:bartender, "~> 0.1.0", hex: :bartender_filter},
+      {:bartender, "~> 0.1.3", hex: :bartender_filter},
       {:ecto_sql, "~> 3.6"},
       {:rustler, github: "rusterlium/rustler", 
       ref: "e343b8ca", sparse: "rustler_mix"},
