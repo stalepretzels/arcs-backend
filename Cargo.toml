@@ -1,0 +1,9 @@
+[package]
+name = "arcs-backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7.5"
+rustrict = "0.7.24"
+pulldown-cmark = "0.10.0"
