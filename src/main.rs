@@ -123,7 +123,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
         let mut cnt = 0;
         while let Some(Ok(msg)) = receiver.next().await {
             cnt += 1;
-            if process_message(msg, who).is_break() {
+            if process_message(msg.clone(), who).is_break() {
                 break;
             }
             if let Ok(mut message) = serde_json::from_str::<User>(msg.to_text().expect("couldn't do to_text on message")) {
