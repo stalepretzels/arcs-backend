@@ -89,86 +89,18 @@ async fn ws_handler(
 
 /// Actual websocket statemachine (one will be spawned per connection)
 async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
-    //send a ping (unsupported by some browsers) just to kick things off and get a response
-    if socket.send(Message::Ping(vec![1, 2, 3])).await.is_ok() {
-        println!("Pinged {who}...");
-    } else {
-        println!("Could not send ping {who}!");
-        // no Error here since the only thing we can do is to close the connection.
-        // If we can not send messages, there is no way to salvage the statemachine anyway.
-        return;
-    }
-
-    // receive single message from a client (we can either receive or send with socket).
-    // this will likely be the Pong for our Ping or a hello message from client.
-    // waiting for message from a client will block this task, but will not block other client's
-    // connections.
-    if let Some(msg) = socket.recv().await {
-        if let Ok(msg) = msg {
-            if process_message(msg, who).is_break() {
-                return;
-            }
+    while let Some(msg) = socket.recv().await {
+        let msg = if let Ok(mut msg) = serde_json::from_str::<User>(msg) {
+            msg.msg = msg.msg.censor();
+            msg
         } else {
-            println!("client {who} abruptly disconnected");
+            // client disconnected
+            return;
+        };
+
+        if socket.send(Message::Text(msg.to_string().expect("cant convert msg to string"))).await.is_err() {
+            // client disconnected
             return;
         }
     }
-
-    // By splitting socket we can send and receive at the same time. In this example we will send
-    // unsolicited messages to client based on some sort of server's internal event (i.e .timer).
-    let (mut sender, mut receiver) = socket.split();
-
-    // This second task will receive messages from client and print them on server console
-    let recv_task = tokio::spawn(async move {
-        let mut cnt = 0;
-        while let Some(Ok(msg)) = receiver.next().await {
-            cnt += 1;
-            if process_message(msg.clone(), who).is_break() {
-                break;
-            }
-            if let Ok(mut message) = serde_json::from_str::<User>(msg.to_text().expect("couldn't do to_text on message")) {
-                message.msg = message.msg.censor();
-                println!("<{0}>: {1}", message.user, message.msg);
-                sender.send(Message::Text(serde_json::to_string(&message).expect("could not return message into json"))).await.expect("couldn't send message")
-            }
-        }
-        cnt
-    });
-
-    // returning from the handler closes the websocket connection
-    println!("Websocket context {who} destroyed");
-}
-
-/// helper to print contents of messages to stdout. Has special treatment for Close.
-fn process_message(msg: Message, who: SocketAddr) -> ControlFlow<(), ()> {
-    match msg {
-        Message::Text(t) => {
-            println!(">>> {who} sent str: {t:?}");
-        }
-        Message::Binary(d) => {
-            println!(">>> {} sent {} bytes: {:?}", who, d.len(), d);
-        }
-        Message::Close(c) => {
-            if let Some(cf) = c {
-                println!(
-                    ">>> {} sent close with code {} and reason `{}`",
-                    who, cf.code, cf.reason
-                );
-            } else {
-                println!(">>> {who} somehow sent close message without CloseFrame");
-            }
-            return ControlFlow::Break(());
-        }
-
-        Message::Pong(v) => {
-            println!(">>> {who} sent pong with {v:?}");
-        }
-        // You should never need to manually handle Message::Ping, as axum's websocket library
-        // will do so for you automagically by replying with Pong and copying the v according to
-        // spec. But if you need the contents of the pings you can see them here.
-        Message::Ping(v) => {
-            println!(">>> {who} sent ping with {v:?}");
-        }
-    }
-    ControlFlow::Continue(())
 }
