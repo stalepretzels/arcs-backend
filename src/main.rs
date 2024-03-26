@@ -128,7 +128,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
             }
             if let Ok(message) = serde_json::from_str::<User>(msg.to_text().expect("couldn't do to_text on message")) {
                 message.msg = message.msg.censor();
-                println!("<{0}>: {message.msg}", message.user);
+                println!("<{0}>: {1}", message.user, message.msg);
                 if sender
                 .send(Message::Text(serde_json::to_string(&message).expect("could not return message into json"))).await.is_err() {return i;}
             }
