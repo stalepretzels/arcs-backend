@@ -126,7 +126,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
             if process_message(msg, who).is_break() {
                 break;
             }
-            if let Ok(message) = serde_json::from_str::<User>(json_str) {
+            if let Ok(message) = serde_json::from_str::<User>(msg) {
                 message.msg = message.msg.censor();
                 println!("<{message.user}>: {message.msg}");
                 if sender
@@ -135,24 +135,6 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
         }
         cnt
     });
-
-    // If any one of the tasks exit, abort the other.
-    tokio::select! {
-        rv_a = (&mut send_task) => {
-            match rv_a {
-                Ok(a) => println!("{a} messages sent to {who}"),
-                Err(a) => println!("Error sending messages {a:?}")
-            }
-            recv_task.abort();
-        },
-        rv_b = (&mut recv_task) => {
-            match rv_b {
-                Ok(b) => println!("Received {b} messages"),
-                Err(b) => println!("Error receiving messages {b:?}")
-            }
-            send_task.abort();
-        }
-    }
 
     // returning from the handler closes the websocket connection
     println!("Websocket context {who} destroyed");
