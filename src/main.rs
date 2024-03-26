@@ -131,7 +131,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
                 message.msg = message.msg.censor();
                 println!("<{message.user}>: {message.msg}");
                 if sender
-                .send(Message::Text(serde_json::to_string(message).expect("could not return message into json"))).await.is_err() {return i;}
+                .send(Message::Text(serde_json::to_string(&message).expect("could not return message into json"))).await.is_err() {return i;}
             }
         }
         cnt
