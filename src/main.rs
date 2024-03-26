@@ -1,20 +1,5 @@
-//! Example websocket server.
-//!
-//! Run the server with
-//! ```not_rust
-//! cargo run -p example-websockets --bin example-websockets
-//! ```
-//!
-//! Run a browser client with
-//! ```not_rust
-//! firefox http://localhost:3000
-//! ```
-//!
-//! Alternatively you can run the rust client (showing two
-//! concurrent websocket connections being established) with
-//! ```not_rust
-//! cargo run -p example-websockets --bin example-client
-//! ```
+mod user;
+use user::User;
 
 use axum::{
     extract::ws::{Message, WebSocket, WebSocketUpgrade},
@@ -27,6 +12,7 @@ use axum_extra::TypedHeader;
 use std::borrow::Cow;
 use std::ops::ControlFlow;
 use std::{net::SocketAddr, path::PathBuf};
+use std::error::Error;
 use tower_http::{
     services::ServeDir,
     trace::{DefaultMakeSpan, TraceLayer},
@@ -40,6 +26,9 @@ use axum::extract::ws::CloseFrame;
 
 //allows to split the websocket stream into separate TX and RX branches
 use futures::{sink::SinkExt, stream::StreamExt};
+
+use rustrict::CensorStr;
+use serde_json;
 
 #[tokio::main]
 async fn main() {
@@ -125,41 +114,9 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
         }
     }
 
-    // Since each client gets individual statemachine, we can pause handling
-    // when necessary to wait for some external event (in this case illustrated by sleeping).
-    // Waiting for this client to finish getting its greetings does not prevent other clients from
-    // connecting to server and receiving their greetings.
-    for i in 1..5 {
-        if socket
-            .send(Message::Text(format!("Hi {i} times!")))
-            .await
-            .is_err()
-        {
-            println!("client {who} abruptly disconnected");
-            return;
-        }
-        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
-    }
-
     // By splitting socket we can send and receive at the same time. In this example we will send
     // unsolicited messages to client based on some sort of server's internal event (i.e .timer).
     let (mut sender, mut receiver) = socket.split();
-
-    // Spawn a task that will push several messages to the client (does not matter what client does)
-    let mut send_task = tokio::spawn(async move {
-        let n_msg = 20;
-        for i in 0..n_msg {
-            // In case of any websocket error, we exit.
-            if sender
-                .send(Message::Text(format!("Server message {i} ...")))
-                .await
-                .is_err()
-            {
-                return i;
-            }
-
-            tokio::time::sleep(std::time::Duration::from_millis(300)).await;
-        }
 
         println!("Sending close to {who}...");
         if let Err(e) = sender
@@ -179,9 +136,15 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
         let mut cnt = 0;
         while let Some(Ok(msg)) = receiver.next().await {
             cnt += 1;
-            // print message and break if instructed to do so
             if process_message(msg, who).is_break() {
                 break;
+            }
+            let json_msg: Result<User, Box<dyn Error>> = serde_json::from_str(json_str);
+            if let Ok(message) = json_msg {
+                message.msg = message.msg.censor();
+                println!("<{message.user}>: {message.msg}")
+                if sender
+                .send(Message::Text(serde_json::to_string(message))).await.is_err() {return i;}
             }
         }
         cnt

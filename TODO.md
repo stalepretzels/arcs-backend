@@ -1,1 +1,4 @@
 - [x] Find out how the HELL to use ws messages
+- [ ] Make messaging "work"
+    - [ ] Rewrite that axum example to not be an example
+- [ ] Make messaging good
