@@ -44,11 +44,6 @@ lazy_static! {
 
 static USER_ID: Lazy<Arc<Mutex<i32>>> = Lazy::new(|| Arc::new(Mutex::new(0)));
 
-fn main() {
-    GLOBAL_INT.fetch_add(1, Ordering::SeqCst);
-    println!("Global value: {}", GLOBAL_INT.load(Ordering::SeqCst));
-}
-
 // Our shared state
 struct AppState {
     // We require unique usernames. This tracks which usernames have been taken.
