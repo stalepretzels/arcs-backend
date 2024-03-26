@@ -126,8 +126,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
             if process_message(msg, who).is_break() {
                 break;
             }
-            let json_msg: Result<User, Box<dyn Error>> = serde_json::from_str(json_str);
-            if let Ok(message) = json_msg {
+            if let Ok(message) = serde_json::from_str::<User>(json_str) {
                 message.msg = message.msg.censor();
                 println!("<{message.user}>: {message.msg}");
                 if sender
