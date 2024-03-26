@@ -120,10 +120,8 @@ async fn ws_handler(
 /// Actual websocket statemachine (one will be spawned per connection)
 async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppState>) {
     let (mut sender, mut receiver) = socket.split();
-    let mut value = USER_ID.lock().unwrap();
-    *value += 1;
-    let username = value.clone().to_string();
-    drop(value);
+    *USER_ID.lock().unwrap() += 1;
+    let username = USER_ID.lock().unwrap().clone().to_string();
 
     // We subscribe *before* sending the "joined" message, so that we will also
     // display it to our client.
