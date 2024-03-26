@@ -15,8 +15,7 @@ use std::{borrow::Cow,
     path::PathBuf,
     error::Error,
     collections::HashSet,
-    sync::{Arc, Mutex},
-    sync::atomic::{AtomicUsize, Ordering}
+    sync::{Arc, Mutex}
 };
 use once_cell::sync::Lazy;
 use tokio::sync::broadcast;
@@ -43,7 +42,7 @@ lazy_static! {
     static ref DB_CLIENT: Mutex<Client> = Mutex::new(Client::connect("postgres://user:password@localhost/database", postgres::NoTls).unwrap());
 }
 
-static USER_ID: Lazy<Arc<AtomicUsize>> = Lazy::new(|| Arc::new(AtomicUsize::new(0)));
+static USER_ID: Lazy<Arc<Mutex<i32>>> = Lazy::new(|| Arc::new(Mutex::new(0)));
 
 fn main() {
     GLOBAL_INT.fetch_add(1, Ordering::SeqCst);
@@ -126,8 +125,10 @@ async fn ws_handler(
 /// Actual websocket statemachine (one will be spawned per connection)
 async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppState>) {
     let (mut sender, mut receiver) = stream.split();
-    USER_ID.fetch_add(1, Ordering::SeqCst);
-    let username = USER_ID.clone();
+    let mut value = USER_ID.lock().unwrap();
+    *value += 1;
+    let username = value.clone();
+    drop(value);
 
     // We subscribe *before* sending the "joined" message, so that we will also
     // display it to our client.
