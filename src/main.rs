@@ -119,14 +119,14 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
     let (mut sender, mut receiver) = socket.split();
 
     // This second task will receive messages from client and print them on server console
-    let mut recv_task = tokio::spawn(async move {
+    let recv_task = tokio::spawn(async move {
         let mut cnt = 0;
         while let Some(Ok(msg)) = receiver.next().await {
             cnt += 1;
             if process_message(msg, who).is_break() {
                 break;
             }
-            if let Ok(message) = serde_json::from_str::<User>(msg.to_text().expect("couldn't do to_text on message")) {
+            if let Ok(mut message) = serde_json::from_str::<User>(msg.to_text().expect("couldn't do to_text on message")) {
                 message.msg = message.msg.censor();
                 println!("<{0}>: {1}", message.user, message.msg);
                 sender.send(Message::Text(serde_json::to_string(&message).expect("could not return message into json"))).await.expect("couldn't send message")
