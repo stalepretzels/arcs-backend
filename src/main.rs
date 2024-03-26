@@ -64,7 +64,7 @@ async fn main() {
         );
 
     // run it with hyper
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:1337")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:9067")
         .await
         .unwrap();
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
