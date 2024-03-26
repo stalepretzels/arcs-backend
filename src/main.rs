@@ -169,4 +169,5 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
 
     // Remove username from map so new clients can take it again.
     state.user_set.lock().unwrap().remove(&username);
+    *USER_ID.lock().unwrap() -= 1
 }
