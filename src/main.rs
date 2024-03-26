@@ -98,8 +98,8 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
             return;
         };
 
-        println!(format!("<{}>: {}", message.user, message.msg));
-        if socket.send(Message::Text(serde_json::to_string(msg).expect("cant convert msg to string"))).await.is_err() {
+        println!("<{}>: {}", message.user, message.msg);
+        if socket.send(Message::Text(serde_json::to_string(&msg).expect("cant convert msg to string"))).await.is_err() {
             // client disconnected
             return;
         }
