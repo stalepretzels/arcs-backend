@@ -127,7 +127,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
     let (mut sender, mut receiver) = stream.split();
     let mut value = USER_ID.lock().unwrap();
     *value += 1;
-    let username = value.clone();
+    let username = value.clone().to_string();
     drop(value);
 
     // We subscribe *before* sending the "joined" message, so that we will also
