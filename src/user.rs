@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct User {
+pub struct User {
     msg: String,
     user: String,
 }

@@ -117,7 +117,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
     // By splitting socket we can send and receive at the same time. In this example we will send
     // unsolicited messages to client based on some sort of server's internal event (i.e .timer).
     let (mut sender, mut receiver) = socket.split();
-    
+
     // This second task will receive messages from client and print them on server console
     let mut recv_task = tokio::spawn(async move {
         let mut cnt = 0;
@@ -131,7 +131,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
                 message.msg = message.msg.censor();
                 println!("<{message.user}>: {message.msg}");
                 if sender
-                .send(Message::Text(serde_json::to_string(message))).await.is_err() {return i;}
+                .send(Message::Text(serde_json::to_string(message).expect("could not return message into json"))).await.is_err() {return i;}
             }
         }
         cnt
