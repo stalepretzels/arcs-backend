@@ -90,7 +90,7 @@ async fn ws_handler(
 /// Actual websocket statemachine (one will be spawned per connection)
 async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
     while let Some(msg) = socket.recv().await {
-        let msg = if let Ok(mut msg) = serde_json::from_str::<User>(msg) {
+        let msg = if let Ok(mut msg) = serde_json::from_str::<User>(msg.expect("we don't know what happened")) {
             msg.msg = msg.msg.censor();
             msg
         } else {
@@ -98,6 +98,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr) {
             return;
         };
 
+        println!(format!("<message.user>: {message.msg}"));
         if socket.send(Message::Text(serde_json.to_string(msg).expect("cant convert msg to string"))).await.is_err() {
             // client disconnected
             return;
