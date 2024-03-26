@@ -2,7 +2,7 @@ mod user;
 use user::User;
 
 use axum::{
-    extract::ws::{Message, WebSocket, WebSocketUpgrade, State},
+    extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
     response::IntoResponse,
     routing::get,
     Router,
