@@ -4,6 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7.5"
+axum = {version="0.7.5", features=["ws"]}
 rustrict = "0.7.24"
+tokio = {version = "1.36.0", features=["full"]}
 pulldown-cmark = "0.10.0"
+tokio-tungstenite = {version="0.21.0", features=["__rustls-tls"]}
+futures-util = "0.3.30"
+headers = "0.4.0"
+tracing-subscriber = {version="0.3.18", features=["env-filter"]}
+axum-extra = {version="0.9.3", features=["typed-header"]}
+tracing = "0.1.40"
+futures = "0.3.30"
+tower-http = {version="0.5.2", features=["fs", "trace"]}
