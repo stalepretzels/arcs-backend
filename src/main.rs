@@ -175,19 +175,3 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
     // Remove username from map so new clients can take it again.
     state.user_set.lock().unwrap().remove(&username);
 }
-    while let Some(msg) = socket.recv().await {
-        let msg = if let Ok(mut msg) = serde_json::from_str::<User>(msg.expect("we don't know what happened").to_text().expect("can't convert message to string")) {
-            msg.msg = msg.msg.censor();
-            msg
-        } else {
-            // client disconnected
-            return;
-        };
-
-        println!("<{}>: {}", msg.user, msg.msg);
-        if socket.send(Message::Text(serde_json::to_string(&msg).expect("cant convert msg to string"))).await.is_err() {
-            // client disconnected
-            return;
-        }
-    }
-}
