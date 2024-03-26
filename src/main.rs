@@ -147,6 +147,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
 
     // Clone things we want to pass (move) to the receiving task.
     let tx = state.tx.clone();
+    let name = username.clone();
 
     // Spawn a task that takes messages from the websocket, prepends the user
     // name, and sends them to all broadcast subscribers.
