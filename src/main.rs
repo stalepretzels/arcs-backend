@@ -108,7 +108,7 @@ async fn ws_handler(
 }
 
 /// Actual websocket statemachine (one will be spawned per connection)
-async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppState>) {
+async fn handle_socket(socket: WebSocket, who: SocketAddr, state: Arc<AppState>) {
     let (mut sender, mut receiver) = socket.split();
     *USER_ID.lock().unwrap() += 1;
     let username = USER_ID.lock().unwrap().clone().to_string();
