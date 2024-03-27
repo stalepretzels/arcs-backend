@@ -140,9 +140,10 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
     // Spawn a task that takes messages from the websocket, prepends the user
     // name, and sends them to all broadcast subscribers.
     let mut recv_task = tokio::spawn(async move {
-        while let Some(Ok(message)) = serde_json::from_str::<MessageModel>(receiver.next().await.expect("")).expect("couldnt get json from message") {
+        while let Some(Ok(Message::Text(text))) = receiver.next().await {
+            text = serde_json::from_str::<MessageModel>(text).expect("couldn't get json from message");
             // Add username before message.
-            let _ = tx.send(format!("{:?}", serde_json::to_string(message)));
+            let _ = tx.send(format!("{:?}", serde_json::to_string(text)));
         }
     });
 
