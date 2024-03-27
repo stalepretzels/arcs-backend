@@ -144,7 +144,7 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
             let mut message = serde_json::from_str::<MessageModel>(&text).expect("couldn't get json from message");
             message.msg = message.msg.censor();
             // Add username before message.
-            let _ = tx.send(format!("{:?}", serde_json::to_string(&message)));
+            let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
         }
     });
 
