@@ -1,5 +1,5 @@
 mod model;
-use model::MessageModel;
+use model::{MessageModel, MessageType};
 
 use axum::{
     extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
@@ -142,9 +142,13 @@ async fn handle_socket(mut socket: WebSocket, who: SocketAddr, state: Arc<AppSta
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
             let mut message = serde_json::from_str::<MessageModel>(&text).expect("couldn't get json from message");
-            message.msg = message.msg.censor();
-            // Add username before message.
-            let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
+            match message.type {
+                MessageType::MessageSent => {
+                    message.msg = message.msg.censor();
+                    let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
+                },
+                _ => { continue; }
+            }
         }
     });
 
