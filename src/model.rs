@@ -33,6 +33,6 @@ impl FromStr for MessageType {
 pub struct MessageModel {
     pub msg: String,
     pub name: String,
-    #[serde(alias="type")]
+    #[serde(rename="type")]
     pub msgtype: MessageType
 }
