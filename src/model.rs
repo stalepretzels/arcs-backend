@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::str::FromStr
+use std::str::FromStr;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
@@ -30,8 +30,8 @@ impl FromStr for MessageType {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct MessageModel {
+pub struct MessageModel {
     pub msg: String,
     pub name: String,
-    pub r#type: MessageType
+    pub msgtype: MessageType
 }
