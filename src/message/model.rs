@@ -30,7 +30,7 @@ impl FromStr for MessageType {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct MessageModel {
     // Message typing so the client and server know what they should do with results
     #[serde(rename="type")]
