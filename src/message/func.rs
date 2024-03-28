@@ -3,11 +3,11 @@ use kuchikiki::traits::*;
 use std::{cell::RefCell,borrow::Borrow};
 
 pub trait VecWithHardLimit<T: Clone> {
-    fn push_with_hard_limit(&mut self, element: T);
+    fn push_with_hard_limit(&mut self, element: &T);
 }
 
 impl<T: Clone> VecWithHardLimit<T> for Vec<T> {
-    fn push_with_hard_limit(&mut self, element: T) {
+    fn push_with_hard_limit(&mut self, element: &T) {
         if self.len() == self.capacity() {
             self.remove(0); // Remove the oldest element
         }
