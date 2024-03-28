@@ -1,13 +1,11 @@
-use scraper::{Html, Selector};
 use rustrict::CensorIter;
 use kuchikiki::traits::*;
+use std::cell::RefCell;
 
 pub fn into_censored_md(html: &str) -> String {
-    let fragment = Html::parse_fragment(html);
-    let selector = Selector::parse("p").unwrap();
-    let root = fragment.select(&selector).next().unwrap();
+    let document = kuchikiki::parse_html().one(html);
 
-    let nodes_text: Vec<String> = root.text().collect::<Vec<&str>>().iter().map(|&t| t.to_string()).collect();
+    let nodes_text: Vec<String> = document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect();
     let mut nodes_char: Vec<char> = nodes_text.join("").chars().censor().collect::<Vec<char>>();
 
     let mut index = 0;
@@ -19,9 +17,8 @@ pub fn into_censored_md(html: &str) -> String {
         index += 1;
     }
 
-    let document = kuchikiki::parse_html().one(html);
-    for (index, text_node) in document.select("p").unwrap().next().expect("").as_node().descendants().text_nodes().enumerate() {
+    for (index, text_node) in document.descendants().text_nodes().enumerate() {
         text_node.replace(new_text[index].clone());
     }
-    document.select_first("p").unwrap().as_node().to_string()
+    document.to_string()
 }
