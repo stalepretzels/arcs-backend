@@ -2,7 +2,7 @@ use rustrict::CensorIter;
 use kuchikiki::traits::*;
 use std::cell::RefCell;
 
-pub fn into_censored_md(html: &str) -> String {
+pub fn into_censored_md(html: &str) -> Option<String> {
     let document = kuchikiki::parse_html().one(html);
 
     let nodes_text: Vec<String> = document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect();
@@ -20,5 +20,9 @@ pub fn into_censored_md(html: &str) -> String {
     for (index, text_node) in document.descendants().text_nodes().enumerate() {
         text_node.replace(new_text[index].clone());
     }
-    document.to_string()
+    if document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect::<Vec<String>>().join("").trim().is_empty() {
+        None
+    } else {
+        Some(document.to_string())
+    }
 }

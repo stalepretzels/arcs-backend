@@ -142,9 +142,12 @@ async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>
             match message.msgtype {
                 MessageType::MessageSent => {
                     let mut msg_new: String = String::new();
-                    push_html(&mut msg_new, Parser::new(&message.msg));
-                    message.msg = into_censored_md(&clean(&*msg_new));
-                    let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
+                    push_html(&mut msg_new, Parser::new(&message.msg.replace("<", "&lt;").replace(">", "&gt;")));
+                    if let Some(text) = into_censored_md(&clean(&*msg_new)) {
+                        message.msg = text;
+                        let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
+                    }
+                    continue;
                 },
                 _ => { continue; }
             }
