@@ -146,7 +146,7 @@ async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>
                     push_html(&mut msg_new, Parser::new(&message.param1.replace("<", "&lt;").replace(">", "&gt;")));
                     if let Some(text) = into_censored_md(&clean(&*msg_new)) {
                         message.param1 = text;
-                        MESSAGES.lock().unwrap().push_with_hard_limit(&message);
+                        MESSAGES.lock().unwrap().push_with_hard_limit(message);
                         let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
                     }
                     continue;

@@ -34,8 +34,8 @@ impl FromStr for MessageType {
 pub struct MessageModel {
     // Message typing so the client and server know what they should do with results
     #[serde(rename="type")]
-    pub msgtype: MessageType 
-    
+    pub msgtype: MessageType ,
+
     // Make params with aliases for each message type
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias="msg")]
