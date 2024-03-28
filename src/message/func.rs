@@ -20,7 +20,7 @@ pub fn into_censored_md(html: &str) -> Option<String> {
 
     // If there's no <p> tag, wrap the content in a <p> tag
     if !document.select_first("p").is_some() {
-        document = kuchikiki::parse_fragment().one(format!("<p>{}</p>", document.select_first("body").unwrap().as_node().to_string()));
+        document = kuchikiki::parse_html().one(format!("<p>{}</p>", document.select_first("body").unwrap().as_node().to_string()));
     }
 
     let nodes_text: Vec<String> = document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect();
