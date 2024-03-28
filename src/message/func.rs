@@ -1,12 +1,12 @@
 use rustrict::CensorIter;
 use kuchikiki::traits::*;
-use std::cell::RefCell;
+use std::{cell::RefCell,borrow::Borrow};
 
 pub trait VecWithHardLimit<T> {
     fn push_with_hard_limit(&mut self, element: &T);
 }
 
-impl<T> VecWithHardLimit<T> for Vec<T> {
+impl<T: Borrow<Vec>> VecWithHardLimit<T> for T {
     fn push_with_hard_limit(&mut self, element: &T) {
         if self.len() == self.capacity() {
             self.remove(0); // Remove the oldest element
