@@ -1,6 +1,6 @@
 use rustrict::CensorIter;
 use kuchikiki::traits::*;
-use std::cell::RefCell;
+use std::{cell::RefCell,borrow::Borrow};
 
 pub trait VecWithHardLimit<T> {
     fn push_with_hard_limit(&mut self, element: &T);
