@@ -1,6 +1,6 @@
 mod message;
 use message::model::{MessageModel, MessageType};
-use message::func::into_censored_md;
+use message::func::{into_censored_md};
 
 use axum::{
     extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
@@ -39,6 +39,7 @@ lazy_static! {
     static ref DB_CLIENT: Mutex<Client> = Mutex::new(Client::connect("postgres://user:password@localhost/database", postgres::NoTls).unwrap());
 }
 
+static MESSAGES: Lazy<Mutex<Vec<MessageModel>>> = Lazy::new(|| Mutex::new(Vec::with_capacity(20)));
 static USER_ID: Lazy<Arc<Mutex<i32>>> = Lazy::new(|| Arc::new(Mutex::new(0)));
 
 // Our shared state
@@ -142,9 +143,10 @@ async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>
             match message.msgtype {
                 MessageType::MessageSent => {
                     let mut msg_new: String = String::new();
-                    push_html(&mut msg_new, Parser::new(&message.msg.replace("<", "&lt;").replace(">", "&gt;")));
+                    push_html(&mut msg_new, Parser::new(&message.param1.replace("<", "&lt;").replace(">", "&gt;")));
                     if let Some(text) = into_censored_md(&clean(&*msg_new)) {
-                        message.msg = text;
+                        message.param1 = text;
+                        MESSAGES.lock().unwrap().push_with_hard_limit(&message);
                         let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
                     }
                     continue;
@@ -167,5 +169,5 @@ async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>
 
     // Remove username from map so new clients can take it again.
     state.user_set.lock().unwrap().remove(&username);
-    *USER_ID.lock().unwrap() -= 1
+    *USER_ID.lock().unwrap() -= 1;
 }

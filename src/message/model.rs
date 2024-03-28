@@ -5,6 +5,7 @@ use std::str::FromStr;
 #[serde(rename_all = "snake_case")]
 pub enum MessageType {
     MessageSent,
+    RetrieveMessages,
     RoomJoin,
     RoomLeave,
     UserJoin,
@@ -31,8 +32,15 @@ impl FromStr for MessageType {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct MessageModel {
-    pub msg: String,
-    pub name: String,
+    // Message typing so the client and server know what they should do with results
     #[serde(rename="type")]
-    pub msgtype: MessageType
+    pub msgtype: MessageType 
+    
+    // Make params with aliases for each message type
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(alias="msg")]
+    pub param1: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(alias="user")]
+    pub param2: String,
 }

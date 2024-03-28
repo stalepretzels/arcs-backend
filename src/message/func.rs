@@ -2,8 +2,26 @@ use rustrict::CensorIter;
 use kuchikiki::traits::*;
 use std::cell::RefCell;
 
+pub trait VecWithHardLimit<T> {
+    fn push_with_hard_limit(&mut self, element: T);
+}
+
+impl<T> VecWithHardLimit<T> for Vec<T> {
+    fn push_with_hard_limit(&mut self, element: T) {
+        if self.len() == self.capacity() {
+            self.remove(0); // Remove the oldest element
+        }
+        self.push(element);
+    }
+}
+
 pub fn into_censored_md(html: &str) -> Option<String> {
-    let document = kuchikiki::parse_html().one(html);
+    let mut document = kuchikiki::parse_html().one(html);
+
+    // If there's no <p> tag, wrap the content in a <p> tag
+    if !document.select_first("p").is_some() {
+        document = kuchikiki::parse_fragment().one(format!("<p>{}</p>", document.select_first("body").unwrap().as_node().to_string()));
+    }
 
     let nodes_text: Vec<String> = document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect();
     let mut nodes_char: Vec<char> = nodes_text.join("").chars().censor().collect::<Vec<char>>();
