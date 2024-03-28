@@ -39,8 +39,8 @@ pub struct MessageModel {
     // Make params with aliases for each message type
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias="msg")]
-    pub param1: String,
+    pub param1: &Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias="user")]
-    pub param2: String,
+    pub param2: &Option<String>,
 }
