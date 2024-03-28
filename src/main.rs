@@ -1,5 +1,5 @@
-mod model;
-use model::{MessageModel, MessageType};
+mod message;
+use message::model::{MessageModel, MessageType};
 
 use axum::{
     extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
@@ -7,13 +7,12 @@ use axum::{
     routing::get,
     Router,
 };
-use axum_extra::TypedHeader;
+use pulldown_cmark::{html, Parser};
+use ammonia::clean;
 
-use std::{borrow::Cow,
-    ops::ControlFlow,
-    net::SocketAddr,
+
+use std::{net::SocketAddr,
     path::PathBuf,
-    error::Error,
     collections::HashSet,
     sync::{Arc, Mutex}
 };
@@ -28,7 +27,6 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 //allows to extract the IP of connecting user
 use axum::extract::connect_info::ConnectInfo;
-use axum::extract::ws::CloseFrame;
 
 //allows to split the websocket stream into separate TX and RX branches
 use futures::{sink::SinkExt, stream::StreamExt};
@@ -108,7 +106,7 @@ async fn ws_handler(
 }
 
 /// Actual websocket statemachine (one will be spawned per connection)
-async fn handle_socket(socket: WebSocket, who: SocketAddr, state: Arc<AppState>) {
+async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>) {
     let (mut sender, mut receiver) = socket.split();
     *USER_ID.lock().unwrap() += 1;
     let username = USER_ID.lock().unwrap().clone().to_string();
@@ -135,7 +133,7 @@ async fn handle_socket(socket: WebSocket, who: SocketAddr, state: Arc<AppState>)
 
     // Clone things we want to pass (move) to the receiving task.
     let tx = state.tx.clone();
-    let name = username.clone();
+    let _name = username.clone();
 
     // Spawn a task that takes messages from the websocket, prepends the user
     // name, and sends them to all broadcast subscribers.
