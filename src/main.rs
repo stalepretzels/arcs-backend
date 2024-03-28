@@ -1,5 +1,6 @@
 mod message;
 use message::model::{MessageModel, MessageType};
+use message::func::into_censored_md;
 
 use axum::{
     extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
@@ -7,9 +8,8 @@ use axum::{
     routing::get,
     Router,
 };
-use pulldown_cmark::{html, Parser};
+use pulldown_cmark::{Parser, html::push_html};
 use ammonia::clean;
-
 
 use std::{net::SocketAddr,
     path::PathBuf,
@@ -31,7 +31,6 @@ use axum::extract::connect_info::ConnectInfo;
 //allows to split the websocket stream into separate TX and RX branches
 use futures::{sink::SinkExt, stream::StreamExt};
 
-use rustrict::CensorStr;
 use serde_json;
 
 use postgres::Client;
@@ -142,7 +141,9 @@ async fn handle_socket(socket: WebSocket, _who: SocketAddr, state: Arc<AppState>
             let mut message = serde_json::from_str::<MessageModel>(&text).expect("couldn't get json from message");
             match message.msgtype {
                 MessageType::MessageSent => {
-                    message.msg = message.msg.censor();
+                    let mut msg_new: String = String::new();
+                    push_html(&mut msg_new, Parser::new(&message.msg));
+                    message.msg = into_censored_md(&clean(&*msg_new));
                     let _ = tx.send(serde_json::to_string(&message).expect("couldnt convert json to string"));
                 },
                 _ => { continue; }
