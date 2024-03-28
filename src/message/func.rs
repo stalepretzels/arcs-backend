@@ -1,6 +1,6 @@
 use rustrict::CensorIter;
 use kuchikiki::traits::*;
-use std::{cell::RefCell,borrow::Borrow};
+use std::cell::RefCell;
 
 pub trait VecWithHardLimit<T: Clone> {
     fn push_with_hard_limit(&mut self, element: &T);
@@ -41,6 +41,6 @@ pub fn into_censored_md(html: &str) -> Option<String> {
     if document.descendants().text_nodes().map(|text| {<RefCell<String> as Clone>::clone(&text).into_inner()}).collect::<Vec<String>>().join("").trim().is_empty() {
         None
     } else {
-        Some(document.to_string())
+        Some(document.select_first("p").unwrap().as_node().to_string())
     }
 }
