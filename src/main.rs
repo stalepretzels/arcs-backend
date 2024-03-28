@@ -1,6 +1,6 @@
 mod message;
 use message::model::{MessageModel, MessageType};
-use message::func::{into_censored_md};
+use message::func::{into_censored_md, VecWithHardLimit};
 
 use axum::{
     extract::{State, ws::{Message, WebSocket, WebSocketUpgrade}},
