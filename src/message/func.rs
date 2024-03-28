@@ -6,7 +6,7 @@ pub trait VecWithHardLimit<T> {
     fn push_with_hard_limit(&mut self, element: &T);
 }
 
-impl<T> VecWithHardLimit<T> for Vec<T> {
+impl<&T> VecWithHardLimit<T> for Vec<T> {
     fn push_with_hard_limit(&mut self, element: &T) {
         if self.len() == self.capacity() {
             self.remove(0); // Remove the oldest element
